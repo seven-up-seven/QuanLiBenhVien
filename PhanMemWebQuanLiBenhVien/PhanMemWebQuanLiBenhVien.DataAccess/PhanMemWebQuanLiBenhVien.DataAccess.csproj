@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\ImplementedClasses\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PhanMemWebQuanLiBenhVien.Models\PhanMemWebQuanLiBenhVien.Models.csproj" />
 	<ProjectReference Include="..\PhanMemWebQuanLiBenhVien.Ultilities\PhanMemWebQuanLiBenhVien.Ultilities.csproj" />
   </ItemGroup>
