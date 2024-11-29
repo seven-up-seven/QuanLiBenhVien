@@ -18,8 +18,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             var listPhongKham = _unitOfWork.PhongKhamRepository.GetAll();
             return View(listPhongKham);
-            
         }
+
 
         [HttpGet]
         public IActionResult Create()
@@ -27,7 +27,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(PhongKham phongKham, int PhongKhamId)
+        public IActionResult Create(PhongKham phongKham)
         {
             if(ModelState.IsValid)
             {
@@ -39,12 +39,39 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View();
         }
 
-        public IActionResult Update()
+
+        [HttpGet]
+        public IActionResult Update(int PhongKhamId)
         {
+            var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
+            if(phongKham != null)
+            {
+                return View(phongKham);
+            }
             return View();
         }
-        public IActionResult Delete()
+        [HttpPost]
+        public IActionResult Update(PhongKham phongKham)
         {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.PhongKhamRepository.Update(phongKham);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int PhongKhamId)
+        {
+            var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
+			if (phongKham != null)
+            {
+                _unitOfWork.PhongKhamRepository.Remove(phongKham);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
