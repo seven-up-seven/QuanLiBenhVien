@@ -40,6 +40,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
 
 
+        [HttpGet("Detail/{PhongKhamId}")]
+        public IActionResult Detail(int PhongKhamId)
+        {
+            var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
+            return View(phongKham);
+        }
+
+
         [HttpGet("Update/{PhongKhamId}")]
         public IActionResult Update(int PhongKhamId)
         {

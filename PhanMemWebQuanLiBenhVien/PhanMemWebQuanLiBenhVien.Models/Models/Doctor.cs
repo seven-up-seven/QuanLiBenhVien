@@ -29,7 +29,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [ForeignKey("ProfessionId")]
         public Profession Profession { get; set; }
 
-        public ICollection<Patient> PatientList { get; set; }
-        public ICollection<Mission> MissionList { get; set; }
+        public ICollection<Patient>? PatientList { get; set; }
+        public ICollection<Mission>? MissionList { get; set; }
     }
 }
