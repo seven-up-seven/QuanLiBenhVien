@@ -6,9 +6,10 @@ namespace PhanMemWebQuanLiBenhVien.Models
     {
         [Key]
         public int RoomId { get; set; }
+
         [Required(ErrorMessage = "Tên phòng là bắt buộc !")]
         //So tang nam trong ten phong
         public string Name { get; set; }
-        public ICollection<Patient> Patients { get; set; }
+        public ICollection<Patient>? Patients { get; set; }
     }
 }

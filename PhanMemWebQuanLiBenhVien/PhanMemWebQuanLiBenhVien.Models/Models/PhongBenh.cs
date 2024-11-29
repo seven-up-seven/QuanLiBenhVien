@@ -12,6 +12,6 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [Required(ErrorMessage ="Số giường là bắt buộc !")]
         [Range(1, 10, ErrorMessage ="Một phòng có ít nhất 1 giường và tối đa 10 giường")]
         public int NumberOfBeds { get; set; }
-        public ICollection<Patient> Patients { get; set; }
+        public ICollection<Patient>? Patients { get; set; }
     }
 }

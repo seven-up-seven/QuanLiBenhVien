@@ -24,6 +24,6 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public string? NurseImgURL { get; set; }
 
 		//Foreign Keys
-		public ICollection<Patient> PatientList { get; set; }
+		public ICollection<Patient>? PatientList { get; set; }
     }
 }

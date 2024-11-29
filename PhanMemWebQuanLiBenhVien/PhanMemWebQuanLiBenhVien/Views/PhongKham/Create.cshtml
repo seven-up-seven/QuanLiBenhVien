@@ -9,10 +9,15 @@
 	</div>
 	<form asp-action="Create" asp-controller="PhongKham" method="post">
 		<div class="form-group">
-			<label for="STT">Tên Phòng</label>
-			<input asp-for="@Model.Name" type="text" class="form-control" placeholder="Nhập Tên Phòng">
+			<label asp-for="Name">Tên Phòng</label>
+			<input asp-for="Name" type="text" class="form-control" placeholder="Nhập Tên Phòng">
 		</div>
-		<span asp-validation-for="@Model.Name" class="text-danger"></span>
-		<button type="submit" class="btn btn-primary"><h4>Thêm</h4></button>
+		<span asp-validation-for="Name" class="text-danger"></span>
+		<div class="row d-flex">
+			<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+			<div class="col-auto text-primary ">
+				<button type="submit" class="btn btn-primary "><h4>Thêm</h4></button>
+			</div>
+		</div>
 	</form>
 </div>
