@@ -7,6 +7,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
 {
     public class Doctor
     {
+        //Goi cac thuoc tinh con lai thong qua IdentityUser
         [Key]
         public int DoctorId { get; set; }
         //Foreign Keys
