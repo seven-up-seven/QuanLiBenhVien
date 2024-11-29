@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhanMemWebQuanLiBenhVien.Models.Doctor
 @{
+	ViewData["Title"] = "Chi Tiết Bác Sĩ";
 }
+<div>
+	<h2 class="my-5">Chi tiết</h2>
+	<div class="mt-5">
+		<p>ID: @Model.DoctorId</p>
+		<p>Tên bác sĩ: @Model.DoctorName</p>
+		<p>CCCD: @Model.DoctorCCCD</p>
+		<p>Tuổi: @Model.DoctorAge</p>
+		<p>Giới tính: @Model.DoctorGender.ToString()</p>
+		<p>Chuyên khoa: @Model.Profession.ProfessionName</p>
+	</div>
+	<div class="my-4">
+		<table>
+			<tr>
+				<th><h4>Danh sách bệnh nhân: </h4></th>
+				@{
+					if (Model.PatientList != null)
+					{
+						foreach (var patient in Model.PatientList)
+						{
+							<td><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
+						}
+					}
+				}
+			</tr>
+		</table>
+	</div>
+	<div class="row d-flex">
+		<div class="col-auto text-primary"><a asp-controller="Doctor" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+		<div class="col-auto text-primary">
+			<form method="post" asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@Model.DoctorId">
+				<button class="btn btn-outline-dark" type="submit">Xoá</button>
+			</form>
+		</div>
+	</div>
+</div>
