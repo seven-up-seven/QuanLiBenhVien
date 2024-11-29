@@ -12,15 +12,23 @@
 		<table>
 			<tr>
 				<th><h4>Danh sách bệnh nhân: </h4></th>
-				@foreach (var patient in Model.Patients)
-				{
-					<td><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
+				@{
+					if(Model.Patients!=null){
+					foreach (var patient in Model.Patients)
+					{
+						<td><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
+					}
+					}
 				}
 			</tr>
 		</table>
 	</div>
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
-		<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Delete" asp-route-PhongKhamId="@Model.RoomId" class="btn btn-outline-dark">Xoá</a></div>
+		<div class="col-auto text-primary">
+			<form method="post" asp-controller="PhongKham" asp-action="Delete" asp-route-PhongKhamId="@Model.RoomId">
+				<button class="btn btn-outline-dark" type="submit">Xoá</button>
+			</form>
+		</div>
 	</div>
 </div>

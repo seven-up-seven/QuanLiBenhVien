@@ -24,14 +24,19 @@
                     <td>@phong.RoomId</td>
                     <td>@phong.Name</td>
                     <td>
-                        @foreach (var patient in phong.Patients)
-                        {
-                            <div><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></div>
+                        @{
+                            if(phong.Patients!=null)
+                            {
+                                foreach (var patient in phong.Patients)
+                                {
+                                    <div><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></div>
+                                }                                
+                            }
                         }
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Update" asp-route-id="@phong.RoomId"><i class="bi bi-pencil-square"></i> Sửa</a>
-                        <a asp-controller="Truyen" asp-action="Detail" asp-route-id="@phong.RoomId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-id="@phong.RoomId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
                     </td>
                 </tr>
             }
