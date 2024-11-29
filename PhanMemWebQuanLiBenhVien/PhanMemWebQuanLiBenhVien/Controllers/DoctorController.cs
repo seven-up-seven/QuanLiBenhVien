@@ -11,9 +11,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class DoctorController : Controller
     {
         private IUnitOfWork _unitOfWork;
-        public DoctorController(IUnitOfWork unitOfWork)
+        private string wwwroot;
+        private IWebHostEnvironment _webHostEnvironment;
+        public DoctorController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -38,8 +41,20 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Doctor doctor)
+        public IActionResult Create(Doctor doctor, IFormFile? DoctorImg)
         {
+            wwwroot = _webHostEnvironment.WebRootPath;
+            if (DoctorImg != null)
+            {
+                string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
+                string filepath = Path.Combine(wwwroot, @"images\");
+                using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                {
+                    DoctorImg.CopyTo(filestream);
+                }
+                doctor.DoctorImgURL = @"\images\" + filename;
+            }
+            else doctor.DoctorImgURL = "";
             _unitOfWork.DoctorRepository.Add(doctor);
             _unitOfWork.Save();
             return RedirectToAction("Index");
@@ -48,9 +63,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             return View();
         }
-        public IActionResult Delete()
+        public IActionResult Delete(int DoctorId)
         {
-            return View();
+            var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId == DoctorId);
+            wwwroot = _webHostEnvironment.WebRootPath;
+            if (!string.IsNullOrEmpty(doctor.DoctorImgURL))
+            {
+                var oldpath = Path.Combine(wwwroot, doctor.DoctorImgURL.TrimStart('\\'));
+                if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
+            }
+            _unitOfWork.DoctorRepository.Remove(doctor);
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
         }
     }
 }
