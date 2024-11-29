@@ -10,7 +10,15 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
     public interface IUnitOfWork
     {
         ApplicationDbContext db_ { get; }
-        
+        IDoctorRepository DoctorRepository { get; }
+        IPatientRepository PatientRepository { get; }
+        IMedicalRecordRepository MedicalRecordRepository { get; }
+        IMissionRepository MissionRepository { get; }
+        INurseRepository NurseRepository { get; }
+        IPhongBenhRepository PhongBenhRepository { get; }
+        IPhongKhamRepository PhongKhamRepository { get; }
+        IProfessionRepository ProfessionRepository { get; }
+        IWorkScheduleRepository WorkScheduleRepository { get; }
 
         public void Save();
 		public Task SaveAsync();

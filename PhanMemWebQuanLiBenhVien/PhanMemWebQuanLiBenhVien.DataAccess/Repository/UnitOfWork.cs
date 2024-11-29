@@ -1,4 +1,5 @@
 ﻿using PhanMemWebQuanLiBenhVien.DataAccess;
+using PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,29 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
     public class UnitOfWork : IUnitOfWork
     {
         ApplicationDbContext _db;
+        public IDoctorRepository DoctorRepository { get; }
+        public IPatientRepository PatientRepository { get; }
+        public IMedicalRecordRepository MedicalRecordRepository { get; }
+        public IMissionRepository MissionRepository { get; }
+        public INurseRepository NurseRepository { get; }
+        public IPhongBenhRepository PhongBenhRepository { get; }
+        public IPhongKhamRepository PhongKhamRepository { get; }
+        public IProfessionRepository ProfessionRepository { get; }
+        public IWorkScheduleRepository WorkScheduleRepository { get; }
         public ApplicationDbContext db_ { get { return _db; } }
         
-        public UnitOfWork(ApplicationDbContext db)
+        public UnitOfWork(ApplicationDbContext db)                 
         {
             this._db = db;
-            
+            DoctorRepository = new DoctorRepository(_db);
+            PatientRepository = new PatientRepository(_db);
+            MedicalRecordRepository = new MedicalRecordRepository(_db);
+            MissionRepository = new MissionRepository(_db);
+            NurseRepository = new NurseRepository(_db);
+            PhongBenhRepository = new PhongBenhRepository(_db);
+            PhongKhamRepository = new PhongKhamRepository(_db);
+            ProfessionRepository = new ProfessionRepository(_db);
+            WorkScheduleRepository = new WorkScheduleRepository(_db);
         }
 
         public void Save()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
 {
-    public interface IPatient: IRepository<Patient>
+    public interface IPatientRepository: IRepository<Patient>
     {
         public void Update(Patient patient);
     }
