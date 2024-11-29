@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Doctor
 @{
+	ViewData["Title"] = "Thêm Bác Sĩ Mới";
 }
+
+<div class="container mt-4">
+	<div class="row my-2">
+		<div class="col text-primary"><h2>Thêm bác sĩ mới</h2></div>
+	</div>
+	<form asp-action="Create" asp-controller="Doctor" method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="@Model.DoctorName">Tên bác sĩ</label>
+			<input asp-for="@Model.DoctorName" class="form-control" placeholder="Nhập tên bác sĩ">
+		</div>
+		<div class="form-group">
+			<label for="@Model.DoctorCCCD">CCCD</label>
+			<input asp-for="@Model.DoctorCCCD" class="form-control" placeholder="Nhập CCCD bác sĩ"></input>
+		</div>
+		<div class="form-group">
+			<label for="@Model.DoctorAge">Tuổi</label>
+			<input asp-for="@Model.DoctorAge" class="form-control" placeholder="Nhập tuổi bác sĩ">
+		</div>
+		<div class="form-group">
+			<label for="@Model.ProfessionId" class="form-control">Chuyên khoa</label>
+			<select asp-for="@Model.ProfessionId" asp-item="@ViewBag.Professions" class="form-control"></select>
+		</div>
+		<div class="form-group">
+			<label for="@Model.DoctorGender" class="form-control">Giới tính</label>
+			<select asp-for="@Model.DoctorGender" asp-items="@ViewBag.genderList" class="form-control"></select>
+		</div>
+		<div class="form-group">
+			<label for="@Model.DoctorImgURL" class="form-control">Ảnh bác sĩ</label>
+			<input type="file" name="DoctorImg" class="form-control"/>
+		</div>
+		<button type="submit" class="btn btn-primary"><h4>Thêm</h4></button>
+	</form>
+</div>

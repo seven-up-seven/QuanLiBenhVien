@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using System.Security.Principal;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -19,6 +23,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem { 
+                Text=u.ProfessionName,
+                Value=u.ProfessionId.ToString()
+            });
+			var genderList = Enum.GetValues(typeof(EGender))
+			.Cast<EGender>()
+			.Select(gender => new SelectListItem
+			{
+				Value = gender.ToString(),
+				Text = gender.ToString()
+			}).ToList();
+			ViewBag.Genders=genderList;
             return View();
         }
         [HttpPost]
