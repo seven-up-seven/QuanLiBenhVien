@@ -11,7 +11,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public DateTime Time { get; set; }
         public string Content { get; set; }
         //Foreign Keys
-        public string DoctorId { get; set; }
+        public int DoctorId { get; set; }
         [ForeignKey("DoctorId")]
         public Doctor Doctor { get; set; }
     }
