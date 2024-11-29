@@ -26,5 +26,10 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess
         public DbSet<PhongKham> phongKhams { get; set; }
         public DbSet<Profession> professions { get; set; }
         public DbSet<WorkSchedule> workSchedules { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }
