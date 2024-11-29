@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PhanMemWebQuanLiBenhVien.Models.Doctor>
+﻿@model IEnumerable<Doctor>
 @{
     ViewData["Title"] = "Danh Sách Bác Sĩ";
 }
@@ -29,19 +29,17 @@
                     <td>@doctor.DoctorName</td>
                     <td>@doctor.DoctorGender.ToString()</td>
                     <td>@doctor.DoctorAge</td>
-                    <td>
-                        @if (doctor.Profession!=null)
-                        {
-                            <p>@doctor.Profession.ProfessionName</p>
-                        }
-                        else
-                        {
-                            <p>nothing</p>
-                        }
-                    </td>
+                    @if (doctor.Profession==null)
+                    {
+                        <td>nothing</td>
+                    }
+                    else
+                    {
+                        <td>@doctor.Profession.ProfessionName</td>
+                    }
                     <td>
                     <a class="btn btn-primary" asp-controller="Doctor" asp-action="Update" asp-route-DoctorId="@doctor.DoctorId"><i class="bi bi-pencil-square"></i> Sửa</a>
-                    <a asp-controller="Doctor" asp-action="Detail" asp-route-id="@doctor.DoctorId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                    <a asp-controller="Doctor" asp-action="Detail" asp-route-DoctorId="@doctor.DoctorId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
                     </td>
                 </tr>
             }

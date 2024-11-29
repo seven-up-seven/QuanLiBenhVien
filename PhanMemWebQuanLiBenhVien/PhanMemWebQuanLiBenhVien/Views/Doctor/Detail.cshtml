@@ -1,4 +1,4 @@
-﻿@model PhanMemWebQuanLiBenhVien.Models.Doctor
+﻿@model Doctor
 @{
 	ViewData["Title"] = "Chi Tiết Bác Sĩ";
 }
@@ -31,9 +31,7 @@
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="Doctor" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
 		<div class="col-auto text-primary">
-			<form method="post" asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@Model.DoctorId">
-				<button class="btn btn-outline-dark" type="submit">Xoá</button>
-			</form>
+			<a class="btn btn-primary" asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@Model.DoctorId">Xóa</a>
 		</div>
 	</div>
 </div>

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using System.Security.Principal;
@@ -21,8 +24,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult Index()
 		{
 			var DoctorList = _unitOfWork.DoctorRepository.GetAll();
+			foreach (var doctor in DoctorList)
+			{
+				var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == doctor.ProfessionId);
+				doctor.Profession = profession;
+			}
 			return View(DoctorList);
 		}
+
 		[HttpGet("Create")]
 		public IActionResult Create()
 		{
@@ -77,6 +86,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			_unitOfWork.Save();
 			return RedirectToAction("Index");
 		}
-
+		public IActionResult Detail(int DoctorId)
+		{
+			var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==DoctorId);
+			doctor.Profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
+			return View(doctor);
+		}
 	}
 }
