@@ -16,5 +16,11 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public string? RoomOfFriday { get; set; }
         public string? RoomOfSaturday { get; set; }
         public string? RoomOfSunday { get; set; }
+
+        //Foreign key
+        public int DoctorId { get; set; }
+        [ForeignKey("DoctorId")]
+        public Doctor Doctor { get; set; }
+
     }
 }
