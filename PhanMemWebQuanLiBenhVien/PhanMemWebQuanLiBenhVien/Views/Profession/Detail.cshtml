@@ -1,5 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhanMemWebQuanLiBenhVien.Models.Profession
 @{
+	ViewData["Title"] = "Chi Tiết Chuyên Khoa";
 }
+<div>
+	<h2 class="my-5">Chi tiết</h2>
+	<div class="mt-5">
+		<p>ID: @Model.ProfessionId</p>
+		<p>Tên phòng: @Model.ProfessionName</p>
+	</div>
+	<div class="row d-flex">
+		<div class="col-auto text-primary"><a asp-controller="Profession" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+		<div class="col-auto text-primary">
+			<form method="post" asp-controller="Profession" asp-action="Delete" asp-route-ProfessionId="@Model.ProfessionId">
+				<button class="btn btn-outline-dark" type="submit">Xoá</button>
+			</form>
+		</div>
+	</div>
+</div>

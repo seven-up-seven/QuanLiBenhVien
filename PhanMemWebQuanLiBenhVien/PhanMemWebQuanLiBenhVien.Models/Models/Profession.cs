@@ -6,7 +6,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
     {
         [Key]
         public int ProfessionId { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Tên chuyên khoa không được bỏ trống")]
         public string ProfessionName { get; set; }
+        //nen them mo ta chi tiet chuyen khoa
+        //them danh sach bac si 
     }
 }
