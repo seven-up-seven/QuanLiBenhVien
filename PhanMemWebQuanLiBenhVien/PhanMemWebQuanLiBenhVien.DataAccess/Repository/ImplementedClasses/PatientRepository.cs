@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
+namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 {
-    public class NurseRepository: Repository<Nurse>, INurseRepository
+    public class PatientRepository : Repository<Patient>, IPatientRepository
     {
         private ApplicationDbContext _db;
-        public NurseRepository(ApplicationDbContext db) : base(db)
+        public PatientRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(Nurse nurse)
+        public void Update(Patient patient)
         {
             throw new NotImplementedException();
         }
