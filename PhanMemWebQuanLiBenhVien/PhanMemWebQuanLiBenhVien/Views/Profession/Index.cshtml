@@ -1,5 +1,45 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<PhanMemWebQuanLiBenhVien.Models.Profession>
 @{
+    ViewData["Title"] = "Danh Sách Chuyên Khoa";
 }
+<div class="container mt-4">
+    <div class="row my-2">
+        <div class="col text-primary"><h2>Danh sách chuyên khoa</h2></div>
+        <div class="col col-2 text-end btn btn-primary text-center"><h5><i class="bi bi-person-plus-fill"></i> <a asp-action="Create" asp-controller="Profession" class="text-decoration-none text-white">Thêm chuyên khoa</a></h5></div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Tên chuyên khoa</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+            <tbody>
+            @foreach (var chuyenKhoa in Model)
+            {
+                <tr>
+                    <td>@chuyenKhoa.ProfessionId</td>
+                    <td>@chuyenKhoa.ProfessionName</td>
+                    @* NEN THEM DANH SACH BAC SI THUOC CHUYEN KHOA*@
+                    @* <td>
+                        @{
+                            if(chuyenKhoa.Doctors!=null)
+                            {
+                                foreach (var )
+                                {
+                                    <div><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></div>
+                                }                                
+                            }
+                        }
+                    </td> *@
+                    <td>
+                        <a class="btn btn-primary" asp-controller="Profession" asp-action="Update" asp-route-id="@chuyenKhoa.ProfessionId"><i class="bi bi-pencil-square"></i> Sửa</a>
+                        <a asp-controller="Profession" asp-action="Detail" asp-route-id="@chuyenKhoa.ProfessionId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody> 
+    </table>
+</div>
