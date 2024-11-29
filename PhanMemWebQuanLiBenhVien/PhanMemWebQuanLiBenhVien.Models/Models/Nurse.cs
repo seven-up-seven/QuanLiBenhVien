@@ -8,5 +8,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
     {
         [Key]
         public int NurseId { get; set; }
+
+        public ICollection<Patient> PatientList { get; set; }
     }
 }

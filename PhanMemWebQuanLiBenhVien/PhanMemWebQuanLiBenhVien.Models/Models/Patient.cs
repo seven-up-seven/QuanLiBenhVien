@@ -38,5 +38,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public int? PhongBenhId { get; set; }
         [ForeignKey("PhongBenhId")]
         public PhongBenh? PhongBenh { get; set; }
+
+        public int NurseId { get; set; }
+        [ForeignKey("NurseId")]
+        public Nurse Nurse { get; set; }
     }
 }
