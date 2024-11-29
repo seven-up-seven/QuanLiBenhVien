@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Nurse
 @{
+    ViewData["Title"] = "Tạo Y Tá";
 }
+
+<div class="container mt-4">
+    <div class="row my-2">
+        <div class="col text-primary">
+            <h2>Thêm y tá mới</h2>
+        </div>
+    </div>
+    <form asp-action="Create" asp-controller="Nurse" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="NurseName">Tên y tá</label>
+            <input asp-for="NurseName" class="form-control" placeholder="Nhập tên y tá" />
+        </div>
+        <div class="form-group">
+            <label for="NurseCCCD">CCCD</label>
+            <input asp-for="NurseCCCD" class="form-control" placeholder="Nhập CCCD y tá" />
+        </div>
+        <div class="form-group">
+            <label for="NurseAge">Tuổi</label>
+            <input asp-for="NurseAge" class="form-control" placeholder="Nhập tuổi y tá" />
+        </div>
+        <div class="form-group">
+            <label for="NurseGender" class="form-control">Giới tính</label>
+            <select asp-for="NurseGender" asp-items="@ViewBag.Genders" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="NurseImgURL" class="form-control">Ảnh y tá</label>
+            <input type="file" name="NurseImg" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <h4>Thêm</h4>
+        </button>
+    </form>
+</div>
