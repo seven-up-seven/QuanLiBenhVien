@@ -5,6 +5,12 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhanMemWebQuanLiBenhVien", "PhanMemWebQuanLiBenhVien\PhanMemWebQuanLiBenhVien.csproj", "{FDC155D4-5B50-4947-85F1-D91D23B92C36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhanMemWebQuanLiBenhVien.Models", "PhanMemWebQuanLiBenhVien.Models\PhanMemWebQuanLiBenhVien.Models.csproj", "{5DB73026-DE13-425F-BC6D-06F4D8C7B58C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhanMemWebQuanLiBenhVien.DataAccess", "PhanMemWebQuanLiBenhVien.DataAccess\PhanMemWebQuanLiBenhVien.DataAccess.csproj", "{89B57397-0730-4C98-9F30-758080FE48D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhanMemWebQuanLiBenhVien.Ultilities", "PhanMemWebQuanLiBenhVien.Ultilities\PhanMemWebQuanLiBenhVien.Ultilities.csproj", "{34173CFC-377A-4A10-AD40-489652F4F773}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{FDC155D4-5B50-4947-85F1-D91D23B92C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDC155D4-5B50-4947-85F1-D91D23B92C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDC155D4-5B50-4947-85F1-D91D23B92C36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB73026-DE13-425F-BC6D-06F4D8C7B58C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB73026-DE13-425F-BC6D-06F4D8C7B58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB73026-DE13-425F-BC6D-06F4D8C7B58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB73026-DE13-425F-BC6D-06F4D8C7B58C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B57397-0730-4C98-9F30-758080FE48D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B57397-0730-4C98-9F30-758080FE48D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B57397-0730-4C98-9F30-758080FE48D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B57397-0730-4C98-9F30-758080FE48D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34173CFC-377A-4A10-AD40-489652F4F773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34173CFC-377A-4A10-AD40-489652F4F773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34173CFC-377A-4A10-AD40-489652F4F773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34173CFC-377A-4A10-AD40-489652F4F773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

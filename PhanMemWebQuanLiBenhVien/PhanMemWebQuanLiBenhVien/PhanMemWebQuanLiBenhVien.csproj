@@ -17,4 +17,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PhanMemWebQuanLiBenhVien.DataAccess\PhanMemWebQuanLiBenhVien.DataAccess.csproj" />
+    <ProjectReference Include="..\PhanMemWebQuanLiBenhVien.Models\PhanMemWebQuanLiBenhVien.Models.csproj" />
+    <ProjectReference Include="..\PhanMemWebQuanLiBenhVien.Ultilities\PhanMemWebQuanLiBenhVien.Ultilities.csproj" />
+  </ItemGroup>
+
 </Project>
