@@ -1,4 +1,4 @@
-﻿using PhanMemWebQuanLiBenhVien.DataAccess;
+﻿using PhanMemWebQuanLiBenhVien.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IPhongKhamRepository : IRepository<PhongKham>
     {
-        ApplicationDbContext db_ { get; }
-        
-
-        public void Save();
-		public Task SaveAsync();
-	}
+        public void Update(PhongKham phongKham);    
+    }
 }
