@@ -20,7 +20,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
         public IActionResult Index()
         {
-            var DoctorList=_unitOfWork.DoctorRepository.GetAll().ToList();
+            var DoctorList=_unitOfWork.DoctorRepository.GetAll();
             return View(DoctorList);
         }
         [HttpGet]
