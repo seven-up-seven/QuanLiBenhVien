@@ -1,5 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhanMemWebQuanLiBenhVien.Models.PhongKham
 @{
+	ViewData["Title"] = "Tạo Phòng Khám";
 }
+
+<div class="container mt-4">
+	<div class="row my-2">
+		<div class="col text-primary"><h2>Thêm phòng khám mới</h2></div>
+	</div>
+	<form asp-action="Create" asp-controller="PhongKham" method="post">
+		<div class="form-group">
+			<label for="STT">Tên Phòng</label>
+			<input asp-for="@Model.Name" type="text" class="form-control" placeholder="Nhập Tên Phòng">
+		</div>
+		<span asp-validation-for="@Model.Name" class="text-danger"></span>
+		<button type="submit" class="btn btn-primary"><h4>Thêm</h4></button>
+	</form>
+</div>
