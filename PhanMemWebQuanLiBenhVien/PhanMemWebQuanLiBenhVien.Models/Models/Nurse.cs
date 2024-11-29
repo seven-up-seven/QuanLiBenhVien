@@ -9,5 +9,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         //cac thuoc tinh khac goi thong qua IdentityUser
         [Key]
         public int NurseId { get; set; }
+
+        public ICollection<Patient> PatientList { get; set; }
     }
 }
