@@ -14,8 +14,11 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Giới tính là bắt buộc.")]
         public EGender Gender { get; set; }
+
         [Required(ErrorMessage = "Chưa nhập tuổi !")]
         [Range(24, int.MaxValue, ErrorMessage = "Độ tuổi phải lớn hơn hoặc bằng 24")]
         public int Age { get; set; }
+
+        public string? ImgURL { get; set; }
     }
 }
