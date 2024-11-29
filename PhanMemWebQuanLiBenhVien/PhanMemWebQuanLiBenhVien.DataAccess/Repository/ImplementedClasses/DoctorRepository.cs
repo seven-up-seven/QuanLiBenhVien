@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
+namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 {
     public class DoctorRepository : Repository<Doctor>, IDoctorRepository
     {
         private ApplicationDbContext _db;
         public DoctorRepository(ApplicationDbContext db) : base(db)
         {
-            _db= db;
+            _db = db;
         }
 
         public void Update(Doctor doctor)

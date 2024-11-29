@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
+namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 {
-    public class MedicalRecordRepository: Repository<MedicalRecord>, IMedicalRecordRepository
+    public class MedicalRecordRepository : Repository<MedicalRecord>, IMedicalRecordRepository
     {
         private ApplicationDbContext _db;
         public MedicalRecordRepository(ApplicationDbContext db) : base(db)
