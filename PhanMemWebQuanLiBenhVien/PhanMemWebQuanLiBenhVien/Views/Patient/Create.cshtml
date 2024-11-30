@@ -1,5 +1,75 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Patient
 @{
+    ViewData["Title"] = "Thêm Bệnh Nhân";
 }
+
+<div class="container mt-4">
+    <div class="row my-2">
+        <div class="col text-primary">
+            <h2>Thêm bệnh nhân mới</h2>
+        </div>
+    </div>
+    <form asp-action="Create" asp-controller="Patient" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="Name">Tên bệnh nhân</label>
+            <input asp-for="Name" class="form-control" placeholder="Nhập tên bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label for="CCCD">CCCD</label>
+            <input asp-for="CCCD" class="form-control" placeholder="Nhập CCCD bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label for="Age">Tuổi</label>
+            <input asp-for="Age" class="form-control" placeholder="Nhập tuổi bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label for="Gender" class="form-control">Giới tính</label>
+            <select asp-for="Gender" asp-items="@ViewBag.Genders" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber">Số điện thoại</label>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label for="BHYT">Tình trạng BHYT</label>
+            <select asp-for="BHYT" class="form-control" asp-items="@ViewBag.BHYT"></select>
+        </div>
+        <div class="form-group">
+            <label for="Address">Địa chỉ</label>
+            <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label for="TrangThaiDieuTri">Lựa chọn</label>
+            <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.statuslist"></select>
+        </div>
+        <div class="form-group" id="PhongBenhGroup" style="display:none;">
+            <label for="PhongBenhId">Phòng bệnh</label>
+            <select asp-for="PhongBenhId" class="form-control" asp-items="@ViewBag.phongbenhlist" id="PhongBenh"></select>
+        </div>
+
+        <div class="form-group" id="PhongKhamGroup" style="display:none;">
+            <label for="PhongKhamId">Phòng khám</label>
+            <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist" id="PhongKham"></select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <h4>Thêm</h4>
+        </button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("TrangThaiDieuTri").addEventListener("change", function() {
+        const selectedValue = this.value; 
+        const phongBenhGroup = document.getElementById("PhongBenhGroup");
+        const phongKhamGroup = document.getElementById("PhongKhamGroup");
+
+        phongBenhGroup.style.display = "none";
+        phongKhamGroup.style.display = "none";
+
+        if (selectedValue === "nhapvien") {
+            phongBenhGroup.style.display = "block";
+        } else if (selectedValue === "chikham") {
+            phongKhamGroup.style.display = "block";
+        }
+    });
+</script>
