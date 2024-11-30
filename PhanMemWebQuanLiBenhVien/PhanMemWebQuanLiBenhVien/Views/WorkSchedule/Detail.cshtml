@@ -1,5 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhanMemWebQuanLiBenhVien.Models.WorkSchedule
 @{
+	ViewData["Title"] = "Chi Tiết Lịch";
 }
+<div>
+	<h2 class="my-5">Chi tiết</h2>
+	<div class="mt-5">
+		<table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Thứ hai</th>
+                <th>Thứ ba</th>
+                <th>Thứ tư</th>
+                <th>Thứ năm</th>
+                <th>Thứ sáu</th>
+                <th>Thứ bảy</th>
+                <th>Chủ nhật</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.WorkScheduleId</td>
+                    <td>@Model.RoomOfMonday</td>
+                    <td>@Model.RoomOfTuesday</td>
+                    <td>@Model.RoomOfWednesday</td>
+                    <td>@Model.RoomOfThurday</td>
+                    <td>@Model.RoomOfFriday</td>
+                    <td>@Model.RoomOfSaturday</td>
+                    <td>@Model.RoomOfSunday</td>
+                </tr>
+            </tbody>
+            </table>
+	</div>
+	<div class="row d-flex">
+        <div class="col-auto text-primary"><a asp-controller="WorkSchedule" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+		<div class="col-auto text-primary">
+            <form method="post" asp-controller="WorkSchedule" asp-action="Delete" asp-route-WorkScheduleId="@Model.WorkScheduleId">
+				<button class="btn btn-outline-dark" type="submit">Xoá</button>
+			</form>
+		</div>
+	</div>
+</div>

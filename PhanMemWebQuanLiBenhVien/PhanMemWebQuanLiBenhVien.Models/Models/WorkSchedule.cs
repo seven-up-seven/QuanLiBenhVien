@@ -20,7 +20,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         //Foreign key
         public int DoctorId { get; set; }
         [ForeignKey("DoctorId")]
-        public Doctor Doctor { get; set; }
+        public Doctor? Doctor { get; set; }
 
     }
 }
