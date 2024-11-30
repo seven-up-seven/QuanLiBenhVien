@@ -1,4 +1,5 @@
-﻿using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(Mission mission)
         {
-            throw new NotImplementedException();
+            _db.Update(mission); ;
         }
     }
 }

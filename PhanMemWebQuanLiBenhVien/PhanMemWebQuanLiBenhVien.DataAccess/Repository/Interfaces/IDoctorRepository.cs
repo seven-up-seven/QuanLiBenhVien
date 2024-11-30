@@ -10,5 +10,6 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
     public interface IDoctorRepository: IRepository<Doctor>
     {
         public void Update(Doctor doctor);
+
     }
 }
