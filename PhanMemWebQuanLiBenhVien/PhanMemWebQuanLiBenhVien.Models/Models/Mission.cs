@@ -9,9 +9,10 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public int MissionId { get; set; }
         [Required]
         public DateTime Time { get; set; }
-        public string Content { get; set; }
+		public string Content { get; set; }
+
         //Foreign Keys
-        public int DoctorId { get; set; }
+		public int DoctorId { get; set; }
         [ForeignKey("DoctorId")]
         public Doctor Doctor { get; set; }
     }
