@@ -1,0 +1,41 @@
+﻿@model Doctor
+@{
+	Layout = "~/Views/Shared/_CustomedLayout.cshtml";
+}
+<h5>Danh sách </h5>
+@if(ViewBag.Patients.Count == 0)
+{
+	<p>Trống</p>
+}
+else
+{
+	<div class="table-responsive">
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>Mã bệnh nhân</th>
+					<th>Tên bệnh nhân</th>
+					<th>Ngày sinh</th>
+					<th>Giới tính</th>
+					<th>Địa chỉ</th>
+					<th>Chức năng</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var patient in ViewBag.Patients)
+				{
+					<tr>
+						<td>@patient.Name</td>
+						<td>@patient.Age</td>
+						<td>@patient.Gender.ToString()</td>
+						<td>@patient.TrangThaiDieuTri.ToString()</td>
+						<td>@patient.PhongBenhId</td>
+						<td>
+						<a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="btn btn-primary">Chi tiết</a>
+						</td> 
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}

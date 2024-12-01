@@ -105,5 +105,28 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == DoctorId);
 			return View(doctor);
 		}
-	}
+
+		public IActionResult DashBoard(int DoctorId)
+		{
+			var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId); 
+
+			return View(doctor);
+		}
+
+        public IActionResult DoctorWorkSchedule(int DoctorId)
+        {
+            var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
+			var workschedule = _unitOfWork.WorkScheduleRepository.Get(ws => ws.DoctorId == DoctorId);
+			ViewBag.WS = workschedule; 
+            return View(doctor);
+        }
+
+        public IActionResult DoctorPatients(int DoctorId)
+        {
+            var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
+			var patients = _unitOfWork.PatientRepository.GetAll(pt => (pt.TrangThaiDieuTri == ETrangThaiDieuTri.nhapvien && pt.DoctorId == DoctorId));
+			ViewBag.Patients = patients;
+            return View(doctor);
+        }
+    }
 }

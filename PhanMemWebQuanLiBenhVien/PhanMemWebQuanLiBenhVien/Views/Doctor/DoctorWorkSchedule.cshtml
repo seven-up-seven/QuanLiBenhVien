@@ -1,0 +1,37 @@
+﻿@model Doctor
+@{
+	Layout = "~/Views/Shared/_CustomedLayout.cshtml";
+}
+<div class="d-flex justify-content-center mt-5">
+    @if (ViewBag.WS == null)
+    {
+        <h4>Nothing here.</h4>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Thứ hai</th>
+                    <th>Thứ ba</th>
+                    <th>Thứ tư</th>
+                    <th>Thứ năm</th>
+                    <th>Thứ sáu</th>
+                    <th>Thứ bảy</th>
+                    <th>Chủ nhật</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@ViewBag.WS.RoomOfMonday</td>
+                    <td>@ViewBag.WS.RoomOfTuesday</td>
+                    <td>@ViewBag.WS.RoomOfWednesday</td>
+                    <td>@ViewBag.WS.RoomOfThurday</td>
+                    <td>@ViewBag.WS.RoomOfFriday</td>
+                    <td>@ViewBag.WS.RoomOfSaturday</td>
+                    <td>@ViewBag.WS.RoomOfSunday</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</div>
