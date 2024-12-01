@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
@@ -11,10 +13,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         private IUnitOfWork _unitOfWork;
         private string wwwroot;
         private IWebHostEnvironment _webHostEnvironment;
-        public NurseController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
+        public NurseController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
+            _db = db;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -57,7 +63,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             return View();
         }
-        public IActionResult Delete(int NurseId)
+        public async Task<IActionResult> Delete(int NurseId)
         {
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
             wwwroot = _webHostEnvironment.WebRootPath;
@@ -66,6 +72,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var oldpath = Path.Combine(wwwroot, nurse.NurseImgURL.TrimStart('\\'));
                 if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
             }
+            var user = _db.customedUsers.FirstOrDefault(u => (u.UserId == NurseId && u.UserRole == ERole.nurse));
+            _userManager.DeleteAsync(user).GetAwaiter().GetResult();
             _unitOfWork.NurseRepository.Remove(nurse);
             _unitOfWork.Save();
             return RedirectToAction("Index");

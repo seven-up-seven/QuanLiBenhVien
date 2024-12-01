@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Nurse>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID y tá</th>
+            <th>Tên y tá</th>
+            <th>Tên tài khoản</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var nurse in Model)
+            {
+                <td>@nurse.NurseId</td>
+                <td>@nurse.NurseName</td>
+                if (nurse.HasAccount == false)
+                {
+                    <td>Không có tài khoản</td>
+                }
+                else
+                {
+                    <td>Đã có tài khoản với Username: @nurse.Username</td>
+                }
+                if (nurse.HasAccount == true)
+                {
+                    <td>
+                        <a asp-controller="CustomedUser" asp-action="DeleteNurseAccount" asp-route-NurseId="@nurse.NurseId" class="btn btn-primary">Xóa tài khoản</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-controller="CustomedUser" asp-action="AssignNurseAccount" class="btn btn-primary" asp-route-NurseId="@nurse.NurseId">Cấp tài khoản</a>
+                    </td>
+                }
+            }
+        </tr>
+    </tbody>
+</table>

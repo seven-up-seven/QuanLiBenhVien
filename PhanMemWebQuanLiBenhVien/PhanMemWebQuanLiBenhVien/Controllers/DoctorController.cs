@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using System.Security.Principal;
@@ -15,11 +16,15 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 	{
 		private IUnitOfWork _unitOfWork;
 		private string wwwroot;
+		private UserManager<IdentityUser> _userManager;
 		private IWebHostEnvironment _webHostEnvironment;
-		public DoctorController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+		private ApplicationDbContext _db;
+		public DoctorController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager, ApplicationDbContext db)
 		{
 			_unitOfWork = unitOfWork;
 			_webHostEnvironment = webHostEnvironment;
+			_userManager = userManager;
+			_db = db;
 		}
 		public IActionResult Index()
 		{
@@ -73,7 +78,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			return View();
 		}
-		public IActionResult Delete(int DoctorId)
+		public async Task<IActionResult> Delete(int DoctorId)
 		{
 			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == DoctorId);
 			wwwroot = _webHostEnvironment.WebRootPath;
@@ -82,6 +87,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				var oldpath = Path.Combine(wwwroot, doctor.DoctorImgURL.TrimStart('\\'));
 				if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
 			}
+			var user=_db.customedUsers.FirstOrDefault(u=>(u.UserId == DoctorId && u.UserRole==ERole.doctor));
+			_userManager.DeleteAsync(user).GetAwaiter().GetResult();
 			_unitOfWork.DoctorRepository.Remove(doctor);
 			_unitOfWork.Save();
 			return RedirectToAction("Index");

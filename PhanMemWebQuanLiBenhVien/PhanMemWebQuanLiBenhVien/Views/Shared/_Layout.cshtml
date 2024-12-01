@@ -49,9 +49,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Mission" asp-action="Index">Nhiệm vụ</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CustomedUser" asp-action="Index">Danh sách Account</a>
-                          </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Danh sách Account
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="ModeratorIndex">Moderator</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="AdminIndex">Admin</a></li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Bác sĩ</a>
                         </li>

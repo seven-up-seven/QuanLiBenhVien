@@ -23,9 +23,11 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		[Range(24, int.MaxValue, ErrorMessage = "Độ tuổi phải lớn hơn hoặc bằng 24")]
 		public int DoctorAge { get; set; }
 		public string? DoctorImgURL { get; set; }
+        public bool HasAccount { get; set; } = false;
+        public string? Username { get; set; } = null;
 
-		//Foreign Keys
-		public int ProfessionId { get; set; }
+        //Foreign Keys
+        public int ProfessionId { get; set; }
         [ForeignKey("ProfessionId")]
         public Profession Profession { get; set; }
 

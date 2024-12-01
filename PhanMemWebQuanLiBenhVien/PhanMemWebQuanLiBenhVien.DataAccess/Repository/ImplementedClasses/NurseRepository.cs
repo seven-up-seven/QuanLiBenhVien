@@ -3,6 +3,7 @@ using PhanMemWebQuanLiBenhVien.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,18 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(Nurse nurse)
         {
-            throw new NotImplementedException();
+            var oldobj = _db.nurses.FirstOrDefault(u => u.NurseId == nurse.NurseId);
+            if (oldobj != null)
+            {
+                oldobj.NurseName = nurse.NurseName;
+                oldobj.NurseGender = nurse.NurseGender;
+                oldobj.NurseAge = nurse.NurseAge;
+                oldobj.NurseCCCD = nurse.NurseCCCD;
+                oldobj.HasAccount = nurse.HasAccount;
+                oldobj.Username = nurse.Username;
+                if (nurse.NurseImgURL != null) oldobj.NurseImgURL = nurse.NurseImgURL;
+                _db.nurses.Update(oldobj);
+            }
         }
     }
 }
