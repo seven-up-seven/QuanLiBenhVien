@@ -34,8 +34,22 @@
                     <td>@patient.Age</td>
                     <td>@patient.TrangThaiDieuTri.ToString()</td>
                     <td>@patient.BHYT</td>
-                    <td></td>
-                    <td></td>
+                    @if (patient.Doctor!=null)
+                    {
+                        <td>@patient.Doctor.DoctorName</td>
+                    }
+                    else
+                    {
+                        <td>Không có</td>
+                    }
+                    @if (patient.Nurse != null)
+                    {
+                        <td>@patient.Nurse.NurseName</td>
+                    }
+                    else
+                    {
+                        <td>Không có</td>
+                    }
                     <td>
                         <a class="btn btn-primary" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@patient.PatientId"><i class="bi bi-pencil-square"></i> Sửa</a>
                         <a asp-controller="Patient" asp-action="Detail" asp-route-PatientId="@patient.PatientId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>

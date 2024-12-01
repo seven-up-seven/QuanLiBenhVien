@@ -16,6 +16,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Index()
         {
             var PatientList = _unitOfWork.PatientRepository.GetAll();
+            foreach (var patient in PatientList)
+            {
+				if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
+				if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
+				if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
+				if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
+			}
             return View(PatientList);
         }
 
@@ -49,12 +56,24 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Value=p.RoomId.ToString()
             });
             ViewBag.phongkhamlist=phongkhamlist;
-            var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+            var doctorlist = _unitOfWork.DoctorRepository.GetAll().Select(p => new SelectListItem
             {
-                Text = p.Name,
-                Value = p.RoomId.ToString()
+                Text = p.DoctorName,
+                Value = p.DoctorId.ToString()
+            });
+            ViewBag.doctorlist= doctorlist;
+            var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+            { 
+                Text=p.Name,
+                Value=p.RoomId.ToString()   
             });
             ViewBag.phongbenhlist=phongbenhlist;
+            var nurselist = _unitOfWork.NurseRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text=p.NurseName,
+                Value=p.NurseId.ToString()
+            });
+            ViewBag.nurselist=nurselist;    
             return View();
         }
         [HttpPost]
@@ -68,7 +87,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             else
             {
-                TempData["error"] = "Thông tin bệnh nhân không hợp lệ";
+                TempData["error"] = "Bệnh nhân không hợp lệ";
                 return RedirectToAction("Create");
             }
         }
@@ -86,7 +105,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Detail(int PatientId)
         {
             var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
-            return View(patient);
+			if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
+			if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
+			if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
+			if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
+			return View(patient);
         }
     }
 }

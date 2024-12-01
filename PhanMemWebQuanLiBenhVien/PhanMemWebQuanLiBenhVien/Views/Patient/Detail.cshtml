@@ -11,16 +11,33 @@
 		<p>Tuổi: @Model.Age</p>
 		<p>Giới tính: @Model.Gender.ToString()</p>
 		<p>Địa chỉ: @Model.Address</p>
-		@if (Model.BHYT==true)
+		@if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
 		{
-			<p>BHYT: Có</p>
+			<p>Trạng thái: @Model.TrangThaiDieuTri.ToString()</p>
+			@if (Model.BHYT == true)
+			{
+				<p>BHYT: Có</p>
+			}
+			else
+			{
+				<p>BHYT: Không</p>
+			}
+			<p>SĐT: @Model.PhoneNumber</p>
+			@if (Model.PhongBenh != null)
+			{
+				<p>Tên phòng bệnh: @Model.PhongBenh.Name</p>
+			}
+			else if (Model.PhongKham !=null)
+			{
+				<p>Tên phòng khám: @Model.PhongKham.Name</p>
+			}
+			<p>Bác sĩ phụ trách: @Model.Doctor.DoctorName</p>
+			<p>Y tá phụ trách: @Model.Nurse.NurseName</p>
 		}
 		else
 		{
-			<p>BHYT: Không</p>
+			<p>Trạng thái: Xuất viện</p>
 		}
-		<p>SĐT: @Model.PhoneNumber</p>
-		<p>Số phòng: </p>
 	</div>
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="Patient" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>

@@ -26,12 +26,14 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số !")]
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "BHYT là bắt buộc !")]
-        public bool BHYT { get; set; }
-        public ETrangThaiDieuTri TrangThaiDieuTri { get; set; }
+
+        //Khi benh nhan xuat vien thi cac gia tri sau duoc chuyen sang null
+        public bool? BHYT { get; set; }
+        public ETrangThaiDieuTri? TrangThaiDieuTri { get; set; }
         //Foreign Keys
-        public int DoctorId { get; set; }
+        public int? DoctorId { get; set; }
         [ForeignKey("DoctorId")]
-        public Doctor Doctor { get; set; }
+        public Doctor? Doctor { get; set; }
         public int? PhongKhamId { get; set; }
         [ForeignKey("PhongKhamId")]
         public PhongKham? PhongKham { get; set; }
@@ -39,8 +41,8 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [ForeignKey("PhongBenhId")]
         public PhongBenh? PhongBenh { get; set; }
 
-        public int NurseId { get; set; }
+        public int? NurseId { get; set; }
         [ForeignKey("NurseId")]
-        public Nurse Nurse { get; set; }
+        public Nurse? Nurse { get; set; }
     }
 }
