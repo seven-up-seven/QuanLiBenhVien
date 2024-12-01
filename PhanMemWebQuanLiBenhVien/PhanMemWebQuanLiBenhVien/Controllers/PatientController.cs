@@ -91,10 +91,74 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 return RedirectToAction("Create");
             }
         }
-        public IActionResult Update()
+        public IActionResult Update(int PatientId)
         {
-            return View();
+            var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
+            var genderList = Enum.GetValues(typeof(EGender))
+            .Cast<EGender>()
+            .Select(gender => new SelectListItem
+            {
+                Value = gender.ToString(),
+                Text = gender.ToString()
+            }).ToList();
+            ViewBag.Genders = genderList;
+            ViewBag.BHYT = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem {Text="Có", Value="true"},
+                new SelectListItem {Text="Không", Value="false"}
+            }, "Value", "Text");
+            var statuslist = Enum.GetValues(typeof(ETrangThaiDieuTri))
+            .Cast<ETrangThaiDieuTri>()
+            .Where(e => e == ETrangThaiDieuTri.chikham || e == ETrangThaiDieuTri.nhapvien)
+            .Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+            ViewBag.statuslist = statuslist;
+            var phongkhamlist = _unitOfWork.PhongKhamRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.RoomId.ToString()
+            });
+            ViewBag.phongkhamlist = phongkhamlist;
+            var doctorlist = _unitOfWork.DoctorRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.DoctorName,
+                Value = p.DoctorId.ToString()
+            });
+            ViewBag.doctorlist = doctorlist;
+            var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.RoomId.ToString()
+            });
+            ViewBag.phongbenhlist = phongbenhlist;
+            var nurselist = _unitOfWork.NurseRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.NurseName,
+                Value = p.NurseId.ToString()
+            });
+            ViewBag.nurselist = nurselist;
+            var specialstatuslist = Enum.GetValues(typeof(ETrangThaiDieuTri))
+            .Cast<ETrangThaiDieuTri>()
+            .Where(e => e == ETrangThaiDieuTri.xuatvien || e == ETrangThaiDieuTri.nhapvien)
+            .Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+            ViewBag.specialstatuslist = specialstatuslist;
+            return View(patient);
         }
+        [HttpPost]
+        public IActionResult Update(Patient patient)
+        {
+            _unitOfWork.PatientRepository.Update(patient);
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Delete(int PatientId)
         {
             var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);

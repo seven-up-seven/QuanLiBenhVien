@@ -1,5 +1,120 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Patient
 @{
+    ViewData["Title"] = "Sửa Bệnh Nhân";
 }
+
+<div class="container mt-4">
+    <div class="row my-2">
+        <div class="col text-primary">
+            <h2>Sửa bệnh nhân</h2>
+        </div>
+    </div>
+    <form method="post">
+        <input asp-for="PatientId" hidden />
+        <div class="form-group">
+            <label asp-for="Name">Tên bệnh nhân</label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <input asp-for="Name" class="form-control" placeholder="Nhập tên bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label asp-for="CCCD">CCCD</label>
+            <span asp-validation-for="CCCD" class="text-danger"></span>
+            <input asp-for="CCCD" class="form-control" placeholder="Nhập CCCD bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Age">Tuổi</label>
+            <span asp-validation-for="Age" class="text-danger"></span>
+            <input asp-for="Age" class="form-control" placeholder="Nhập tuổi bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Gender">Giới tính</label>
+            <select asp-for="Gender" asp-items="@ViewBag.Genders" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber">Số điện thoại</label>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại bệnh nhân" />
+        </div>
+        <div class="form-group">
+            <label asp-for="BHYT">Tình trạng BHYT</label>
+            <select asp-for="BHYT" class="form-control" asp-items="@ViewBag.BHYT"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address">Địa chỉ</label>
+            <span asp-validation-for="Address" class="text-danger"></span>
+            <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ bệnh nhân" />
+        </div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+        {
+            @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.xuatvien)
+            {
+                <div class="form-group">
+                    <label for="TrangThaiDieuTri">Lựa chọn</label>
+                    <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.statuslist">
+                    </select>
+                </div>
+                <div class="form-group" id="DoctorGroup" style="display:none;">
+                    <label for="DoctorId">Bác sĩ phụ trách</label>
+                    <select asp-for="DoctorId" class="form-control" asp-items="@ViewBag.doctorlist"></select>
+                </div>
+                <div class="form-group" id="NurseGroup" style="display:none;">
+                    <label for="NurseId">Y tá phụ trách</label>
+                    <select asp-for="NurseId" class="form-control" asp-items="@ViewBag.nurselist"></select>
+                </div>
+                <div class="form-group" id="PhongBenhGroup" style="display:none">
+                    <label for="PhongBenhId">Phòng bệnh</label>
+                    <select asp-for="PhongBenhId" class="form-control" asp-items="@ViewBag.phongbenhlist"></select>
+                </div>
+                <div class="form-group" id="PhongKhamGroup" style="display:none;">
+                    <label for="PhongKhamId">Phòng khám</label>
+                    <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist"></select>
+                </div>
+                <script>
+                    document.getElementById("TrangThaiDieuTri").addEventListener("change", function () {
+                        const selectedValue = this.value;
+                        const DoctorGroup = document.getElementById("DoctorGroup");
+                        const phongKhamGroup = document.getElementById("PhongKhamGroup");
+                        const phongBenhGroup = document.getElementById("PhongBenhGroup");
+                        const NurseGroup = document.getElementById("NurseGroup");
+
+                        DoctorGroup.style.display = "none";
+                        phongKhamGroup.style.display = "none";
+                        phongBenhGroup.style.display = "none";
+                        NurseGroup.style.display = "none";
+
+                        if (selectedValue === "nhapvien") {
+                            DoctorGroup.style.display = "block";
+                            NurseGroup.style.display = "block";
+                            phongBenhGroup.style.display = "block";
+                        } else if (selectedValue === "chikham") {
+                            phongKhamGroup.style.display = "block";
+                        }
+                    });
+                </script>
+            }
+        }
+        @if (User.IsInRole("Doctor"))
+        {
+            <div class="form-group">
+                <label for="TrangThaiDieuTri">Lựa chọn</label>
+                <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.specialstatuslist">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="NurseId">Y tá phụ trách</label>
+                <select asp-for="NurseId" class="form-control" asp-items="@ViewBag.nurselist"></select>
+            </div>
+        }
+        @if (User.IsInRole("Nurse"))
+        {
+            <div class="form-group">
+                <label for="TrangThaiDieuTri">Lựa chọn</label>
+                <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.specialstatuslist">
+                </select>
+            </div>
+        }
+        <button type="submit" class="btn btn-primary">
+            <h4>Sửa</h4>
+        </button>
+    </form>
+</div>

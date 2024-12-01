@@ -74,9 +74,30 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			_unitOfWork.Save();
 			return RedirectToAction("Index");
 		}
-		public IActionResult Update()
+		public IActionResult Update(int DoctorId)
 		{
-			return View();
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            var genderList = Enum.GetValues(typeof(EGender))
+            .Cast<EGender>()
+            .Select(gender => new SelectListItem
+            {
+                Value = gender.ToString(),
+                Text = gender.ToString()
+            }).ToList();
+            ViewBag.Genders = genderList;
+			var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId == DoctorId);
+            return View(doctor);
+		}
+		[HttpPost]
+		public ActionResult Update(Doctor doctor)
+		{
+			_unitOfWork.DoctorRepository.Update(doctor);
+			_unitOfWork.Save();
+			return RedirectToAction("Index");
 		}
 		public async Task<IActionResult> Delete(int DoctorId)
 		{
@@ -97,6 +118,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==DoctorId);
 			doctor.Profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
+			doctor.PatientList=_unitOfWork.PatientRepository.GetAll(u=>u.DoctorId == DoctorId).ToList();
 			return View(doctor);
 		}
 		public IActionResult DoctorHomePage(int DoctorId)

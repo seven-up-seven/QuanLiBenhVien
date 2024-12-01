@@ -12,14 +12,17 @@
     <form asp-action="Create" asp-controller="Nurse" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="NurseName">Tên y tá</label>
+            <span asp-validation-for="NurseName" class="text-danger"></span>
             <input asp-for="NurseName" class="form-control" placeholder="Nhập tên y tá" />
         </div>
         <div class="form-group">
             <label for="NurseCCCD">CCCD</label>
+            <span asp-validation-for="NurseCCCD" class="text-danger"></span>
             <input asp-for="NurseCCCD" class="form-control" placeholder="Nhập CCCD y tá" />
         </div>
         <div class="form-group">
             <label for="NurseAge">Tuổi</label>
+            <span asp-validation-for="NurseAge" class="text-danger"></span>
             <input asp-for="NurseAge" class="form-control" placeholder="Nhập tuổi y tá" />
         </div>
         <div class="form-group">

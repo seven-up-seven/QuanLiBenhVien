@@ -12,26 +12,29 @@
     <form asp-action="Create" asp-controller="Doctor" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="DoctorName">Tên bác sĩ</label>
+            <span asp-validation-for="DoctorName" class="text-danger"></span>
             <input asp-for="DoctorName" class="form-control" placeholder="Nhập tên bác sĩ" />
         </div>
         <div class="form-group">
             <label for="DoctorCCCD">CCCD</label>
+            <span asp-validation-for="DoctorCCCD" class="text-danger"></span>
             <input asp-for="DoctorCCCD" class="form-control" placeholder="Nhập CCCD bác sĩ" />
         </div>
         <div class="form-group">
             <label for="DoctorAge">Tuổi</label>
+            <span asp-validation-for="DoctorAge" class="text-danger"></span>
             <input asp-for="DoctorAge" class="form-control" placeholder="Nhập tuổi bác sĩ" />
         </div>
         <div class="form-group">
-            <label for="ProfessionId" class="form-control">Chuyên khoa</label>
+            <label for="ProfessionId">Chuyên khoa</label>
             <select asp-for="ProfessionId" asp-items="@ViewBag.Professions" class="form-control"></select>
         </div>
         <div class="form-group">
-            <label for="DoctorGender" class="form-control">Giới tính</label>
+            <label for="DoctorGender">Giới tính</label>
             <select asp-for="DoctorGender" asp-items="@ViewBag.Genders" class="form-control"></select>
         </div>
         <div class="form-group">
-            <label for="DoctorImgURL" class="form-control">Ảnh bác sĩ</label>
+            <label for="DoctorImgURL">Ảnh bác sĩ</label>
             <input type="file" name="DoctorImg" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">

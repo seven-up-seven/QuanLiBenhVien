@@ -59,9 +59,25 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _unitOfWork.Save();
             return RedirectToAction("Index");
         }
-        public IActionResult Update()
+        public IActionResult Update(int NurseId)
         {
-            return View();
+            var genderList = Enum.GetValues(typeof(EGender))
+            .Cast<EGender>()
+            .Select(gender => new SelectListItem
+            {
+                Value = gender.ToString(),
+                Text = gender.ToString()
+            }).ToList();
+            ViewBag.Genders = genderList;
+            var nurse=_unitOfWork.NurseRepository.Get(u=>u.NurseId == NurseId);
+            return View(nurse);
+        }
+        [HttpPost]
+        public IActionResult Update(Nurse nurse)
+        {
+            _unitOfWork.NurseRepository.Update(nurse);
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> Delete(int NurseId)
         {
@@ -81,6 +97,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Detail(int NurseId)
         {
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
+            nurse.PatientList = _unitOfWork.PatientRepository.GetAll(u => u.NurseId == NurseId).ToList();
             return View(nurse);
         }
     }

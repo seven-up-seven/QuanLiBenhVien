@@ -33,7 +33,14 @@
                     <td>@patient.Gender.ToString()</td>
                     <td>@patient.Age</td>
                     <td>@patient.TrangThaiDieuTri.ToString()</td>
-                    <td>@patient.BHYT</td>
+                    @if (patient.BHYT==true)
+                    {
+                        <td>Có</td>
+                    }
+                    else
+                    {
+                        <td>Không</td>
+                    }
                     @if (patient.Doctor!=null)
                     {
                         <td>@patient.Doctor.DoctorName</td>
