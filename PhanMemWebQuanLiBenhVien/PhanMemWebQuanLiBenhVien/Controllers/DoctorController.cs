@@ -99,5 +99,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			doctor.Profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
 			return View(doctor);
 		}
+		public IActionResult DoctorHomePage(int DoctorId)
+		{
+
+			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == DoctorId);
+			return View(doctor);
+		}
 	}
 }

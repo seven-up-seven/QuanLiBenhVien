@@ -9,77 +9,80 @@
     <link rel="stylesheet" href="~/PhanMemWebQuanLiBenhVien.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PhanMemWebQuanLiBenhVien</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PhongKham" asp-action="Index">Phòng Khám</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PhongBenh" asp-action="Index">Phòng Bệnh</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Patient" asp-action="Index">Bệnh Nhân</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MedicalRecord" asp-action="Index">Bệnh án</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Nurse" asp-action="Index">Y tá</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profession" asp-action="Index">Chuyên khoa</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="WorkSchedule" asp-action="Index">Lịch</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Mission" asp-action="Index">Nhiệm vụ</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Danh sách Account
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="ModeratorIndex">Moderator</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CustomedUser" asp-action="AdminIndex">Admin</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Bác sĩ</a>
-                        </li>
-                        <partial name="_LoginPartial"></partial>
-                    </ul>
+        <div class="container-fluid vh-100">
+            <div class="row h-100">
+                <!-- Vertical Navbar -->
+                <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar h-100">
+                    <div class="position-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                                    <span class="bi bi-house"></span> Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Privacy">
+                                    <span class="bi bi-shield-lock"></span> Privacy
+                                </a>
+                            </li>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="PhongKham" asp-action="Index">Phòng Khám</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="PhongBenh" asp-action="Index">Phòng Bệnh</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Patient" asp-action="Index">Bệnh Nhân</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="MedicalRecord" asp-action="Index">Bệnh án</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Nurse" asp-action="Index">Y tá</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Profession" asp-action="Index">Chuyên khoa</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="WorkSchedule" asp-action="Index">Lịch</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Mission" asp-action="Index">Nhiệm vụ</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Danh sách Account
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                        <li><a class="dropdown-item" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
+                                        <li><a class="dropdown-item" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
+                                        <li><a class="dropdown-item" asp-controller="CustomedUser" asp-action="ModeratorIndex">Moderator</a></li>
+                                        <li><a class="dropdown-item" asp-controller="CustomedUser" asp-action="AdminIndex">Admin</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Doctor" asp-action="Index">Bác sĩ</a>
+                                </li>
+                            }
+                            <partial name="_LoginPartial" />
+                        </ul>
+                    </div>
+                </nav>
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </div>
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - PhanMemWebQuanLiBenhVien - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
