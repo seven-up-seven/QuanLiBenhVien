@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 
@@ -11,9 +12,11 @@ using PhanMemWebQuanLiBenhVien.DataAccess;
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241201042804_prof")]
+    partial class prof
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,7 +372,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
-                    b.Property<int?>("DoctorId")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int>("Gender")
@@ -379,7 +382,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NurseId")
+                    b.Property<int>("NurseId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
@@ -393,7 +396,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     b.Property<int?>("PhongKhamId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrangThaiDieuTri")
+                    b.Property<int>("TrangThaiDieuTri")
                         .HasColumnType("int");
 
                     b.HasKey("PatientId");
@@ -607,11 +610,15 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 {
                     b.HasOne("PhanMemWebQuanLiBenhVien.Models.Doctor", "Doctor")
                         .WithMany("PatientList")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PhanMemWebQuanLiBenhVien.Models.Nurse", "Nurse")
                         .WithMany("PatientList")
-                        .HasForeignKey("NurseId");
+                        .HasForeignKey("NurseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PhanMemWebQuanLiBenhVien.Models.PhongBenh", "PhongBenh")
                         .WithMany("Patients")

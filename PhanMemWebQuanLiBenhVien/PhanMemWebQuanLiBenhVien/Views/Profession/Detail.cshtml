@@ -6,7 +6,24 @@
 	<h2 class="my-5">Chi tiết</h2>
 	<div class="mt-5">
 		<p>ID: @Model.ProfessionId</p>
-		<p>Tên phòng: @Model.ProfessionName</p>
+		<p>Tên chuyên khoa: @Model.ProfessionName</p>
+		<p>Mô tả: @Model.Description</p>
+	</div>
+	<div>
+        @{
+			<h4> Danh sách bác sĩ</h4>
+            if(Model.DoctorList != null && Model.DoctorList.Count() > 0)
+            {
+                foreach(var doctor in Model.DoctorList)
+                {
+					<p>@doctor.DoctorName</p>
+				}
+			}
+			else
+			{
+				<p>Trống.</p>
+			}
+        }
 	</div>
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="Profession" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>

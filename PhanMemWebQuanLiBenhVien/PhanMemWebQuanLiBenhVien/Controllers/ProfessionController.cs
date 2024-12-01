@@ -44,6 +44,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult Detail(int ProfessionId)
 		{
 			var profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == ProfessionId);
+			profession.DoctorList = _unitOfWork.DoctorRepository.GetAll(dr => dr.ProfessionId == ProfessionId).ToList(); 
 			return View(profession);
 		}
 
