@@ -1,0 +1,68 @@
+﻿@model Doctor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PhanMemWebQuanLiBenhVien</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PhanMemWebQuanLiBenhVien.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <!-- Vertical Navbar -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar h-100">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            @if (!string.IsNullOrEmpty(Model.DoctorImgURL))
+                            {
+                                <img src="@Model.DoctorImgURL" style="width: 100%; height: auto" class="img-fluid rounded-circle" />
+                            }
+                            else
+                            {
+                                <img src="~/images/doctor.jpg" />
+                            }
+                        </li>
+                        <partial name="_LoginPartial" />
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                                <span class="bi bi-house"></span> Home 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Doctor" asp-action="Index">
+                                <span class="bi bi-person"></span> Doctors
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Nurse" asp-action="Index">
+                                <span class="bi bi-people"></span> Nurses
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Index">
+                                <span class="bi bi-gear"></span> Accounts
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="py-3">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PhanMemWebQuanLiBenhVien.Models;
 
 namespace PhanMemWebQuanLiBenhVien.Areas.Identity.Pages.Account
 {
@@ -22,12 +23,14 @@ namespace PhanMemWebQuanLiBenhVien.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, RoleManager<IdentityRole> roleManager)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -124,6 +127,12 @@ namespace PhanMemWebQuanLiBenhVien.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    if (User.IsInRole("Doctor"))
+                    {
+                        var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                        var true_user = (CustomedUser)user;
+                        return LocalRedirect($"/Doctor/DoctorHomePage?DoctorId={true_user.UserId}");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
