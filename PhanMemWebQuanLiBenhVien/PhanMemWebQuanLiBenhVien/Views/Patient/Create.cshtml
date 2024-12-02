@@ -49,19 +49,19 @@
                 <option value="">-- Chọn --</option>
             </select>
         </div>
-        <div class="form-group" id="DoctorGroup">
+        <div class="form-group" id="DoctorGroup" style="display: none">
             <label for="DoctorId">Bác sĩ phụ trách</label>
             <select asp-for="DoctorId" class="form-control" asp-items="@ViewBag.doctorlist" id="DoctorGroup"  disabled></select>
         </div>
-        <div class="form-group" id="NurseGroup">
+        <div class="form-group" id="NurseGroup" style="display: none">
             <label for="NurseId">Y tá phụ trách</label>
             <select asp-for="NurseId" class="form-control" asp-items="@ViewBag.nurselist" id="NurseGroup" disabled></select>
         </div>
-        <div class="form-group" id="PhongBenhGroup">
+        <div class="form-group" id="PhongBenhGroup" style="display: none">
             <label for="PhongBenhId">Phòng bệnh</label>
             <select asp-for="PhongBenhId" class="form-control" asp-items="@ViewBag.phongbenhlist" id="PhongBenhGroup" disabled></select>
         </div>
-        <div class="form-group" id="PhongKhamGroup">
+        <div class="form-group" id="PhongKhamGroup" style="display: none">
             <label for="PhongKhamId">Phòng khám</label>
             <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist" id="PhongKhamGroup" disabled></select>
         </div>
