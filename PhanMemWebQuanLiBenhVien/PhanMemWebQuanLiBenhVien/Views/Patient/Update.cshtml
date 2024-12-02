@@ -93,19 +93,7 @@
                 </script>
             }
         }
-        @if (User.IsInRole("Doctor"))
-        {
-            <div class="form-group">
-                <label for="TrangThaiDieuTri">Lựa chọn</label>
-                <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.specialstatuslist">
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="NurseId">Y tá phụ trách</label>
-                <select asp-for="NurseId" class="form-control" asp-items="@ViewBag.nurselist"></select>
-            </div>
-        }
-        @if (User.IsInRole("Nurse"))
+        @if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("Admin"))
         {
             <div class="form-group">
                 <label for="TrangThaiDieuTri">Lựa chọn</label>
