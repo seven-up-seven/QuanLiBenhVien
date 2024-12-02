@@ -1,4 +1,18 @@
-﻿
+﻿@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
 @{
-    Layout = "/Views/Shared/_Layout.cshtml";
+    if (User.IsInRole("Doctor"))
+    {
+        var doctor = UnitOfWork.DoctorRepository.Get(u => u.Username == User.Identity.Name);
+        ViewBag.Doctor = doctor;
+        Layout = "_CustomedLayout";
+    }
+    else if (User.IsInRole("Nurse"))
+    {
+        //Nurse chua co layout rieng
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
 }

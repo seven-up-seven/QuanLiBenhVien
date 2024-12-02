@@ -81,8 +81,22 @@
                 {
                     <p><strong>Tên phòng:</strong> Không có</p>
                 }
-                <p><strong>Bác sĩ phụ trách:</strong> @Model.Doctor.DoctorName</p>
-                <p><strong>Y tá phụ trách:</strong> @Model.Nurse.NurseName</p>
+                if (Model.Doctor!=null)
+                {
+                    <p><strong>Bác sĩ phụ trách:</strong> @Model.Doctor.DoctorName</p>
+                }
+                else
+                {
+                    <p><strong>Bác sĩ phụ trách:</strong> Không có</p>
+                }
+                if (Model.Nurse!=null)
+                {
+                    <p><strong>Y tá phụ trách:</strong> @Model.Nurse.NurseName</p>
+                }
+                else
+                {
+                    <p><strong>Y tá phụ trách:</strong>Không có</p>
+                }
         }
         else
         {

@@ -93,10 +93,22 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(doctor);
 		}
 		[HttpPost]
-		public ActionResult Update(Doctor doctor)
+		public ActionResult Update(Doctor doctor, IFormFile? DoctorImg)
 		{
-			_unitOfWork.DoctorRepository.Update(doctor);
+            wwwroot = _webHostEnvironment.WebRootPath;
+            if (DoctorImg != null)
+            {
+                string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
+                string filepath = Path.Combine(wwwroot, @"images\");
+                using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                {
+                    DoctorImg.CopyTo(filestream);
+                }
+                doctor.DoctorImgURL = @"\images\" + filename;
+            }
+            _unitOfWork.DoctorRepository.Update(doctor);
 			_unitOfWork.Save();
+			if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new {DoctorId=doctor.DoctorId});
 			return RedirectToAction("Index");
 		}
 		public async Task<IActionResult> Delete(int DoctorId)
@@ -123,7 +135,6 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		}
 		public IActionResult DoctorHomePage(int DoctorId)
 		{
-
 			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == DoctorId);
 			return View(doctor);
 		}
