@@ -1,0 +1,68 @@
+﻿@model MedicalRecord
+@{
+    ViewData["Title"] = "Tạo Bệnh Án";
+}
+
+<div class="container mt-4">
+    <div class="row my-2">
+        <div class="col text-primary">
+            <h2>Thêm mới bệnh án</h2>
+        </div>
+    </div>
+    <form asp-action="Create" asp-controller="MedicalRecord" method="post">
+        <div class="form-group">
+            <label asp-for="PatientId">ID Bệnh nhân</label>
+            <select asp-for="PatientId" asp-items="@ViewBag.PatientList" class="form-control" id="patientIdSelect">
+                <option>--Chọn--</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="PatientName">Tên bệnh nhân</label>
+            <input asp-for="PatientName" class="form-control" id="patientNameInput" readonly />
+        </div>
+        <div class="form-group">
+            <label asp-for="PatientGender">Giới tính</label>
+            <select asp-for="PatientGender" class="form-control" >
+				<option>--Chọn--</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="BHYT">BHYT</label>
+            <select asp-for="BHYT" class="form-control">
+                <option>--Chọn--</option>
+                <option value="Có">Có</option>
+                <option value="Không">Không</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address">Địa chỉ</label>
+            <input asp-for="Address" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="TienSuBenhAn">Tiền sử bệnh án</label>
+            <input asp-for="TienSuBenhAn" class="form-control"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <h4>Thêm</h4>
+        </button>
+    </form>
+</div>
+
+<script>
+    // Lấy dữ liệu PatientNames từ ViewBag
+    var patientNames = @Html.Raw(Json.Serialize(ViewBag.PatientNames));
+
+    // Lắng nghe sự thay đổi lựa chọn trong dropdown
+    document.getElementById('patientIdSelect').addEventListener('change', function () {
+        var selectedPatientId = this.value;
+        // Cập nhật tên bệnh nhân vào ô input khi thay đổi lựa chọn
+        if (selectedPatientId) {
+            document.getElementById('patientNameInput').value = patientNames[selectedPatientId];
+        } else {
+            document.getElementById('patientNameInput').value = '';
+        }
+    });
+</script>

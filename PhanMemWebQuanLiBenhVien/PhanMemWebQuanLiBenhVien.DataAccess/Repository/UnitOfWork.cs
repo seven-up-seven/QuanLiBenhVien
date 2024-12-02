@@ -21,6 +21,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
         public IPhongKhamRepository PhongKhamRepository { get; }
         public IProfessionRepository ProfessionRepository { get; }
         public IWorkScheduleRepository WorkScheduleRepository { get; }
+        public IMedicalVisitRepository MedicalVisitRepository { get; }
         public ApplicationDbContext db_ { get { return _db; } }
         
         public UnitOfWork(ApplicationDbContext db)                 
@@ -35,6 +36,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
             PhongKhamRepository = new PhongKhamRepository(_db);
             ProfessionRepository = new ProfessionRepository(_db);
             WorkScheduleRepository = new WorkScheduleRepository(_db);
+            MedicalVisitRepository = new MedicalVisitRepository(_db);
         }
 
         public void Save()
