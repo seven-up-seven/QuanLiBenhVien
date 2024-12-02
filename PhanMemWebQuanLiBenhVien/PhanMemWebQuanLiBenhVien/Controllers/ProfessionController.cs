@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 
@@ -82,6 +83,29 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				return RedirectToAction("Index");
 			}
 			return View();
+		}
+
+		public IActionResult ThemTruongKhoa(int ProfessionId)
+		{
+			var doctorlist = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == ProfessionId);
+			ViewBag.doctorlist = doctorlist.Select(u => new SelectListItem{
+				Text=u.DoctorName,
+				Value=u.DoctorId.ToString()
+			}).ToList();
+			var profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==ProfessionId);
+			return View(profession);
+		}
+		[HttpPost]
+		public IActionResult ThemTruongKhoa(int TruongKhoaId, int ProfessionId)
+		{
+			var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == ProfessionId);
+			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == TruongKhoaId);
+			profession.TruongKhoaId= TruongKhoaId;
+			doctor.IsTruongKhoa= true;
+			_unitOfWork.ProfessionRepository.Update(profession);
+			_unitOfWork.DoctorRepository.Update(doctor);
+			_unitOfWork.Save();
+			return RedirectToAction("Index");
 		}
 	}
 }

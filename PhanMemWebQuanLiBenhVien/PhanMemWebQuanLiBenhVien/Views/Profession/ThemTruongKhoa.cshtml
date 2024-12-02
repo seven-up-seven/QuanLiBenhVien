@@ -1,0 +1,16 @@
+﻿@model Profession
+@{
+    ViewData["Title"] = "Thêm Trưởng Khoa";
+}
+<h2>@Model.ProfessionName</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="ProfessionId" />
+    <div class="form-group">
+        <label for="BacSiTruongKhoaId">Chọn Bác Sĩ Trưởng Khoa</label>
+        <select asp-for="TruongKhoaId" class="form-control" asp-items="@ViewBag.doctorlist">
+            <option value="">Chọn bác sĩ trưởng khoa</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>

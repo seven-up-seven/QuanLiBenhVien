@@ -25,7 +25,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public string? DoctorImgURL { get; set; }
         public bool HasAccount { get; set; } = false;
         public string? Username { get; set; } = null;
-
+        public bool IsTruongKhoa { get; set; } = false;
         //Foreign Keys
         public int ProfessionId { get; set; }
         [ForeignKey("ProfessionId")]

@@ -27,7 +27,7 @@
 			{
 				<p>Tên phòng bệnh: @Model.PhongBenh.Name</p>
 			}
-			else if (Model.PhongKham !=null)
+			@if (Model.PhongKham !=null)
 			{
 				<p>Tên phòng khám: @Model.PhongKham.Name</p>
 			}
