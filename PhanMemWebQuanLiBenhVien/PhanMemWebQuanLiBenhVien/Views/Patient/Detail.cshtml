@@ -69,7 +69,18 @@
                 <p><strong>Trạng thái:</strong> @Model.TrangThaiDieuTri.ToString()</p>
                 <p><strong>BHYT:</strong> @(Model.BHYT == true ? "Có" : "Không")</p>
                 <p><strong>SĐT:</strong> @Model.PhoneNumber</p>
-                <p><strong>Tên phòng:</strong> @(Model.PhongBenh?.Name ?? Model.PhongKham?.Name)</p>
+                if (Model.TrangThaiDieuTri==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
+                {
+                    <p><strong>Tên phòng khám:</strong> @Model.PhongKham.Name</p>
+                }
+                else if (Model.TrangThaiDieuTri==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien)
+                {
+                    <p><strong>Tên phòng bệnh:</strong> @Model.PhongBenh.Name</p>
+                }
+                else
+                {
+                    <p><strong>Tên phòng:</strong> Không có</p>
+                }
                 <p><strong>Bác sĩ phụ trách:</strong> @Model.Doctor.DoctorName</p>
                 <p><strong>Y tá phụ trách:</strong> @Model.Nurse.NurseName</p>
         }

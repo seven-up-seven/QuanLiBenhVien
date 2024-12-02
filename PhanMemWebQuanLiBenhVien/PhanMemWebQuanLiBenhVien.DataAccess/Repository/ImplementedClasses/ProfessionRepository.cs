@@ -18,7 +18,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(Profession profession)
         {
-            throw new NotImplementedException();
+            _db.professions.Update(profession);
         }
     }
 }
