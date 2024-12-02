@@ -17,7 +17,7 @@
 					if(Model.Patients!=null){
 					foreach (var patient in Model.Patients)
 					{
-						<td><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
+						<td><a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
 					}
 					}
 				}

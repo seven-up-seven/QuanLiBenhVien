@@ -49,21 +49,21 @@
                 <option value="">-- Chọn --</option>
             </select>
         </div>
-        <div class="form-group" id="DoctorGroup" style="display:none;">
+        <div class="form-group" id="DoctorGroup">
             <label for="DoctorId">Bác sĩ phụ trách</label>
-            <select asp-for="DoctorId" class="form-control" asp-items="@ViewBag.doctorlist"></select>
+            <select asp-for="DoctorId" class="form-control" asp-items="@ViewBag.doctorlist" id="DoctorGroup"  disabled></select>
         </div>
-        <div class="form-group" id="NurseGroup" style="display:none;">
+        <div class="form-group" id="NurseGroup">
             <label for="NurseId">Y tá phụ trách</label>
-            <select asp-for="NurseId" class="form-control" asp-items="@ViewBag.nurselist"></select>
+            <select asp-for="NurseId" class="form-control" asp-items="@ViewBag.nurselist" id="NurseGroup" disabled></select>
         </div>
-        <div class="form-group" id="PhongBenhGroup" style="display:none">
+        <div class="form-group" id="PhongBenhGroup">
             <label for="PhongBenhId">Phòng bệnh</label>
-            <select asp-for="PhongBenhId" class="form-control" asp-items="@ViewBag.phongbenhlist"></select>
+            <select asp-for="PhongBenhId" class="form-control" asp-items="@ViewBag.phongbenhlist" id="PhongBenhGroup" disabled></select>
         </div>
-        <div class="form-group" id="PhongKhamGroup" style="display:none;">
+        <div class="form-group" id="PhongKhamGroup">
             <label for="PhongKhamId">Phòng khám</label>
-            <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist"></select>
+            <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist" id="PhongKhamGroup" disabled></select>
         </div>
         <button type="submit" class="btn btn-primary">
             <h4>Thêm</h4>
@@ -79,17 +79,30 @@
         const phongBenhGroup = document.getElementById("PhongBenhGroup");
         const NurseGroup = document.getElementById("NurseGroup");
 
+        const DoctorSelect = DoctorGroup.querySelector("select");
+        const phongKhamSelect = phongKhamGroup.querySelector("select");
+        const phongBenhSelect = phongBenhGroup.querySelector("select");
+        const NurseSelect = NurseGroup.querySelector("select");
+
         DoctorGroup.style.display = "none";
+        DoctorSelect.setAttribute("disabled", "disabled");
         phongKhamGroup.style.display = "none";
+        phongKhamSelect.setAttribute("disabled", "disabled");
         phongBenhGroup.style.display = "none";
+        phongBenhSelect.setAttribute("disabled", "disabled");
         NurseGroup.style.display = "none";
+        NurseSelect.setAttribute("disabled", "disabled");
 
         if (selectedValue === "nhapvien") {
             DoctorGroup.style.display = "block";
+            DoctorSelect.removeAttribute("disabled");
             NurseGroup.style.display = "block";
+            NurseSelect.removeAttribute("disabled");
             phongBenhGroup.style.display = "block";
+            phongBenhSelect.removeAttribute("disabled");
         } else if (selectedValue === "chikham") {
             phongKhamGroup.style.display = "block";
+            phongKhamSelect.removeAttribute("disabled");
         }
     });
 </script>

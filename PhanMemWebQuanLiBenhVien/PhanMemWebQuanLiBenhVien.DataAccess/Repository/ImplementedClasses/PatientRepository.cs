@@ -39,7 +39,12 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
                 if (oldobj.DoctorId != null) oldobj.DoctorId = null;
                 if (oldobj.NurseId != null) oldobj.NurseId = null;
             }
-            _db.Update(oldobj);
+            if(patient.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.nhapvien)
+			{
+				if (oldobj.PhongKhamId != null) oldobj.PhongKhamId = null;
+				if (oldobj.PhongBenhId != null) oldobj.PhongBenhId = null;
+			}
+			_db.Update(oldobj);
         }
     }
 }

@@ -48,6 +48,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Detail(int PhongKhamId)
         {
             var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
+            phongKham.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongKhamId == phongKham.RoomId); 
             return View(phongKham);
         }
 

@@ -8,21 +8,31 @@
 		<p>ID: @Model.RoomId</p>
 		<p>Tên phòng: @Model.Name</p>
 	</div>
-	<div class="my-4">
-		<table>
-			<tr>
-				<th><h4>Danh sách bệnh nhân: </h4></th>
-				@{
-					if(Model.Patients!=null){
-					foreach (var patient in Model.Patients)
+    <div class="my-4">
+					<h4>Danh sách bệnh nhân:</h4>
+					@if (Model.Patients != null && Model.Patients.Any())
 					{
-						<td><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Tên bệnh nhân</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var patient in Model.Patients)
+								{
+									<tr>
+										<td><a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none">@patient.Name</a></td>
+									</tr>
+								}
+							</tbody>
+						</table>
 					}
+					else
+					{
+						<p>Chưa có bệnh nhân.</p>
 					}
-				}
-			</tr>
-		</table>
-	</div>
+    </div>
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
 		<div class="col-auto text-primary">

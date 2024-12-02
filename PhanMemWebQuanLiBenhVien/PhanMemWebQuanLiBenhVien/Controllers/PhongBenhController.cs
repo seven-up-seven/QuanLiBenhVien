@@ -17,6 +17,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult Index()
 		{
 			var listPhongBenh = _unitOfWork.PhongBenhRepository.GetAll();
+			foreach (var phong in listPhongBenh)
+			{
+				phong.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongBenhId == phong.RoomId); 
+			}
 			return View(listPhongBenh);
 		}
 
@@ -44,6 +48,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult Detail(int PhongBenhId)
 		{
 			var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
+			phongBenh.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongBenhId == PhongBenhId);
 			return View(phongBenh);
 		}
 
