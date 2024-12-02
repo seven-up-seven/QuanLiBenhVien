@@ -9,7 +9,9 @@
     }
     else if (User.IsInRole("Nurse"))
     {
-        //Nurse chua co layout rieng
+        var nurse = UnitOfWork.NurseRepository.Get(u => u.Username == User.Identity.Name);
+        ViewBag.Nurse = nurse;
+        Layout = "_CustomedLayout";
     }
     else
     {

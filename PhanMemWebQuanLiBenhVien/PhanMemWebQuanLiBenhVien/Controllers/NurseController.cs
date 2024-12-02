@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
@@ -73,10 +74,22 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(nurse);
         }
         [HttpPost]
-        public IActionResult Update(Nurse nurse)
+        public IActionResult Update(Nurse nurse, IFormFile? NurseImg)
         {
+            wwwroot = _webHostEnvironment.WebRootPath;
+            if (NurseImg != null)
+            {
+                string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
+                string filepath = Path.Combine(wwwroot, @"images\");
+                using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                {
+                    NurseImg.CopyTo(filestream);
+                }
+                nurse.NurseImgURL = @"\images\" + filename;
+            }
             _unitOfWork.NurseRepository.Update(nurse);
             _unitOfWork.Save();
+            if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> Delete(int NurseId)
@@ -98,6 +111,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
             nurse.PatientList = _unitOfWork.PatientRepository.GetAll(u => u.NurseId == NurseId).ToList();
+            return View(nurse);
+        }
+        public IActionResult NurseHomePage(int NurseId)
+        {
+            var nurse= _unitOfWork.NurseRepository.Get(u=>u.NurseId == NurseId);
+            return View(nurse);
+        }
+        public IActionResult NursePatients(int NurseId)
+        {
+            var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
+            var patients = _unitOfWork.PatientRepository.GetAll(pt => (pt.TrangThaiDieuTri == ETrangThaiDieuTri.nhapvien && pt.NurseId == NurseId));
+            ViewBag.Patients = patients;
             return View(nurse);
         }
     }

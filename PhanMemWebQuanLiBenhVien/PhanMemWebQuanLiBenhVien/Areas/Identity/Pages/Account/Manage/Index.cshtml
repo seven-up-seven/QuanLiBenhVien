@@ -71,6 +71,39 @@
         <button type="submit" class="btn-primary">Cập nhật</button>
     </form>
 }
+else if (User.IsInRole("Nurse"))
+{
+    var nurse = UnitOfWork.NurseRepository.Get(u => u.Username == User.Identity.Name);
+    <form method="post" asp-controller="Nurse" asp-action="Update" enctype="multipart/form-data">
+        <input asp-for="@nurse.NurseId" hidden />
+        <input asp-for="@nurse.HasAccount" hidden />
+        <input asp-for="@nurse.Username" hidden />
+        <div class="form-group">
+            <label for="NurseName">Tên y tá</label>
+            <span asp-validation-for="@nurse.NurseName" class="text-danger"></span>
+            <input asp-for="@nurse.NurseName" class="form-control" placeholder="Nhập tên y tá" />
+        </div>
+        <div class="form-group">
+            <label for="NurseCCCD">CCCD</label>
+            <span asp-validation-for="@nurse.NurseCCCD" class="text-danger"></span>
+            <input asp-for="@nurse.NurseCCCD" class="form-control" placeholder="Nhập CCCD y tá" />
+        </div>
+        <div class="form-group">
+            <label for="NurseAge">Tuổi</label>
+            <span asp-validation-for="@nurse.NurseAge" class="text-danger"></span>
+            <input asp-for="@nurse.NurseAge" class="form-control" placeholder="Nhập tuổi y tá" />
+        </div>
+        <div class="form-group">
+            <label for="@nurse.NurseGender">Giới tính</label>
+            <select asp-for="@nurse.NurseGender" asp-items="@Model.genderList" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="@nurse.NurseImgURL">Ảnh y tá</label>
+            <input type="file" name="NurseImg" class="form-control" />
+        </div>
+        <button type="submit" class="btn-primary">Cập nhật</button>
+    </form>
+}
 
 
 @section Scripts {
