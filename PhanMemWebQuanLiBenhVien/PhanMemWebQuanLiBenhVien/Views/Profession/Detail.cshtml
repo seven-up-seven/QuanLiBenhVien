@@ -7,6 +7,14 @@
 	<div class="mt-5">
 		<p>ID: @Model.ProfessionId</p>
 		<p>Tên chuyên khoa: @Model.ProfessionName</p>
+		@if (Model.TruongKhoaId!=null)
+		{
+			<p>Trưởng khoa: @Model.TruongKhoaName</p>
+		}
+		else
+		{
+			<p>Trưởng khoa: Không có</p>
+		}
 		<p>Mô tả: @Model.Description</p>
 	</div>
 	<div>

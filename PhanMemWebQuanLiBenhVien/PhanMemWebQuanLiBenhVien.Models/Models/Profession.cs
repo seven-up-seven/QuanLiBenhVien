@@ -10,6 +10,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public string ProfessionName { get; set; }
         public string Description {  get; set; }
         public int? TruongKhoaId { get; set; } = null;
+        public string? TruongKhoaName { get; set; } = null;
         public List<Doctor>? DoctorList { get; set; }
     }
 }

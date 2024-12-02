@@ -89,7 +89,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
             }
             var user = _db.customedUsers.FirstOrDefault(u => (u.UserId == NurseId && u.UserRole == ERole.nurse));
-            _userManager.DeleteAsync(user).GetAwaiter().GetResult();
+            if (user!=null) _userManager.DeleteAsync(user).GetAwaiter().GetResult();
             _unitOfWork.NurseRepository.Remove(nurse);
             _unitOfWork.Save();
             return RedirectToAction("Index");

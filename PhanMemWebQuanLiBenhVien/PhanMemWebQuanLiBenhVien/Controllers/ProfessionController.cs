@@ -18,6 +18,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult Index()
 		{
 			var listProfession = _unitOfWork.ProfessionRepository.GetAll();
+			foreach (var profession in listProfession)
+			{
+				var truongkhoa=_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId);
+				if (truongkhoa!=null) profession.TruongKhoaName = truongkhoa.DoctorName;
+			}
 			return View(listProfession);
 		}
 
