@@ -19,7 +19,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
         IPhongKhamRepository PhongKhamRepository { get; }
         IProfessionRepository ProfessionRepository { get; }
         IWorkScheduleRepository WorkScheduleRepository { get; }
-
+        IMedicalVisitRepository MedicalVisitRepository { get; }
         public void Save();
 		public Task SaveAsync();
 	}

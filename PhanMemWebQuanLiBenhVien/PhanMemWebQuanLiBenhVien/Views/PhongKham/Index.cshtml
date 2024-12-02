@@ -12,7 +12,7 @@
             <tr>
                 <th>ID</th>
                 <th>Tên phòng</th>
-                <th>Danh sách bệnh nhân</th>
+                <th>Số lượng bệnh nhân</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,14 +24,13 @@
                     <td>@phong.RoomId</td>
                     <td>@phong.Name</td>
                     <td>
-                        @{
-                            if(phong.Patients!=null)
-                            {
-                                foreach (var patient in phong.Patients)
-                                {
-                                    <div><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></div>
-                                }                                
-                            }
+                        @if(phong.Patients == null)
+                        {
+                            <p>0</p>
+                        }
+                        else
+                        {
+                            <p>@phong.Patients.Count()</p>
                         }
                     </td>
                     <td>
