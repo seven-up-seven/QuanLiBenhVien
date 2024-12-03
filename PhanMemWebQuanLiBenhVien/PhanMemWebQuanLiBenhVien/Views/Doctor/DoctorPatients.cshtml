@@ -2,7 +2,7 @@
 @{
 	Layout = "~/Views/Shared/_CustomedLayout.cshtml";
 }
-<h5>Danh sách </h5>
+<h2 class="text-primary">Danh sách </h2>
 @if(ViewBag.Patients.Count == 0)
 {
 	<p>Trống</p>
@@ -13,11 +13,12 @@ else
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th>Mã bệnh nhân</th>
 					<th>Tên bệnh nhân</th>
-					<th>Ngày sinh</th>
+					<th>Tuổi
+					<th>CCCD</th>
 					<th>Giới tính</th>
-					<th>Địa chỉ</th>
+					<th>Trạn thái điều trị</th>
+					<th>Phòng bệnh</th>
 					<th>Chức năng</th>
 				</tr>
 			</thead>
@@ -27,11 +28,12 @@ else
 					<tr>
 						<td>@patient.Name</td>
 						<td>@patient.Age</td>
+						<td>@patient.CCCD</td>
 						<td>@patient.Gender.ToString()</td>
 						<td>@patient.TrangThaiDieuTri.ToString()</td>
-						<td>@patient.PhongBenhId</td>
+						<td>@patient.PhongBenh.Name</td>
 						<td>
-						<a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="btn btn-primary">Chi tiết</a>
+						<a href="@Url.Action("DoctorPatientDetail", "Doctor", new { PatientId = patient.PatientId })" class="btn btn-primary">Chi tiết</a>
 						</td> 
 					</tr>
 				}

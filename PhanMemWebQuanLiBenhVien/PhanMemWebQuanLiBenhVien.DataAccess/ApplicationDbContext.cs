@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PhanMemWebQuanLiBenhVien.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhanMemWebQuanLiBenhVien.DataAccess
 {
@@ -27,6 +22,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess
         public DbSet<Profession> professions { get; set; }
         public DbSet<WorkSchedule> workSchedules { get; set; }
         public DbSet<MedicalVisit> medicalVisits { get; set; }
+        
 		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -1,0 +1,65 @@
+﻿@model PhanMemWebQuanLiBenhVien.Models.MedicalRecord
+@{
+    ViewData["Title"] = "Chi Tiết Bệnh Án";
+}
+
+<div class="container mt-4">
+    <div class="row my-2">
+        <div class="col text-primary">
+            <h2>Chi Tiết Bệnh Án</h2>
+        </div>
+        <div class="col col-2 text-end btn btn-primary text-center">
+            <h5><i class="bi bi-pencil-square"></i> <a asp-action="Update" asp-controller="MedicalRecord" asp-route-id="@Model.MedicalRecordId" class="text-decoration-none text-white">Chỉnh sửa</a></h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h5>ID Bệnh Án: @Model.MedicalRecordId</h5>
+            <p><strong>Tên bệnh nhân:</strong> @Model.PatientName</p>
+            <p><strong>Giới tính:</strong> @Model.PatientGender</p>
+            <p><strong>BHYT:</strong> @Model.BHYT</p>
+            <p><strong>Địa chỉ:</strong> @Model.Address</p>
+            <p><strong>Tiền sử bệnh án:</strong> @Model.TienSuBenhAn</p>
+        </div>
+
+        <div class="col-md-6">
+            <h5>Thông Tin Các Lần Khám</h5>
+            @if (ViewBag.MedicalVisits != null)
+            {
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Ngày khám</th>
+                            <th>Triệu chứng</th>
+                            <th>Kết quả lâm sàng</th>
+                            <th>Chẩn đoán</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var visit in ViewBag.MedicalVisits)
+                        {
+                            <tr>
+                                <td>@visit.VisitDate.ToString("dd/MM/yyyy")</td>
+                                <td>@visit.Symptom</td>
+                                <td>@visit.KetQuaLamSang</td>
+                                <td>@visit.ChanDoan</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Không có thông tin về các lần khám cho bệnh án này.</p>
+            }
+            <a class="btn btn-primary" asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId">Thêm lần khám</a>
+        </div>
+    </div>
+
+    <div class="row d-flex mt-4">
+        <div class="col-auto text-primary">
+            <a asp-controller="MedicalRecord" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn btn-outline-dark">Quay lại</a>
+        </div>
+    </div>
+</div>

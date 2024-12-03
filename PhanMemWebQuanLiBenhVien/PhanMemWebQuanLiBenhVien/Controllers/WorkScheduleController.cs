@@ -88,5 +88,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             return View();
         }
+
+        public static (DateTime StartOfWeek, DateTime EndOfWeek) GetWeekRange(DateTime currentDate)
+        {
+            var startOfWeek = currentDate.AddDays(-(int)currentDate.DayOfWeek + 1); // Thứ Hai
+            var endOfWeek = startOfWeek.AddDays(6); // Chủ Nhật
+            return (startOfWeek, endOfWeek);
+        }
+
     }
 }

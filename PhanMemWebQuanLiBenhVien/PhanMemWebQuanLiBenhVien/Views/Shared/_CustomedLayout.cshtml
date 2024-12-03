@@ -13,11 +13,11 @@
     <div class="container-fluid vh-100">
         <div class="row h-100">
             <!-- Vertical Navbar -->
-            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar h-100">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar h-100" >
                 <div class="position-sticky">
                     @if (User.IsInRole("Doctor"))
                     {
-                        <ul class="nav flex-column">
+                        <ul class="nav flex-column text-primary fw-bold" style="font-size: 20px;">
                         <li class="nav-item">
                             @if (!string.IsNullOrEmpty(ViewBag.Doctor.DoctorImgURL))
                             {
@@ -30,22 +30,22 @@
                         </li>
                         <partial name="_LoginPartial" class="pb-2" />
                         <li class="nav-item pb-2">
-                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="DoctorHomePage" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
+                            <a class="nav-link " asp-controller="Doctor" asp-action="DoctorHomePage" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
                                 <i class="bi bi-house-fill"></i> Home
                             </a>
                         </li>
                         <li class="nav-item pb-2">
-                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="DashBoard" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
+                            <a class="nav-link " asp-controller="Doctor" asp-action="DashBoard" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
                                 <i class="bi bi-clipboard"></i> Dash Board
                             </a>
                         </li>
                         <li class="nav-item pb-2">
-                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="DoctorWorkSchedule" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
+                            <a class="nav-link" asp-controller="Doctor" asp-action="DoctorWorkSchedule" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
                                 <i class="bi bi-calendar"></i> Schedule
                             </a>
                         </li>
                         <li class="nav-item pb-2">
-                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
+                            <a class="nav-link" asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@ViewBag.Doctor.DoctorId">
                                 <i class="bi bi-person"></i> Patients
                             </a>
                         </li>

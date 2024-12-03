@@ -9,7 +9,7 @@
             <h2>Thêm mới bệnh án</h2>
         </div>
     </div>
-    <form asp-action="Create" asp-controller="MedicalRecord" method="post">
+    <form asp-action="AdminCreate" asp-controller="MedicalRecord" method="post">
         <div class="form-group">
             <label asp-for="PatientId">ID Bệnh nhân</label>
             <select asp-for="PatientId" asp-items="@ViewBag.PatientList" class="form-control" id="patientIdSelect">

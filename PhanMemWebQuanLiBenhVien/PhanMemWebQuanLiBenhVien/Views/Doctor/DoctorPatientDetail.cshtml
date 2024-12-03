@@ -1,0 +1,101 @@
+﻿@model Patient
+@{
+    ViewData["Title"] = "Chi Tiết Bệnh Nhân";
+}
+<div>
+    <h2 class="my-5">Chi tiết bệnh nhân</h2>
+    <div class="mt-5">
+        <p><strong>ID:</strong> @Model.PatientId</p>
+        <p><strong>Tên bệnh nhân:</strong> @Model.Name</p>
+        <p><strong>CCCD:</strong> @Model.CCCD</p>
+        <p><strong>Tuổi:</strong> @Model.Age</p>
+        <p><strong>Giới tính:</strong> @Model.Gender.ToString()</p>
+        <p><strong>Địa chỉ:</strong> @Model.Address</p>
+        @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
+        {
+            <p><strong>Trạng thái:</strong> @Model.TrangThaiDieuTri.ToString()</p>
+            <p><strong>BHYT:</strong> @(Model.BHYT == true ? "Có" : "Không")</p>
+            <p><strong>SĐT:</strong> @Model.PhoneNumber</p>
+            if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
+            {
+                <p><strong>Tên phòng khám:</strong> @Model.PhongKham.Name</p>
+            }
+            else if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien)
+            {
+                <p><strong>Tên phòng bệnh:</strong> @Model.PhongBenh.Name</p>
+            }
+            else
+            {
+                <p><strong>Tên phòng:</strong> Không có</p>
+            }
+            if (Model.Doctor != null)
+            {
+                <p><strong>Bác sĩ phụ trách:</strong> @Model.Doctor.DoctorName</p>
+            }
+            else
+            {
+                <p><strong>Bác sĩ phụ trách:</strong> Không có</p>
+            }
+            if (Model.Nurse != null)
+            {
+                <p><strong>Y tá phụ trách:</strong> @Model.Nurse.NurseName</p>
+            }
+            else
+            {
+                <p><strong>Y tá phụ trách:</strong>Không có</p>
+            }
+        }
+        else
+        {
+            <p><strong>Trạng thái:</strong> Xuất viện</p>
+        }
+    </div>
+
+    <div class="row d-flex">
+        <div class="col-auto text-primary"><h3>Danh sách bệnh án</h3></div>
+        <div class="col-auto"><a class="btn btn-primary" asp-action="DoctorCreate" asp-controller="MedicalRecord" asp-route-PatientId="@Model.PatientId"><i class="bi bi-plus"></i>Thêm bệnh án</a></div>
+    </div>
+    @if (Model.MedicalRecords != null && Model.MedicalRecords.Any())
+    {
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID Hồ Sơ</th>
+                    <th>Tên Bệnh Nhân</th>
+                    <th>Giới Tính</th>
+                    <th>Địa Chỉ</th>
+                    <th>Tiền Sử Bệnh Án</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model.MedicalRecords)
+                {
+                    <tr>
+                        <td>@record.MedicalRecordId</td>
+                        <td>@record.PatientName</td>
+                        <td>@record.PatientGender</td>
+                        <td>@record.Address</td>
+                        <td>@record.TienSuBenhAn</td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" asp-controller="MedicalRecord" asp-action="Detail" asp-route-id="@record.MedicalRecordId">Chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có bệnh án nào.</p>
+    }
+
+    <div class="row d-flex mt-4">
+        <div class="col-auto text-primary">
+            <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@Model.DoctorId" class="btn btn-outline-dark">Quay lại</a>
+        </div>
+        <div class="col-auto text-primary">
+            <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+        </div>
+    </div>
+</div>

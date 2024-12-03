@@ -3,25 +3,27 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav" style="margin-left: 15px;">
+<ul class="navbar-nav" style="margin-left: 18px;">
 @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <p class="text-decoration-underline" style="color: gray">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
+        </li>
+        <li class="nav-item row d-flex">
+            <a id="manage" class="col col-auto btn btn-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài khoản</a>
+
+            <form id="logoutForm" class="form-inline col col-auto" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="btn btn-link">Đăng xuất</button>
+            </form>
+        </li>
+    }
+    else
 {
     <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài khoản của bạn</a>
+            <a class="nav-link text-primary fw-bold" id="register" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-plus-fill"></i> Register</a>
     </li>
     <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-primary fw-bold" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-box-arrow-in-left"></i> Login</a>
     </li>
 }
 </ul>

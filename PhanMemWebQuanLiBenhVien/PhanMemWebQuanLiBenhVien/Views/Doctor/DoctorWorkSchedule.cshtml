@@ -1,16 +1,17 @@
 ﻿@model Doctor
 @{
-	Layout = "~/Views/Shared/_CustomedLayout.cshtml";
+    Layout = "~/Views/Shared/_CustomedLayout.cshtml";
 }
+<h2 class="text-primary">Lịch tuần</h2>
 <div class="d-flex justify-content-center mt-5">
     @if (ViewBag.WS == null)
     {
-        <h4>Nothing here.</h4>
+        <h4 class="text-muted">Nothing here.</h4>
     }
     else
     {
-        <table>
-            <thead>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
                 <tr>
                     <th>Thứ hai</th>
                     <th>Thứ ba</th>

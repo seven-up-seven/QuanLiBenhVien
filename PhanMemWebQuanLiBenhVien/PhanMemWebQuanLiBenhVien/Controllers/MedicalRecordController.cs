@@ -23,8 +23,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
 
 
-        [HttpGet("AdminSideCreate")]
-        public IActionResult AdminSideCreate()
+        [HttpGet("AdminCreate")]
+        public IActionResult AdminCreate()
         {
             var patientList = _unitOfWork.PatientRepository.GetAll();
 
@@ -41,16 +41,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
             return View();
         }
-
-
-        //[HttpGet("Create")]
-        //public IActionResult Create()
-        //{
-
-        //    return View();
-        //}
-
-        [HttpPost("Create")]
+        [HttpPost("AdminCreate")]
         public IActionResult Create(MedicalRecord medicalRecord)
         {
             if (ModelState.IsValid)
@@ -59,8 +50,28 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("AdminSideCreate");
+            return RedirectToAction("AdminCreate");
         }
+
+        [HttpGet("DoctorCreate/{PatientId}")]
+        public IActionResult DoctorCreate(int PatientId)
+        {
+            var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId); 
+            ViewBag.Patient = patient;
+            return View();
+        }
+        [HttpPost("DoctorCreate/{PatientId}")]
+        public IActionResult DoctorCreate(MedicalRecord medicalRecord)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
+                _unitOfWork.Save();
+                return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId = medicalRecord.PatientId});
+            }
+            return RedirectToAction("DoctorCreate");
+        }
+
 
 
         [HttpGet("Detail/{MedicalRecordId}")]
@@ -68,7 +79,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == MedicalRecordId);
             ViewBag.MedicalVisits = _unitOfWork.MedicalVisitRepository.GetAll(mv => mv.MedicalRecordId == MedicalRecordId);
-            return View(medicalRecord);
+            return View("AdminDetail", medicalRecord);
         }
 
         [HttpGet("Update/{MedicalRecordId}")]
