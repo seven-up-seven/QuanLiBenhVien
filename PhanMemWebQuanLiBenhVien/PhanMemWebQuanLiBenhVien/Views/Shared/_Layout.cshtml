@@ -17,12 +17,12 @@
                     <div class="position-sticky">
                         <ul class="nav flex-column" style="font-size: 20px;">
                             <li class="nav-item">
-                                <a class="nav-link active fw-bold" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link active fw-bold text-white" asp-controller="Home" asp-action="Index">
                                     <span class="bi bi-house"></span> Home
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-bold" asp-controller="Home" asp-action="Privacy">
+                            <a class="nav-link fw-bold text-white" asp-controller="Home" asp-action="Privacy">
                                     <span class="bi bi-shield-lock"></span> Privacy
                                 </a>
                             </li>
@@ -82,11 +82,9 @@
             </div>
         </div>
 
-    @* <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - PhanMemWebQuanLiBenhVien - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> *@
+    <footer class="footer bg-dark text-white text-center mt-2" style="height: 50px">
+        <p>© 2024 Hospital Management Portal | All Rights Reserved</p>
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

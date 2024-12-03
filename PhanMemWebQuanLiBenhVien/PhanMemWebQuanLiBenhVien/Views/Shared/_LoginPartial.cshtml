@@ -3,27 +3,27 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav" style="margin-left: 18px;">
+<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <p class="text-decoration-underline" style="color: gray">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
+        <li class="nav-item ">
+            <p class="text-decoration-underline fst-italic " style="color: gray; overflow: hidden; width: 200px; font-size: 20px; padding-left: 30px;">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
         </li>
-        <li class="nav-item row d-flex">
-            <a id="manage" class="col col-auto btn btn-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài khoản</a>
+        <li class="nav-item row d-flex" style="padding-left: 16px">
+            <a id="manage" class="col col-auto btn btn-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" >Tài khoản</a>
 
             <form id="logoutForm" class="form-inline col col-auto" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn btn-link">Đăng xuất</button>
+                <button id="logout" type="submit" class="btn btn-link text-white">Đăng xuất</button>
             </form>
         </li>
     }
     else
 {
-    <li class="nav-item">
-            <a class="nav-link text-primary fw-bold" id="register" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-plus-fill"></i> Register</a>
+    <li class="nav-item ">
+            <a class="nav-link fw-bold text-white " id="register" asp-area="Identity" asp-page="/Account/Register" style="padding-left: 18px"><i class="bi bi-person-plus-fill"></i> Register</a>
     </li>
     <li class="nav-item">
-            <a class="nav-link text-primary fw-bold" id="login" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-box-arrow-in-left"></i> Login</a>
+            <a class="nav-link fw-bold text-white " id="login" asp-area="Identity" asp-page="/Account/Login" style="padding-left: 18px"><i class="bi bi-box-arrow-in-left"></i> Login</a>
     </li>
 }
 </ul>

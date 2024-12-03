@@ -7,103 +7,107 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
+<div>
+    <h3>@ViewData["Title"]</h3>
+    <partial name="_StatusMessage" for="StatusMessage" />
 
-<h2 class="text-center">Tài khoản</h2>
-<div class="row d-flex justify-content-center">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="row d-flex justify-content-center gap-1">
-                <a asp-page="ChangePassword" class="w-100 btn btn-lg btn-primary">Đổi mật khẩu</a>
-                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-            </div>
-        </form>
+    <h2 class="text-center">Tài khoản</h2>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                    <label asp-for="Username" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                    <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="row d-flex justify-content-center gap-1">
+                    <a asp-page="ChangePassword" class="w-100 btn btn-lg btn-primary">Đổi mật khẩu</a>
+                    <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<h2 class="text-center mt-3">Thông tin cá nhân</h2>
-@if (User.IsInRole("Doctor"))
-{
-    var doctor = UnitOfWork.DoctorRepository.Get(u => u.Username == User.Identity.Name);
-    <form method="post" asp-controller="Doctor" asp-action="Update" enctype="multipart/form-data">
-        <input asp-for="@doctor.DoctorId" hidden />
-        <input asp-for="@doctor.HasAccount" hidden/>
-        <input asp-for="@doctor.ProfessionId" hidden />
-        <input asp-for="@doctor.Username" hidden/>
-        <div class="form-group">
-            <label for="DoctorName">Tên bác sĩ</label>
-            <span asp-validation-for="@doctor.DoctorName" class="text-danger"></span>
-            <input asp-for="@doctor.DoctorName" class="form-control" placeholder="Nhập tên bác sĩ" />
-        </div>
-        <div class="form-group">
-            <label for="DoctorCCCD">CCCD</label>
-            <span asp-validation-for="@doctor.DoctorCCCD" class="text-danger"></span>
-            <input asp-for="@doctor.DoctorCCCD" class="form-control" placeholder="Nhập CCCD bác sĩ" />
-        </div>
-        <div class="form-group">
-            <label for="DoctorAge">Tuổi</label>
-            <span asp-validation-for="@doctor.DoctorAge" class="text-danger"></span>
-            <input asp-for="@doctor.DoctorAge" class="form-control" placeholder="Nhập tuổi bác sĩ" />
-        </div>
-        <div class="form-group">
-            <label for="ProfessionId">Chuyên khoa</label>
-            <select asp-for="@doctor.ProfessionId" asp-items="@Model.Professions" class="form-control" disabled></select>
-        </div>
-        <div class="form-group">
-            <label for="@doctor.DoctorGender">Giới tính</label>
-            <select asp-for="@doctor.DoctorGender" asp-items="@Model.genderList" class="form-control"></select>
-        </div>
-        <div class="form-group">
-            <label for="@doctor.DoctorImgURL">Ảnh bác sĩ</label>
-            <input type="file" name="DoctorImg" class="form-control" />
-        </div>
-        <button type="submit" class="btn-primary">Cập nhật</button>
-    </form>
-}
-else if (User.IsInRole("Nurse"))
-{
-    var nurse = UnitOfWork.NurseRepository.Get(u => u.Username == User.Identity.Name);
-    <form method="post" asp-controller="Nurse" asp-action="Update" enctype="multipart/form-data">
-        <input asp-for="@nurse.NurseId" hidden />
-        <input asp-for="@nurse.HasAccount" hidden />
-        <input asp-for="@nurse.Username" hidden />
-        <div class="form-group">
-            <label for="NurseName">Tên y tá</label>
-            <span asp-validation-for="@nurse.NurseName" class="text-danger"></span>
-            <input asp-for="@nurse.NurseName" class="form-control" placeholder="Nhập tên y tá" />
-        </div>
-        <div class="form-group">
-            <label for="NurseCCCD">CCCD</label>
-            <span asp-validation-for="@nurse.NurseCCCD" class="text-danger"></span>
-            <input asp-for="@nurse.NurseCCCD" class="form-control" placeholder="Nhập CCCD y tá" />
-        </div>
-        <div class="form-group">
-            <label for="NurseAge">Tuổi</label>
-            <span asp-validation-for="@nurse.NurseAge" class="text-danger"></span>
-            <input asp-for="@nurse.NurseAge" class="form-control" placeholder="Nhập tuổi y tá" />
-        </div>
-        <div class="form-group">
-            <label for="@nurse.NurseGender">Giới tính</label>
-            <select asp-for="@nurse.NurseGender" asp-items="@Model.genderList" class="form-control"></select>
-        </div>
-        <div class="form-group">
-            <label for="@nurse.NurseImgURL">Ảnh y tá</label>
-            <input type="file" name="NurseImg" class="form-control" />
-        </div>
-        <button type="submit" class="btn-primary">Cập nhật</button>
-    </form>
-}
+    <h2 class="text-center mt-3">Thông tin cá nhân</h2>
+    @if (User.IsInRole("Doctor"))
+    {
+        var doctor = UnitOfWork.DoctorRepository.Get(u => u.Username == User.Identity.Name);
+        <form method="post" asp-controller="Doctor" asp-action="Update" enctype="multipart/form-data">
+            <input asp-for="@doctor.DoctorId" hidden />
+            <input asp-for="@doctor.HasAccount" hidden />
+            <input asp-for="@doctor.ProfessionId" hidden />
+            <input asp-for="@doctor.Username" hidden />
+            <div class="form-group">
+                <label for="DoctorName">Tên bác sĩ</label>
+                <span asp-validation-for="@doctor.DoctorName" class="text-danger"></span>
+                <input asp-for="@doctor.DoctorName" class="form-control" placeholder="Nhập tên bác sĩ" />
+            </div>
+            <div class="form-group">
+                <label for="DoctorCCCD">CCCD</label>
+                <span asp-validation-for="@doctor.DoctorCCCD" class="text-danger"></span>
+                <input asp-for="@doctor.DoctorCCCD" class="form-control" placeholder="Nhập CCCD bác sĩ" />
+            </div>
+            <div class="form-group">
+                <label for="DoctorAge">Tuổi</label>
+                <span asp-validation-for="@doctor.DoctorAge" class="text-danger"></span>
+                <input asp-for="@doctor.DoctorAge" class="form-control" placeholder="Nhập tuổi bác sĩ" />
+            </div>
+            <div class="form-group">
+                <label for="ProfessionId">Chuyên khoa</label>
+                <select asp-for="@doctor.ProfessionId" asp-items="@Model.Professions" class="form-control" disabled></select>
+            </div>
+            <div class="form-group">
+                <label for="@doctor.DoctorGender">Giới tính</label>
+                <select asp-for="@doctor.DoctorGender" asp-items="@Model.genderList" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label for="@doctor.DoctorImgURL">Ảnh bác sĩ</label>
+                <input type="file" name="DoctorImg" class="form-control" />
+            </div>
+            <br />
+            <button type="submit" class="btn-primary">Cập nhật</button>
+        </form>
+    }
+    else if (User.IsInRole("Nurse"))
+    {
+        var nurse = UnitOfWork.NurseRepository.Get(u => u.Username == User.Identity.Name);
+        <form method="post" asp-controller="Nurse" asp-action="Update" enctype="multipart/form-data">
+            <input asp-for="@nurse.NurseId" hidden />
+            <input asp-for="@nurse.HasAccount" hidden />
+            <input asp-for="@nurse.Username" hidden />
+            <div class="form-group">
+                <label for="NurseName">Tên y tá</label>
+                <span asp-validation-for="@nurse.NurseName" class="text-danger"></span>
+                <input asp-for="@nurse.NurseName" class="form-control" placeholder="Nhập tên y tá" />
+            </div>
+            <div class="form-group">
+                <label for="NurseCCCD">CCCD</label>
+                <span asp-validation-for="@nurse.NurseCCCD" class="text-danger"></span>
+                <input asp-for="@nurse.NurseCCCD" class="form-control" placeholder="Nhập CCCD y tá" />
+            </div>
+            <div class="form-group">
+                <label for="NurseAge">Tuổi</label>
+                <span asp-validation-for="@nurse.NurseAge" class="text-danger"></span>
+                <input asp-for="@nurse.NurseAge" class="form-control" placeholder="Nhập tuổi y tá" />
+            </div>
+            <div class="form-group">
+                <label for="@nurse.NurseGender">Giới tính</label>
+                <select asp-for="@nurse.NurseGender" asp-items="@Model.genderList" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label for="@nurse.NurseImgURL">Ảnh y tá</label>
+                <input type="file" name="NurseImg" class="form-control" />
+            </div>
+            <br />
+            <button type="submit" class="btn-primary">Cập nhật</button>
+        </form>
+    }
+</div>
 
 
 @section Scripts {

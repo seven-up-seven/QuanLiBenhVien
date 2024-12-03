@@ -33,13 +33,14 @@
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập</button>
                 </div>
+                <br />
                 <div>
                     <p>
                         <a id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu?</a>
                     </p>
-                    <p>
+                   @*  <p>
                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Đăng kí người dùng mới</a>
-                    </p>
+                    </p> *@
                 </div>
             </form>
         </section>
