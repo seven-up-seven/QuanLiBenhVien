@@ -29,44 +29,65 @@
                             @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" asp-controller="PhongKham" asp-action="Index">Phòng Khám</a>
+                                    <a class="nav-link text-white" asp-controller="PhongKham" asp-action="Index">
+                                        <span class="bi bi-building"></span> Phòng Khám
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="PhongBenh" asp-action="Index">Phòng Bệnh</a>
+                                    <a class="nav-link text-white" asp-controller="PhongBenh" asp-action="Index">
+                                        <span class="bi bi-hospital"></span> Phòng Bệnh
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Patient" asp-action="Index">Bệnh Nhân</a>
+                                    <a class="nav-link text-white" asp-controller="Patient" asp-action="Index">
+                                        <span class="bi bi-person"></span> Bệnh Nhân
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="MedicalRecord" asp-action="Index">Bệnh án</a>
+                                    <a class="nav-link text-white" asp-controller="MedicalRecord" asp-action="Index">
+                                        <span class="bi bi-file-medical"></span> Bệnh án
+                                    </a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-controller="Profession" asp-action="Index">
+                                        <span class="bi bi-briefcase-medical"></span> Chuyên khoa
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" asp-controller="Nurse" asp-action="Index">Y tá</a>
+                                    <a class="nav-link text-white" asp-controller="WorkSchedule" asp-action="Index">
+                                        <span class="bi bi-calendar"></span> Lịch
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Profession" asp-action="Index">Chuyên khoa</a>
+                                    <a class="nav-link text-white" asp-controller="Mission" asp-action="Index">
+                                        <span class="bi bi-clipboard-check"></span> Nhiệm vụ
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="WorkSchedule" asp-action="Index">Lịch</a>
+                                    <a class="nav-link text-white" asp-controller="MedicalRecord" asp-action="Index">
+                                        <span class="bi bi-file-medical"></span> Bệnh án
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Mission" asp-action="Index">Nhiệm vụ</a>
+                                    <a class="nav-link text-white" asp-cosntroller="Doctor" asp-action="Index">
+                                        <span class="bi bi-person-badge"></span> Bác sĩ
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="MedicalRecord" asp-action="Index">Bệnh án</a>
-                                </li>
-                                <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Doctor" asp-action="Index">Bác sĩ</a>
+                                    <a class="nav-link text-white" asp-controller="Nurse" asp-action="Index">
+                                        <span class="bi bi-person-badge"></span> Y tá
+                                    </a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Danh sách Account
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="bi bi-people"></span> Danh sách Account
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                                    <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
-                                    <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
-                                    <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="ModeratorIndex">Moderator</a></li>
-                                    <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="AdminIndex">Admin</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="ModeratorIndex">Moderator</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="AdminIndex">Admin</a></li>
                                     </ul>
                                 </li>
                             }
