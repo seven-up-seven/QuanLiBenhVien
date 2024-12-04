@@ -30,8 +30,10 @@
             <label asp-for="ChanDoan">Chẩn đoán</label>
             <input asp-for="ChanDoan" class="form-control" />
         </div>
+        <br />
         <button type="submit" class="btn btn-primary">
-            <h4>Thêm</h4>
+            Thêm lần khám
         </button>
+        <a asp-action="DoctorDetail" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@ViewBag.Id" class="btn text-white">Quay lại</a>
     </form>
 </div>

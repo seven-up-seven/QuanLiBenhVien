@@ -129,7 +129,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpGet("CreateMedicalVisit/{MedicalRecordId}")]
         public IActionResult CreateMedicalVisit(int MedicalRecordId)
         {
-            ViewBag.MedicalRecordId = MedicalRecordId;
+            ViewBag.Id = MedicalRecordId;
             return View();
         }
         [HttpPost("CreateMedicalVisit/{MedicalRecordId}")]
