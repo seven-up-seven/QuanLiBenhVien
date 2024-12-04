@@ -7,7 +7,7 @@
 @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item ">
-            <p class="text-decoration-underline fst-italic " style="color: gray; overflow: hidden; width: 200px; font-size: 20px; padding-left: 30px;">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
+            <p class="text-decoration-underline fst-italic " style="color: gray; overflow: hidden; width: 200px; font-size: 20px;">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
         </li>
         <li class="nav-item">
             <div class="row d-flex justify-content-center">

@@ -58,10 +58,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId); 
             ViewBag.Patient = patient;
+            ViewBag.PatientId = PatientId;
             return View();
         }
         [HttpPost("DoctorCreate/{PatientId}")]
-        public IActionResult DoctorCreate(MedicalRecord medicalRecord)
+        public IActionResult DoctorCreate(MedicalRecord medicalRecord, int PatientId)
         {
             if (ModelState.IsValid)
             {
@@ -74,8 +75,16 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
 
 
-        [HttpGet("Detail/{MedicalRecordId}")]
-        public IActionResult Detail(int MedicalRecordId)
+        [HttpGet("DoctorDetail/{MedicalRecordId}")]
+        public IActionResult DoctorDetail(int MedicalRecordId)
+        {
+            var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == MedicalRecordId);
+            ViewBag.MedicalVisits = _unitOfWork.MedicalVisitRepository.GetAll(mv => mv.MedicalRecordId == MedicalRecordId);
+            return View("DoctorDetail", medicalRecord);
+        }
+
+        [HttpGet("AdminDetail/{MedicalRecordId}")]
+        public IActionResult AdminDetail(int MedicalRecordId)
         {
             var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == MedicalRecordId);
             ViewBag.MedicalVisits = _unitOfWork.MedicalVisitRepository.GetAll(mv => mv.MedicalRecordId == MedicalRecordId);
@@ -120,7 +129,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpGet("CreateMedicalVisit/{MedicalRecordId}")]
         public IActionResult CreateMedicalVisit(int MedicalRecordId)
         {
-            ViewBag.MedicalRecordId = MedicalRecordId;
+            ViewBag.Id = MedicalRecordId;
             return View();
         }
         [HttpPost("CreateMedicalVisit/{MedicalRecordId}")]
@@ -130,7 +139,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.MedicalVisitRepository.Add(medicalVisit);
                 _unitOfWork.Save();
-                return RedirectToAction("Detail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
+                return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
             }
             return View();
         }

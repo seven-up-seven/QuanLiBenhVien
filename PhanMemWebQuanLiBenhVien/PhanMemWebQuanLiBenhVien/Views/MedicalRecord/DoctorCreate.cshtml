@@ -38,25 +38,12 @@
             <label asp-for="TienSuBenhAn">Tiền sử bệnh án</label>
             <input asp-for="TienSuBenhAn" class="form-control"/>
         </div>
-
-        <button type="submit" class="btn btn-primary">
-            <h4>Thêm</h4>
-        </button>
+        <br />
+        <div class="row d-flex gap-2">
+            <button type="submit" class="col col-auto">
+                Thêm
+            </button>
+            <button asp-action="DoctorPatientDetail" asp-controller="Doctor" asp-route-PatientId="@ViewBag.PatientId" class="col col-auto">Quay lại</button>
+        </div>
     </form>
 </div>
-
-<@* script>
-    // Lấy dữ liệu PatientNames từ ViewBag
-    var patientNames = @Html.Raw(Json.Serialize(ViewBag.PatientNames));
-
-    // Lắng nghe sự thay đổi lựa chọn trong dropdown
-    document.getElementById('patientIdSelect').addEventListener('change', function () {
-        var selectedPatientId = this.value;
-        // Cập nhật tên bệnh nhân vào ô input khi thay đổi lựa chọn
-        if (selectedPatientId) {
-            document.getElementById('patientNameInput').value = patientNames[selectedPatientId];
-        } else {
-            document.getElementById('patientNameInput').value = '';
-        }
-    });
-</script> *@
