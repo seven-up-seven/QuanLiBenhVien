@@ -32,7 +32,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
       
    	        ViewBag.Doctors = _unitOfWork.DoctorRepository.GetAll().Select(u => new SelectListItem
 			{
-				Text = u.DoctorName,
+				Text = "Tên: " + u.DoctorName + " ID: "+u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
             return View();

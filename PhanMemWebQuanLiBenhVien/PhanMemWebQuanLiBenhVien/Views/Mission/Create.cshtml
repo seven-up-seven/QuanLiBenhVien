@@ -24,12 +24,12 @@
 
         <div class="form-group">
             <div class="form-group">
-                <label for="DoctorId" class="form-control">Bác sĩ</label>
+                <label for="DoctorId" >Bác sĩ</label>
                 <select asp-for="DoctorId" asp-items="@ViewBag.Doctors" class="form-control"></select>
             </div>
             <span asp-validation-for="DoctorId" class="text-danger"></span>
         </div>
-
+        <br />
         <button type="submit" class="btn btn-primary">Thêm</button>
     </form>
 
