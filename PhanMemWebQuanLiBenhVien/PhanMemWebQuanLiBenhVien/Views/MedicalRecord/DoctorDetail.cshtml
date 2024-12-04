@@ -8,8 +8,8 @@
         <div class="col text-primary">
             <h2>Chi Tiết Bệnh Án</h2>
         </div>
-        <div class="col col-2 text-end btn btn-primary text-center">
-            <h5><i class="bi bi-pencil-square"></i> <a asp-action="Update" asp-controller="MedicalRecord" asp-route-id="@Model.MedicalRecordId" class="text-decoration-none text-white">Chỉnh sửa</a></h5>
+        <div class="col col-2 text-end text-center">
+            <h5> <a asp-action="Update" asp-controller="MedicalRecord" asp-route-id="@Model.MedicalRecordId" class="text-decoration-none text-white btn btn-primary "><i class="bi bi-pencil-square"></i> Chỉnh sửa</a></h5>
         </div>
     </div>
 
@@ -59,7 +59,7 @@
 
     <div class="row d-flex mt-4">
         <div class="col-auto text-primary">
-            <a asp-controller="MedicalRecord" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn btn-outline-dark">Quay lại</a>
+            <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white">Quay lại</a>
         </div>
     </div>
 </div>
