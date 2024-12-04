@@ -9,12 +9,14 @@
         <li class="nav-item ">
             <p class="text-decoration-underline fst-italic " style="color: gray; overflow: hidden; width: 200px; font-size: 20px; padding-left: 30px;">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
         </li>
-        <li class="nav-item row d-flex" style="padding-left: 16px">
-            <a id="manage" class="col col-auto btn btn-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" >Tài khoản</a>
+        <li class="nav-item">
+            <div class="row d-flex justify-content-center">
+                <a id="manage" class="col col-auto btn btn-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài khoản</a>
 
-            <form id="logoutForm" class="form-inline col col-auto" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn btn-link text-white">Đăng xuất</button>
-            </form>
+                <form id="logoutForm" class="form-inline col col-auto" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="btn btn-link text-white">Đăng xuất</button>
+                </form>
+            </div>
         </li>
     }
     else
