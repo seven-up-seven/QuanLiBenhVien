@@ -58,20 +58,28 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost("Create")]
 		public IActionResult Create(Doctor doctor, IFormFile? DoctorImg)
 		{
-			wwwroot = _webHostEnvironment.WebRootPath;
-			if (DoctorImg != null)
+			if (ModelState.IsValid)
 			{
-				string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
-				string filepath = Path.Combine(wwwroot, @"images\");
-				using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
-				{
-					DoctorImg.CopyTo(filestream);
-				}
-				doctor.DoctorImgURL = @"\images\" + filename;
+                wwwroot = _webHostEnvironment.WebRootPath;
+                if (DoctorImg != null)
+                {
+                    string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
+                    string filepath = Path.Combine(wwwroot, @"images\");
+                    using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                    {
+                        DoctorImg.CopyTo(filestream);
+                    }
+                    doctor.DoctorImgURL = @"\images\" + filename;
+                }
+                else doctor.DoctorImgURL = "";
+                _unitOfWork.DoctorRepository.Add(doctor);
+				TempData["success"] = "Tạo bác sĩ mới thành công!";
+                _unitOfWork.Save();
+            }
+			else
+			{
+				TempData["error"] = "Thông tin bác sĩ không hợp lệ!";
 			}
-			else doctor.DoctorImgURL = "";
-			_unitOfWork.DoctorRepository.Add(doctor);
-			_unitOfWork.Save();
 			return RedirectToAction("Index");
 		}
 		public IActionResult Update(int DoctorId)
@@ -95,19 +103,24 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost]
 		public ActionResult Update(Doctor doctor, IFormFile? DoctorImg)
 		{
-            wwwroot = _webHostEnvironment.WebRootPath;
-            if (DoctorImg != null)
-            {
-                string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
-                string filepath = Path.Combine(wwwroot, @"images\");
-                using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
-                {
-                    DoctorImg.CopyTo(filestream);
-                }
-                doctor.DoctorImgURL = @"\images\" + filename;
-            }
-            _unitOfWork.DoctorRepository.Update(doctor);
-			_unitOfWork.Save();
+			if (ModelState.IsValid)
+			{
+				wwwroot = _webHostEnvironment.WebRootPath;
+				if (DoctorImg != null)
+				{
+					string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
+					string filepath = Path.Combine(wwwroot, @"images\");
+					using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+					{
+						DoctorImg.CopyTo(filestream);
+					}
+					doctor.DoctorImgURL = @"\images\" + filename;
+				}
+				_unitOfWork.DoctorRepository.Update(doctor);
+				_unitOfWork.Save();
+				TempData["success"] = "Cập nhật bác sĩ thành công!";
+			}
+			else TempData["error"] = "Thông tin bác sĩ không hợp lệ!";
 			if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new {DoctorId=doctor.DoctorId});
 			return RedirectToAction("Index");
 		}
