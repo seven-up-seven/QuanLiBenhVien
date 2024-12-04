@@ -101,7 +101,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(doctor);
 		}
 		[HttpPost]
-		public ActionResult Update(Doctor doctor, IFormFile? DoctorImg)
+		public IActionResult Update(Doctor doctor, IFormFile? DoctorImg)
 		{
 			if (ModelState.IsValid)
 			{
