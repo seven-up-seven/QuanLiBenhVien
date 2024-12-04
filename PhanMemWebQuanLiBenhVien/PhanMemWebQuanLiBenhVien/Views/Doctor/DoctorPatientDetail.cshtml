@@ -91,8 +91,8 @@
     }
 
     <div class="row d-flex mt-4">
-        <div class="col-auto text-primary">
-            <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@Model.DoctorId" class="btn btn-outline-dark">Quay lại</a>
+        <div class="col-auto">
+            <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@Model.DoctorId" class="btn text-white">Quay lại</a>
         </div>
         <div class="col-auto text-primary">
             <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
