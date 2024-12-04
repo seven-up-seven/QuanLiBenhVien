@@ -36,7 +36,9 @@
                     </td>
                     <td>@phong.NumberOfBeds</td>
                     <td>
-                        <a class="btn btn-primary" asp-controller="PhongBenh" asp-action="Update" asp-route-id="@phong.RoomId"><i class="bi bi-pencil-square"></i> Sửa</a>
+                        <a class="btn btn-primary" asp-controller="PhongBenh" asp-action="Update" asp-route-PhongBenhId="@phong.RoomId">
+                            <i class="bi bi-pencil-square"></i> Sửa
+                        </a>
                         <a asp-controller="PhongBenh" asp-action="Detail" asp-route-id="@phong.RoomId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
                     </td>
                 </tr>

@@ -19,7 +19,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			var listPhongBenh = _unitOfWork.PhongBenhRepository.GetAll();
 			foreach (var phong in listPhongBenh)
 			{
-				phong.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongBenhId == phong.RoomId); 
+				phong.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongBenhId == phong.RoomId);
 			}
 			return View(listPhongBenh);
 		}
@@ -52,29 +52,6 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			return View(phongBenh);
 		}
 
-
-		[HttpGet("Update/{PhongBenhId}")]
-		public IActionResult Update(int PhongBenhId)
-		{
-			var phongBenh = _unitOfWork.PhongKhamRepository.Get(pb => pb.RoomId == PhongBenhId);
-			if (phongBenh != null)
-			{
-				return View(phongBenh);
-			}
-			return View();
-		}
-		[HttpPost("Update/{PhongBenhId}")]
-		public IActionResult Update(PhongBenh phongBenh)
-		{
-			if (ModelState.IsValid)
-			{
-				_unitOfWork.PhongBenhRepository.Update(phongBenh);
-				_unitOfWork.Save();
-				return RedirectToAction("Index");
-			}
-			return View();
-		}
-
 		[HttpPost("Delete/{PhongBenhId}")]
 		public IActionResult Delete(int PhongBenhId)
 		{
@@ -87,5 +64,32 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			}
 			return View();
 		}
+		[HttpGet("Update/{PhongBenhId}")]
+		// lấy thông tin thông qua ID
+		public IActionResult Update(int PhongBenhId)
+		{
+			var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
+			if (phongBenh == null)
+			{
+				return NotFound();
+			}
+			return View(phongBenh);
+		}
+
+		[HttpPost("Update/{PhongBenhId}")]
+		[ActionName("Update")]
+		// cập nhật dữ liệu
+		public IActionResult UpdatePost(PhongBenh phongBenh)
+		{
+			if (ModelState.IsValid)
+			{
+				_unitOfWork.PhongBenhRepository.Update(phongBenh);
+				_unitOfWork.Save();
+				return RedirectToAction("Index");
+			}
+			return View(phongBenh);
+		}
+
 	}
+
 }

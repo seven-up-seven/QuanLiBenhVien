@@ -18,7 +18,20 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(PhongBenh phongBenh)
         {
-            throw new NotImplementedException();
+
+            var existingPhongBenh = _db.phongBenhs.FirstOrDefault(pb => pb.RoomId == phongBenh.RoomId);
+
+            if (existingPhongBenh != null)
+            {
+                existingPhongBenh.Name = phongBenh.Name;
+                existingPhongBenh.NumberOfBeds = phongBenh.NumberOfBeds;
+
+            }
         }
     }
 }
+
+
+        
+   
+
