@@ -1,9 +1,9 @@
-﻿@model Doctor
+﻿@model IEnumerable<Patient>
 @{
 	Layout = "~/Views/Shared/_CustomedLayout.cshtml";
 }
 <h2 class="text-primary">Danh sách </h2>
-@if(ViewBag.Patients.Count == 0)
+@if(Model.Count() == 0)
 {
 	<p>Trống</p>
 }
@@ -23,15 +23,15 @@ else
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var patient in ViewBag.Patients)
+				@foreach (var patient in Model)
 				{
 					<tr>
 						<td>@patient.Name</td>
-						<td>@patient.Age</td>
+						<td>@patient.DateOfBirth</td>
 						<td>@patient.CCCD</td>
 						<td>@patient.Gender.ToString()</td>
-						<td>@patient.TrangThaiDieuTri.ToString()</td>
-						<td>@patient.PhongBenh.Name</td>
+						<td>@patient.TrangThaiBenhAn.ToString()</td>
+						<td>@patient.MedicalRecords.LastOrDefault().PhongBenh.Name</td>
 						<td>
 						<a href="@Url.Action("DoctorPatientDetail", "Doctor", new { PatientId = patient.PatientId })" class="btn btn-primary">Chi tiết</a>
 						</td> 
