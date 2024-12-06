@@ -213,5 +213,54 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			patient.MedicalRecords = (ICollection<MedicalRecord>?)medicalRecord;
             return View(patient);
         }
+        public async Task<IActionResult> DoctorMission(int month, int year)
+        {
+            // Lấy thông tin người dùng hiện tại
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (user == null) return NotFound("Người dùng không tồn tại.");
+            var trueUser = (CustomedUser)user;
+
+            // Lấy thông tin bác sĩ từ UserName
+            var doctor = _unitOfWork.DoctorRepository.Get(u => u.Username == trueUser.UserName);
+            if (doctor == null) return NotFound("Bác sĩ không tồn tại.");
+
+            // Lấy thời gian hiện tại nếu không truyền tháng và năm
+            if (month == 0 || year == 0)
+            {
+                var currentDate = DateTime.Now;
+                month = currentDate.Month;
+                year = currentDate.Year;
+            }
+
+            // Gán danh sách nhiệm vụ của bác sĩ, chỉ lấy các nhiệm vụ trong tháng và năm được chọn
+            doctor.MissionList = _unitOfWork.MissionRepository.GetAll(m =>
+                m.DoctorId == doctor.DoctorId &&
+                m.Time.Month == month &&
+                m.Time.Year == year).ToList();
+            foreach (var mission in doctor.MissionList)
+            {
+               if(mission.PhongKhamId!=null)
+				{
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == mission.PhongKhamId);
+                    mission.PhongKham = phongkham;
+                }
+				else
+				{
+                    var phongbenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == mission.PhongBenhId);
+                    mission.PhongBenh = phongbenh;
+                }
+            }
+            // Truyền tháng và năm cho View
+            ViewBag.SelectedMonth = month;
+            ViewBag.SelectedYear = year;
+
+            return View(doctor);
+        }
+
+
+
+
+
+
     }
 }

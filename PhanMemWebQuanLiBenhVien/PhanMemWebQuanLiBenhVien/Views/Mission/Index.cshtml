@@ -4,7 +4,7 @@
     <div class="row my-2">
         <div class="col text-primary"><h2>Danh sách nhiệm vụ</h2></div>
         <div class="col col-auto text-end  text-center">
-            <h5>  
+            <h5>
                 <a asp-action="Create" asp-controller="Mission" class="text-decoration-none btn btn-primary text-white"><i class="bi bi-person-plus-fill"></i> Thêm nhiệm vụ</a>
             </h5>
         </div>
@@ -12,8 +12,11 @@
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
-                <th>Thời gian</th>
+                <th>Thời gian bắt đầu</th>
+                <th>Thời gian kết thúc</th>
+                <th>Mức độ</th>
                 <th>Nội dung</th>
+                <th>Phòng</th>
                 <th>Mã bác sĩ</th>
                 <th>Tên bác sĩ</th>
                 <th>Actions</th>
@@ -24,15 +27,25 @@
             {
                 <tr>
                     <td>@mission.Time</td>
+                    <td>@mission.EndTime</td>
+                    <td>@mission.Lever</td>
                     <td>@mission.Content</td>
+                    @if (mission.PhongKham == null)
+                    {
+                        <td>@mission.PhongBenh.Name</td>
+                    }
+                    else
+                    {
+                        <td>@mission.PhongKham.Name</td>
+                    }
                     <td>@mission.DoctorId</td>
                     <td>@mission.Doctor?.DoctorName</td> <!-- Hiển thị tên bác sĩ -->
                     <td>
                         <a class="btn btn-primary" asp-controller="Mission" asp-action="Update" asp-route-MissionId="@mission.MissionId">
                             <i class="bi bi-pencil-square"></i> Sửa
                         </a>
-        
-                          <form asp-controller="Mission" asp-action="Delete" method="post" style="display:inline;">
+
+                        <form asp-controller="Mission" asp-action="Delete" method="post" style="display:inline;">
                             <input type="hidden" name="missionId" value="@mission.MissionId" />
                             <button type="submit" class="btn btn-danger">
                                 <i class="bi bi-trash"></i> Xóa

@@ -42,5 +42,19 @@ namespace PhanMemWebQuanLiBenhVien.Ultilities
             cotrieuchung,
             tronang
         }
+
+        public enum ELever
+        {
+            binhthuong,
+            uutien,
+            nguycap
+        }
+
+
+        public enum EPhong
+        {
+            phongkham,
+            phongbenh
+        }
     }
 }
