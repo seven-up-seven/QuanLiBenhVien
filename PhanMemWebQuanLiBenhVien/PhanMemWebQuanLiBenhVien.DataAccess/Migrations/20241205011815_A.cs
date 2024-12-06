@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class A : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,11 +31,8 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    CCCD = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<int>(type: "int", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: true),
-                    ImgURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    UserRole = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -61,7 +58,14 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 columns: table => new
                 {
                     NurseId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NurseCCCD = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    NurseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NurseGender = table.Column<int>(type: "int", nullable: false),
+                    NurseAge = table.Column<int>(type: "int", nullable: false),
+                    NurseImgURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasAccount = table.Column<bool>(type: "bit", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,30 +105,14 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 {
                     ProfessionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfessionName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProfessionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TruongKhoaId = table.Column<int>(type: "int", nullable: true),
+                    TruongKhoaName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_professions", x => x.ProfessionId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "workSchedules",
-                columns: table => new
-                {
-                    WorkScheduleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoomOfMonday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomOfTuesday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomOfWednesday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomOfThurday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomOfFriday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomOfSaturday = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomOfSunday = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_workSchedules", x => x.WorkScheduleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,8 +227,16 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 {
                     DoctorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DoctorCCCD = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    DoctorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorGender = table.Column<int>(type: "int", nullable: false),
+                    DoctorAge = table.Column<int>(type: "int", nullable: false),
+                    DoctorImgURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasAccount = table.Column<bool>(type: "bit", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsTruongKhoa = table.Column<bool>(type: "bit", nullable: false),
                     ProfessionId = table.Column<int>(type: "int", nullable: false),
-                    WorkScheduleId = table.Column<int>(type: "int", nullable: false)
+                    ViTriLamViec = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -250,12 +246,6 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                         column: x => x.ProfessionId,
                         principalTable: "professions",
                         principalColumn: "ProfessionId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_doctors_workSchedules_WorkScheduleId",
-                        column: x => x.WorkScheduleId,
-                        principalTable: "workSchedules",
-                        principalColumn: "WorkScheduleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -289,14 +279,15 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     CCCD = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    BHYT = table.Column<bool>(type: "bit", nullable: false),
                     TrangThaiDieuTri = table.Column<int>(type: "int", nullable: false),
-                    DoctorId = table.Column<int>(type: "int", nullable: false),
-                    PhongKhamId = table.Column<int>(type: "int", nullable: true),
-                    PhongBenhId = table.Column<int>(type: "int", nullable: true)
+                    TrangThaiBenhAn = table.Column<int>(type: "int", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: true),
+                    NurseId = table.Column<int>(type: "int", nullable: true),
+                    PhongBenhRoomId = table.Column<int>(type: "int", nullable: true),
+                    PhongKhamRoomId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -305,18 +296,48 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                         name: "FK_patients_doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "doctors",
-                        principalColumn: "DoctorId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "DoctorId");
                     table.ForeignKey(
-                        name: "FK_patients_phongBenhs_PhongBenhId",
-                        column: x => x.PhongBenhId,
+                        name: "FK_patients_nurses_NurseId",
+                        column: x => x.NurseId,
+                        principalTable: "nurses",
+                        principalColumn: "NurseId");
+                    table.ForeignKey(
+                        name: "FK_patients_phongBenhs_PhongBenhRoomId",
+                        column: x => x.PhongBenhRoomId,
                         principalTable: "phongBenhs",
                         principalColumn: "RoomId");
                     table.ForeignKey(
-                        name: "FK_patients_phongKhams_PhongKhamId",
-                        column: x => x.PhongKhamId,
+                        name: "FK_patients_phongKhams_PhongKhamRoomId",
+                        column: x => x.PhongKhamRoomId,
                         principalTable: "phongKhams",
                         principalColumn: "RoomId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "workSchedules",
+                columns: table => new
+                {
+                    WorkScheduleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoomOfMonday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomOfTuesday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomOfWednesday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomOfThurday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomOfFriday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomOfSaturday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomOfSunday = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_workSchedules", x => x.WorkScheduleId);
+                    table.ForeignKey(
+                        name: "FK_workSchedules_doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "doctors",
+                        principalColumn: "DoctorId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -326,17 +347,67 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     MedicalRecordId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientId = table.Column<int>(type: "int", nullable: false),
-                    Prediction = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WentToHospitalDay = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PatientName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatientGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BHYT = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TienSuBenhAn = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorId = table.Column<int>(type: "int", nullable: true),
+                    PhongKhamId = table.Column<int>(type: "int", nullable: true),
+                    PhongBenhId = table.Column<int>(type: "int", nullable: true),
+                    NurseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_medicalRecords", x => x.MedicalRecordId);
                     table.ForeignKey(
+                        name: "FK_medicalRecords_doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "doctors",
+                        principalColumn: "DoctorId");
+                    table.ForeignKey(
+                        name: "FK_medicalRecords_nurses_NurseId",
+                        column: x => x.NurseId,
+                        principalTable: "nurses",
+                        principalColumn: "NurseId");
+                    table.ForeignKey(
                         name: "FK_medicalRecords_patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "patients",
                         principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_medicalRecords_phongBenhs_PhongBenhId",
+                        column: x => x.PhongBenhId,
+                        principalTable: "phongBenhs",
+                        principalColumn: "RoomId");
+                    table.ForeignKey(
+                        name: "FK_medicalRecords_phongKhams_PhongKhamId",
+                        column: x => x.PhongKhamId,
+                        principalTable: "phongKhams",
+                        principalColumn: "RoomId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "medicalVisits",
+                columns: table => new
+                {
+                    VisitId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MedicalRecordId = table.Column<int>(type: "int", nullable: false),
+                    VisitDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Symptom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KetQuaLamSang = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChanDoan = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_medicalVisits", x => x.VisitId);
+                    table.ForeignKey(
+                        name: "FK_medicalVisits_medicalRecords_MedicalRecordId",
+                        column: x => x.MedicalRecordId,
+                        principalTable: "medicalRecords",
+                        principalColumn: "MedicalRecordId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -385,14 +456,34 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 column: "ProfessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_doctors_WorkScheduleId",
-                table: "doctors",
-                column: "WorkScheduleId");
+                name: "IX_medicalRecords_DoctorId",
+                table: "medicalRecords",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_medicalRecords_NurseId",
+                table: "medicalRecords",
+                column: "NurseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_medicalRecords_PatientId",
                 table: "medicalRecords",
                 column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_medicalRecords_PhongBenhId",
+                table: "medicalRecords",
+                column: "PhongBenhId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_medicalRecords_PhongKhamId",
+                table: "medicalRecords",
+                column: "PhongKhamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_medicalVisits_MedicalRecordId",
+                table: "medicalVisits",
+                column: "MedicalRecordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_missions_DoctorId",
@@ -405,14 +496,24 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_patients_PhongBenhId",
+                name: "IX_patients_NurseId",
                 table: "patients",
-                column: "PhongBenhId");
+                column: "NurseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_patients_PhongKhamId",
+                name: "IX_patients_PhongBenhRoomId",
                 table: "patients",
-                column: "PhongKhamId");
+                column: "PhongBenhRoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_patients_PhongKhamRoomId",
+                table: "patients",
+                column: "PhongKhamRoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_workSchedules_DoctorId",
+                table: "workSchedules",
+                column: "DoctorId");
         }
 
         /// <inheritdoc />
@@ -434,13 +535,13 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "medicalRecords");
+                name: "medicalVisits");
 
             migrationBuilder.DropTable(
                 name: "missions");
 
             migrationBuilder.DropTable(
-                name: "nurses");
+                name: "workSchedules");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -449,10 +550,16 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "medicalRecords");
+
+            migrationBuilder.DropTable(
                 name: "patients");
 
             migrationBuilder.DropTable(
                 name: "doctors");
+
+            migrationBuilder.DropTable(
+                name: "nurses");
 
             migrationBuilder.DropTable(
                 name: "phongBenhs");
@@ -462,9 +569,6 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "professions");
-
-            migrationBuilder.DropTable(
-                name: "workSchedules");
         }
     }
 }

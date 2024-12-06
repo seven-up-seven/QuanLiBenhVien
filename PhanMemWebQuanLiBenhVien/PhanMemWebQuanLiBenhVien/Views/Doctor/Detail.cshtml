@@ -12,24 +12,30 @@
 		<p>Giới tính: @Model.DoctorGender.ToString()</p>
 		<p>Chuyên khoa: @Model.Profession.ProfessionName</p>
 	</div>
-	<div class="my-4">
-		<table>
-			<tr>
-				<th><h4>Danh sách bệnh nhân: </h4></th>
-				@{
-					if (Model.PatientList != null)
-					{
-						foreach (var patient in Model.PatientList)
-						{
-							<td><a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
-						}
-					}
-				}
-			</tr>
-		</table>
-	</div>
+    <div class="my-4">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Danh sách bệnh nhân</th>
+							</tr>
+						</thead>
+						<tbody>
+							@{
+								if (Model.PatientList != null)
+								{
+									foreach (var patient in Model.PatientList)
+									{
+										<tr>
+											<td><a href="@Url.Action("DoctorPatientDetail", "Doctor", new {PatientId = patient.PatientId})" class="text-white">@patient.Name</a></td>
+										</tr>
+									}
+								}
+							}
+						</tbody>
+					</table>
+    </div>
 	<div class="row d-flex">
-		<div class="col-auto text-primary"><a asp-controller="Doctor" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+		<div class="col-auto text-primary"><a asp-controller="Doctor" asp-action="Index" class="btn text-white">Quay lại</a></div>
 		<div class="col-auto text-primary">
 			<a class="btn btn-primary" asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@Model.DoctorId">Xóa</a>
 		</div>

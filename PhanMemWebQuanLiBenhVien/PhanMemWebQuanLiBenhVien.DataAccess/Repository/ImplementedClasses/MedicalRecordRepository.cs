@@ -18,7 +18,23 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(MedicalRecord medicalRecord)
         {
-            throw new NotImplementedException();
+            var existingRecord = _db.medicalRecords.FirstOrDefault(m => m.MedicalRecordId == medicalRecord.MedicalRecordId);
+            if (existingRecord != null)
+            {
+                existingRecord.PatientId = medicalRecord.PatientId;
+                existingRecord.PatientName = medicalRecord.PatientName;
+                existingRecord.PatientGender = medicalRecord.PatientGender;
+                existingRecord.BHYT = medicalRecord.BHYT;
+                existingRecord.Address = medicalRecord.Address;
+                existingRecord.TienSuBenhAn = medicalRecord.TienSuBenhAn;
+                existingRecord.TrangThaiDieuTri = medicalRecord.TrangThaiDieuTri;
+                existingRecord.TrangThaiBenhAn = medicalRecord.TrangThaiBenhAn;
+                existingRecord.DoctorId = medicalRecord.DoctorId;
+                existingRecord.PhongKhamId = medicalRecord.PhongKhamId;
+                existingRecord.PhongBenhId = medicalRecord.PhongBenhId;
+                existingRecord.NurseId = medicalRecord.NurseId;
+                _db.SaveChanges();
+            }
         }
     }
 }

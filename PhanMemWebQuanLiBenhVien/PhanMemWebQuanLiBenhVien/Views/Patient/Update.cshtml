@@ -22,9 +22,9 @@
             <input asp-for="CCCD" class="form-control" placeholder="Nhập CCCD bệnh nhân" />
         </div>
         <div class="form-group">
-            <label asp-for="Age">Tuổi</label>
-            <span asp-validation-for="Age" class="text-danger"></span>
-            <input asp-for="Age" class="form-control" placeholder="Nhập tuổi bệnh nhân" />
+            <label asp-for="DateOfBirth">Ngày sinh</label>
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            <input asp-for="DateOfBirth" class="form-control" placeholder="Nhập ngày sinh bệnh nhân" />
         </div>
         <div class="form-group">
             <label asp-for="Gender">Giới tính</label>
@@ -35,16 +35,16 @@
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại bệnh nhân" />
         </div>
-        <div class="form-group">
+        @* <div class="form-group">
             <label asp-for="BHYT">Tình trạng BHYT</label>
             <select asp-for="BHYT" class="form-control" asp-items="@ViewBag.BHYT"></select>
-        </div>
+        </div> *@
         <div class="form-group">
             <label asp-for="Address">Địa chỉ</label>
             <span asp-validation-for="Address" class="text-danger"></span>
             <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ bệnh nhân" />
         </div>
-        @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+        @* @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
         {
             @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.xuatvien)
             {
@@ -92,12 +92,12 @@
                     });
                 </script>
             }
-        }
+        } *@
         @if (User.IsInRole("Doctor") || User.IsInRole("Nurse"))
         {
             <div class="form-group">
-                <label for="TrangThaiDieuTri">Lựa chọn</label>
-                <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.specialstatuslist">
+                <label asp-for="TrangThaiBenhAn">Lựa chọn</label>
+                <select asp-for="TrangThaiBenhAn" class="form-control" asp-items="@ViewBag.specialstatuslist">
                 </select>
             </div>
         }

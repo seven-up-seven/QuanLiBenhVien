@@ -110,7 +110,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Detail(int NurseId)
         {
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
-            nurse.PatientList = _unitOfWork.PatientRepository.GetAll(u => u.NurseId == NurseId).ToList();
+            nurse.PatientList = (ICollection<Patient>?)_unitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == NurseId).ToList();
             return View(nurse);
         }
         public IActionResult NurseHomePage(int NurseId)
@@ -121,7 +121,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult NursePatients(int NurseId)
         {
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
-            var patients = _unitOfWork.PatientRepository.GetAll(pt => (pt.TrangThaiDieuTri == ETrangThaiDieuTri.nhapvien && pt.NurseId == NurseId));
+            var patients = _unitOfWork.MedicalRecordRepository.GetAll(pt => (pt.TrangThaiDieuTri == ETrangThaiDieuTri.noitru && pt.NurseId == NurseId));
             ViewBag.Patients = patients;
             return View(nurse);
         }

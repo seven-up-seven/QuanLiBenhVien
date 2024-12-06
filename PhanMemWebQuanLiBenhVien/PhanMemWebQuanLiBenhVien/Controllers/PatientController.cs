@@ -16,13 +16,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Index()
         {
             var PatientList = _unitOfWork.PatientRepository.GetAll();
-            foreach (var patient in PatientList)
-            {
-				if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
-				if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
-				if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
-				if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
-			}
+   //         foreach (var patient in PatientList)
+   //         {
+			//	if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
+			//	if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
+			//	if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
+			//	if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
+			//}
             return View(PatientList);
         }
 
@@ -36,14 +36,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Text = gender.ToString()
             }).ToList();
             ViewBag.Genders = genderList;
-            ViewBag.BHYT = new SelectList(new List<SelectListItem>
-            {
-                new SelectListItem {Text="Có", Value="true"},
-                new SelectListItem {Text="Không", Value="false"} 
-            }, "Value", "Text");
-            var statuslist=Enum.GetValues(typeof(ETrangThaiDieuTri))
-            .Cast<ETrangThaiDieuTri>()
-            .Where(e=>e==ETrangThaiDieuTri.chikham || e==ETrangThaiDieuTri.nhapvien)
+
+            var statuslist=Enum.GetValues(typeof(ETrangThaiBenhAn))
+            .Cast<ETrangThaiBenhAn>()
+            .Where(e=>e==ETrangThaiBenhAn.dangchuatri || e==ETrangThaiBenhAn.ketthucchuatri)
+
             .Select(e=>new SelectListItem
             {
                 Value=e.ToString(),
@@ -107,9 +104,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 new SelectListItem {Text="Có", Value="true"},
                 new SelectListItem {Text="Không", Value="false"}
             }, "Value", "Text");
-            var statuslist = Enum.GetValues(typeof(ETrangThaiDieuTri))
-            .Cast<ETrangThaiDieuTri>()
-            .Where(e => e == ETrangThaiDieuTri.chikham || e == ETrangThaiDieuTri.nhapvien)
+            var statuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+            .Cast<ETrangThaiBenhAn>()
+            .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
             .Select(e => new SelectListItem
             {
                 Value = e.ToString(),
@@ -140,9 +137,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Value = p.NurseId.ToString()
             });
             ViewBag.nurselist = nurselist;
-            var specialstatuslist = Enum.GetValues(typeof(ETrangThaiDieuTri))
-            .Cast<ETrangThaiDieuTri>()
-            .Where(e => e == ETrangThaiDieuTri.xuatvien || e == ETrangThaiDieuTri.nhapvien)
+            var specialstatuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+            .Cast<ETrangThaiBenhAn>()
+            .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
             .Select(e => new SelectListItem
             {
                 Value = e.ToString(),
@@ -169,10 +166,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Detail(int PatientId)
         {
             var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
-			if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
-			if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
-			if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
-			if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
+			//if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
+			//if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
+			//if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
+			//if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
 			return View(patient);
         }
     }

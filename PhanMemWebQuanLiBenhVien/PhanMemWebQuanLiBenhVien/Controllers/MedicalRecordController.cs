@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
@@ -59,6 +60,68 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId); 
             ViewBag.Patient = patient;
             ViewBag.PatientId = PatientId;
+            ViewBag.statuslist = Enum.GetValues(typeof(ETrangThaiDieuTri))
+                                       .Cast<ETrangThaiDieuTri>()
+                                       .Select(e => new SelectListItem
+                                       {
+                                           Value = e.ToString(),
+                                           Text = e.ToString()
+                                       }).ToList();
+            var doctorList = _unitOfWork.DoctorRepository.GetAll()
+                        .Select(d => new SelectListItem
+                        {
+                            Value = d.DoctorId.ToString(),
+                            Text = d.DoctorName
+                        }).ToList();
+            ViewBag.doctorlist = doctorList;
+
+            // Fetch and set the nurse list
+            var nurseList = _unitOfWork.NurseRepository.GetAll()
+                                .Select(n => new SelectListItem
+                                {
+                                    Value = n.NurseId.ToString(),
+                                    Text = n.NurseName
+                                }).ToList();
+            ViewBag.nurselist = nurseList;
+
+            // Fetch and set the PhongBenh list
+            var phongBenhList = _unitOfWork.PhongBenhRepository.GetAll()
+                                .Where(pb =>
+                                {
+                                    var patients = _unitOfWork.PatientRepository.GetAll();
+                                    foreach(var patient in patients)
+                                    {
+                                        patient.MedicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId).ToList();
+                                    }
+                                    var validPatients = patients.Where(patient =>
+                                    {
+                                        var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId && mr.PhongBenhId == pb.RoomId).ToList();
+                                        patient.MedicalRecords = (ICollection<MedicalRecord>?)medicalRecords;
+                                        return patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                                               medicalRecords.LastOrDefault() != null &&
+                                               medicalRecords.LastOrDefault().TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                                               medicalRecords.LastOrDefault().TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru;
+                                    }).ToList();
+
+                                    return validPatients.Count < pb.NumberOfBeds;
+                                })
+                                .Select(pb => new SelectListItem
+                                {
+                                    Value = pb.RoomId.ToString(),
+                                    Text = pb.Name
+                                }).ToList();
+
+            ViewBag.phongbenhlist = phongBenhList;
+
+
+            // Fetch and set the PhongKham list
+            var phongKhamList = _unitOfWork.PhongKhamRepository.GetAll()
+                                .Select(pk => new SelectListItem
+                                {
+                                    Value = pk.RoomId.ToString(),
+                                    Text = pk.Name
+                                }).ToList();
+            ViewBag.phongkhamlist = phongKhamList;
             return View();
         }
         [HttpPost("DoctorCreate/{PatientId}")]
@@ -66,6 +129,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId);
+                patient.TrangThaiBenhAn = ETrangThaiBenhAn.dangchuatri;
+                medicalRecord.TrangThaiBenhAn = ETrangThaiBenhAn.dangchuatri; 
+                _unitOfWork.PatientRepository.Update(patient);
                 _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
                 _unitOfWork.Save();
                 return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId = medicalRecord.PatientId});
@@ -79,6 +146,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult DoctorDetail(int MedicalRecordId)
         {
             var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == MedicalRecordId);
+            medicalRecord.Doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == medicalRecord.DoctorId);
+            medicalRecord.Nurse = _unitOfWork.NurseRepository.Get(nr => nr.NurseId == medicalRecord.NurseId);
+            medicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == medicalRecord.PhongBenhId);
+            medicalRecord.PhongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == medicalRecord.PhongKhamId);
             ViewBag.MedicalVisits = _unitOfWork.MedicalVisitRepository.GetAll(mv => mv.MedicalRecordId == MedicalRecordId);
             return View("DoctorDetail", medicalRecord);
         }
@@ -143,5 +214,24 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             return View();
         }
+
+        [HttpPost("CloseMedicalRecord/{MedicalRecordId}")]
+        public IActionResult CloseMedicalRecord(int MedicalRecordId)
+        {
+            var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == MedicalRecordId);
+            if (medicalRecord != null)
+            {
+                medicalRecord.TrangThaiBenhAn = ETrangThaiBenhAn.ketthucchuatri;
+                var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == medicalRecord.PatientId);
+                patient.TrangThaiBenhAn = ETrangThaiBenhAn.ketthucchuatri;
+                _unitOfWork.PatientRepository.Update(patient);
+                _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        
     }
 }

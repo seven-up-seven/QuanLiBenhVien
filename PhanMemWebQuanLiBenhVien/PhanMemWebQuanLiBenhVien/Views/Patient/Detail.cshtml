@@ -61,10 +61,11 @@
         <p><strong>ID:</strong> @Model.PatientId</p>
         <p><strong>Tên bệnh nhân:</strong> @Model.Name</p>
         <p><strong>CCCD:</strong> @Model.CCCD</p>
-        <p><strong>Tuổi:</strong> @Model.Age</p>
+        <p><strong>Tuổi:</strong> @Model.DateOfBirth</p>
         <p><strong>Giới tính:</strong> @Model.Gender.ToString()</p>
         <p><strong>Địa chỉ:</strong> @Model.Address</p>
-        @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
+        <p><strong>Trạng thái:</strong> @Model.TrangThaiBenhAn.ToString()</p>
+       @*  @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
         {
                 <p><strong>Trạng thái:</strong> @Model.TrangThaiDieuTri.ToString()</p>
                 <p><strong>BHYT:</strong> @(Model.BHYT == true ? "Có" : "Không")</p>
@@ -101,10 +102,11 @@
         else
         {
                 <p><strong>Trạng thái:</strong> Xuất viện</p>
-        }
+        } *@
     </div>
 
     <h3 class="mt-5">Danh sách bệnh án</h3>
+    <div class="col-auto"><a class="btn btn-primary" asp-action="DoctorCreate" asp-controller="MedicalRecord" asp-route-PatientId="@Model.PatientId"><i class="bi bi-plus"></i>Thêm bệnh án</a></div>
     @if (Model.MedicalRecords != null && Model.MedicalRecords.Any())
     {
             <table class="table table-bordered">

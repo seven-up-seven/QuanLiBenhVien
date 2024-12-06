@@ -21,6 +21,10 @@
             <p><strong>BHYT:</strong> @Model.BHYT</p>
             <p><strong>Địa chỉ:</strong> @Model.Address</p>
             <p><strong>Tiền sử bệnh án:</strong> @Model.TienSuBenhAn</p>
+            <p><strong>Bác sĩ:</strong> @Model.Doctor?.DoctorName</p>
+            <p><strong>Phòng khám:</strong> @Model.PhongKham?.Name</p>
+            <p><strong>Phòng bệnh:</strong> @Model.PhongBenh?.Name</p>
+            <p><strong>Y tá:</strong> @Model.Nurse?.NurseName</p>
         </div>
 
         <div class="col-md-6">
@@ -60,6 +64,11 @@
     <div class="row d-flex mt-4">
         <div class="col-auto text-primary">
             <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white">Quay lại</a>
+        </div>
+        <div class="col-auto text-primary">
+            <form asp-action="CloseMedicalRecord" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId" method="post">
+                <button type="submit">Đóng bệnh án</button>
+            </form>
         </div>
     </div>
 </div>

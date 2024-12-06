@@ -9,36 +9,40 @@
 		<p>Tên phòng: @Model.Name</p>
 	</div>
     <div class="my-4">
-					<h4>Danh sách bệnh nhân:</h4>
-					@if (Model.Patients != null && Model.Patients.Any())
-					{
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Tên bệnh nhân</th>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach (var patient in Model.Patients)
-								{
-									<tr>
-										<td><a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none">@patient.Name</a></td>
-									</tr>
-								}
-							</tbody>
-						</table>
-					}
-					else
-					{
-						<p>Chưa có bệnh nhân.</p>
-					}
+        <h4>Danh sách bệnh nhân:</h4>
+        @if (Model.Patients != null && Model.Patients.FirstOrDefault() != null)
+        {
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Tên bệnh nhân</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model.Patients)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("DoctorPatientDetail", "Doctor", new { PatientId = patient.PatientId })" class="text-decoration-none">
+                                    @patient.Name
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Chưa có bệnh nhân.</p>
+        }
     </div>
 	<div class="row d-flex">
-		<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
-		<div class="col-auto text-primary">
+		<div class="col-auto">
 			<form method="post" asp-controller="PhongKham" asp-action="Delete" asp-route-PhongKhamId="@Model.RoomId">
-				<button class="btn btn-outline-dark" type="submit">Xoá</button>
+				<button class="btn text-white" type="submit">Xoá</button>
 			</form>
 		</div>
+		<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Index" class="btn text-white">Quay lại</a></div>
 	</div>
 </div>

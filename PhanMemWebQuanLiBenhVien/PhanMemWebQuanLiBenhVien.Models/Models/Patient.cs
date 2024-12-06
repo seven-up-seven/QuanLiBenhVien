@@ -16,9 +16,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Giới tính là bắt buộc !")]
         public EGender Gender { get; set; }
+
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Độ tuổi phải không âm !")]
-        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; }
         [Required(ErrorMessage ="Địa chỉ là bắt buộc !")]
         public string Address { get; set; }
         [Required(ErrorMessage = "SĐT là bắt buộc !")]
@@ -27,23 +27,23 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "BHYT là bắt buộc !")]
 
+        public ETrangThaiBenhAn? TrangThaiBenhAn { get; set; }
         //Khi benh nhan xuat vien thi cac gia tri sau duoc chuyen sang null
-        public bool? BHYT { get; set; }
-        public ETrangThaiDieuTri? TrangThaiDieuTri { get; set; }
-        //Foreign Keys
-        public int? DoctorId { get; set; }
-        [ForeignKey("DoctorId")]
-        public Doctor? Doctor { get; set; }
-        public int? PhongKhamId { get; set; }
-        [ForeignKey("PhongKhamId")]
-        public PhongKham? PhongKham { get; set; }
-        public int? PhongBenhId { get; set; }
-        [ForeignKey("PhongBenhId")]
-        public PhongBenh? PhongBenh { get; set; }
 
-        public int? NurseId { get; set; }
-        [ForeignKey("NurseId")]
-        public Nurse? Nurse { get; set; }
+        //Foreign Keys
+        //public int? DoctorId { get; set; }
+        //[ForeignKey("DoctorId")]
+        //public Doctor? Doctor { get; set; }
+        //public int? PhongKhamId { get; set; }
+        //[ForeignKey("PhongKhamId")]
+        //public PhongKham? PhongKham { get; set; }
+        //public int? PhongBenhId { get; set; }
+        //[ForeignKey("PhongBenhId")]
+        //public PhongBenh? PhongBenh { get; set; }
+
+        //public int? NurseId { get; set; }
+        //[ForeignKey("NurseId")]
+        //public Nurse? Nurse { get; set; }
 
         public ICollection<MedicalRecord>? MedicalRecords { get; set; }
 	}

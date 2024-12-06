@@ -20,11 +20,21 @@ namespace PhanMemWebQuanLiBenhVien.Ultilities
             nurse,
             moderator
         }
+        public enum EViTriLamViec
+        {
+            bsngoaitru,
+            bsnoitru,
+            bscapcuu
+        }
         public enum ETrangThaiDieuTri
         {
-            nhapvien,
-            xuatvien,
-            chikham
+            noitru, 
+            ngoaitru
+        }
+        public enum ETrangThaiBenhAn
+        {
+            dangchuatri,
+            ketthucchuatri
         }
         public enum ETinhTrangBenhNhan
         {

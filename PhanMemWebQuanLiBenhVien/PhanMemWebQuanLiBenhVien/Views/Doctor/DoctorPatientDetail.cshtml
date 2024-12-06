@@ -8,10 +8,11 @@
         <p><strong>ID:</strong> @Model.PatientId</p>
         <p><strong>Tên bệnh nhân:</strong> @Model.Name</p>
         <p><strong>CCCD:</strong> @Model.CCCD</p>
-        <p><strong>Tuổi:</strong> @Model.Age</p>
+        <p><strong>Tuổi:</strong> @Model.DateOfBirth</p>
         <p><strong>Giới tính:</strong> @Model.Gender.ToString()</p>
         <p><strong>Địa chỉ:</strong> @Model.Address</p>
-        @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
+        <p><strong>Trạng thái: @Model.TrangThaiBenhAn.ToString()</strong></p>
+       @*  @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
         {
             <p><strong>Trạng thái:</strong> @Model.TrangThaiDieuTri.ToString()</p>
             <p><strong>BHYT:</strong> @(Model.BHYT == true ? "Có" : "Không")</p>
@@ -48,14 +49,14 @@
         else
         {
             <p><strong>Trạng thái:</strong> Xuất viện</p>
-        }
+        } *@
     </div>
 
     <div class="row d-flex">
         <div class="col-auto text-primary"><h3>Danh sách bệnh án</h3></div>
         <div class="col-auto"><a class="btn btn-primary" asp-action="DoctorCreate" asp-controller="MedicalRecord" asp-route-PatientId="@Model.PatientId"><i class="bi bi-plus"></i>Thêm bệnh án</a></div>
     </div>
-    @if (Model.MedicalRecords != null && Model.MedicalRecords.Any())
+    @if (Model.MedicalRecords != null && Model.MedicalRecords.Count > 0)
     {
         <table class="table table-bordered">
             <thead class="table-dark">
@@ -65,6 +66,7 @@
                     <th>Giới Tính</th>
                     <th>Địa Chỉ</th>
                     <th>Tiền Sử Bệnh Án</th>
+                    <th>Trạng thái</th>
                     <th>Hành Động</th>
                 </tr>
             </thead>
@@ -77,6 +79,7 @@
                         <td>@record.PatientGender</td>
                         <td>@record.Address</td>
                         <td>@record.TienSuBenhAn</td>
+                        <td>@record.TrangThaiBenhAn.ToString()</td>
                         <td>
                             <a class="btn btn-sm btn-primary" asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-id="@record.MedicalRecordId">Chi tiết</a>
                         </td>
@@ -84,18 +87,18 @@
                 }
             </tbody>
         </table>
+        <div class="row d-flex mt-4">
+            <div class="col-auto">
+                <a asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-DoctorId="@Model.MedicalRecords.FirstOrDefault().DoctorId" class="btn text-white">Quay lại</a>
+            </div>
+            <div class="col-auto text-primary">
+                <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+            </div>
+        </div>
     }
     else
     {
         <p>Không có bệnh án nào.</p>
     }
 
-    <div class="row d-flex mt-4">
-        <div class="col-auto">
-            <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@Model.DoctorId" class="btn text-white">Quay lại</a>
-        </div>
-        <div class="col-auto text-primary">
-            <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
-        </div>
-    </div>
 </div>

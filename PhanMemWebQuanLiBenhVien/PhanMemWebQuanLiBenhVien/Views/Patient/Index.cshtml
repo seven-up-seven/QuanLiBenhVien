@@ -16,10 +16,8 @@
                 <th>Giới tính</th>
                 <th>Tuổi</th>
                 <th>Tình trạng</th>
-                <th>BHYT</th>
-                <th>Bác sĩ phụ trách</th>
-                <th>Y tá phụ trách</th>
                 <th>Actions</th>
+               
             </tr>
         </thead>
 
@@ -30,36 +28,26 @@
                     <td>@patient.PatientId</td>
                     <td>@patient.CCCD</td>
                     <td>@patient.Name</td>
-                    <td>@patient.Gender.ToString()</td>
-                    <td>@patient.Age</td>
-                    <td>@patient.TrangThaiDieuTri.ToString()</td>
-                    @if (patient.BHYT==true)
+                    @if (@patient.Gender.ToString() == "male")
                     {
-                        <td>Có</td>
+                        <td>Nam</td>
                     }
                     else
                     {
-                        <td>Không</td>
+                        <td>Nữ</td>
                     }
-                    @if (patient.Doctor!=null)
+                    <td>@patient.DateOfBirth</td>
+                    @if ( @patient.TrangThaiBenhAn.ToString() == "dangchuatri")
                     {
-                        <td>@patient.Doctor.DoctorName</td>
-                    }
-                    else
-                    {
-                        <td>Không có</td>
-                    }
-                    @if (patient.Nurse != null)
-                    {
-                        <td>@patient.Nurse.NurseName</td>
+                        <td>Đang chữa trị</td>
                     }
                     else
                     {
-                        <td>Không có</td>
+                        <td>Kết thúc chữa trị</td>
                     }
                     <td>
                         <a class="btn btn-primary" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@patient.PatientId"><i class="bi bi-pencil-square"></i> Sửa</a>
-                        <a asp-controller="Patient" asp-action="Detail" asp-route-PatientId="@patient.PatientId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                        <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@patient.PatientId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
                     </td>
                 </tr>
             }

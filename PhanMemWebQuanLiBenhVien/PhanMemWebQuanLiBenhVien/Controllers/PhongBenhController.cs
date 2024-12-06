@@ -14,15 +14,29 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		}
 
 		[HttpGet("Index")]
-		public IActionResult Index()
-		{
-			var listPhongBenh = _unitOfWork.PhongBenhRepository.GetAll();
-			foreach (var phong in listPhongBenh)
-			{
-				phong.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongBenhId == phong.RoomId); 
-			}
-			return View(listPhongBenh);
-		}
+        public IActionResult Index()
+        {
+            var listPhongBenh = _unitOfWork.PhongBenhRepository.GetAll();
+            var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll();
+            var listBenhNhan = _unitOfWork.PatientRepository.GetAll();
+            foreach (var phong in listPhongBenh)
+            {
+                phong.Patients = new List<Patient>();
+                foreach (var patient in listBenhNhan)
+                {
+                    patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId && mr.PhongBenhId == phong.RoomId);
+                    if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                        patient.MedicalRecords != null &&
+                        patient.MedicalRecords.LastOrDefault() != null &&
+                        patient.MedicalRecords.LastOrDefault().TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                        patient.MedicalRecords.LastOrDefault().TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+                    {
+                        phong.Patients.Add(patient);
+                    }
+                }
+            }
+            return View(listPhongBenh);
+        }
 
 
 		[HttpGet("Create")]
@@ -44,16 +58,38 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		}
 
 
-		[HttpGet("Detail/{PhongBenhId}")]
-		public IActionResult Detail(int PhongBenhId)
-		{
-			var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
-			phongBenh.Patients = (ICollection<Patient>?)_unitOfWork.PatientRepository.GetAll(pt => pt.PhongBenhId == PhongBenhId);
-			return View(phongBenh);
-		}
+        [HttpGet("Detail/{PhongBenhId}")]
+        public IActionResult Detail(int PhongBenhId)
+        {
+            var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PhongBenhId == PhongBenhId);
+            var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
+            if (phongBenh == null)
+            {
+                return NotFound(); // or handle the null case appropriately
+            }
+
+            phongBenh.Patients = new List<Patient>();
+            var listBenhNhan = _unitOfWork.PatientRepository.GetAll();
+            foreach (var patient in listBenhNhan)
+            {
+                patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId && mr.PhongBenhId == phongBenh.RoomId);
+                if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    patient.MedicalRecords != null &&
+                    patient.MedicalRecords.LastOrDefault() != null &&
+                    patient.MedicalRecords.LastOrDefault().TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    patient.MedicalRecords.LastOrDefault().TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+                {
+                    phongBenh.Patients.Add(patient);
+                }
+            }
+
+            return View(phongBenh);
+        }
 
 
-		[HttpGet("Update/{PhongBenhId}")]
+
+
+        [HttpGet("Update/{PhongBenhId}")]
 		public IActionResult Update(int PhongBenhId)
 		{
 			var phongBenh = _unitOfWork.PhongKhamRepository.Get(pb => pb.RoomId == PhongBenhId);

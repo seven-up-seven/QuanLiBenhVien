@@ -143,8 +143,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==DoctorId);
 			doctor.Profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
-			doctor.PatientList=_unitOfWork.PatientRepository.GetAll(u=>u.DoctorId == DoctorId).ToList();
-			return View(doctor);
+            doctor.PatientList = _unitOfWork.MedicalRecordRepository.GetAll(u => u.DoctorId == DoctorId)
+                       .Select(mr => new Patient
+                       {
+                           PatientId = mr.PatientId,
+                           Name = mr.PatientName
+                       }).ToList();
+            return View(doctor);
 		}
 		public IActionResult DoctorHomePage(int DoctorId)
 		{
@@ -170,24 +175,28 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult DoctorPatients(int DoctorId)
         {
             var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
-			var patients = _unitOfWork.PatientRepository.GetAll(pt => (pt.TrangThaiDieuTri == ETrangThaiDieuTri.nhapvien && pt.DoctorId == DoctorId));
+			var patients = _unitOfWork.MedicalRecordRepository.GetAll(pt => (pt.Patient.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri && pt.DoctorId == DoctorId && pt.TrangThaiDieuTri == ETrangThaiDieuTri.noitru));
 			foreach (var patient in patients)
 			{
 				patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == patient.PhongBenhId);
             }
 			ViewBag.Patients = patients;
-			
             return View(doctor);
         }
 
         public IActionResult DoctorPatientDetail(int PatientId)
         {
-            var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
-            if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
-            if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
-            if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
-            if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
-			patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId); 
+            var medicalRecord = _unitOfWork.MedicalRecordRepository.GetAll(u => u.PatientId == PatientId);
+            foreach(var mr in medicalRecord)
+			{
+                if (mr.DoctorId != null) mr.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == mr.DoctorId);
+                if (mr.NurseId != null) mr.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == mr.NurseId);
+                if (mr.PhongBenhId != null) mr.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == mr.PhongBenhId);
+                if (mr.PhongKhamId != null) mr.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == mr.PhongKhamId);
+            }
+			//patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId); \
+			var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId);
+			patient.MedicalRecords = (ICollection<MedicalRecord>?)medicalRecord;
             return View(patient);
         }
     }

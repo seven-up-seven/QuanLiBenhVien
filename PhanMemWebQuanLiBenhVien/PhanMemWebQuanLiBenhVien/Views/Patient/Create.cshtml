@@ -21,9 +21,9 @@
             <input asp-for="CCCD" class="form-control" placeholder="Nhập CCCD bệnh nhân" />
         </div>
         <div class="form-group">
-            <label for="Age">Tuổi</label>
-            <span asp-validation-for="Age" class="text-danger"></span>
-            <input asp-for="Age" class="form-control" placeholder="Nhập tuổi bệnh nhân" />
+            <label for="DateOfBirth">Ngày sinh</label>
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            <input asp-for="DateOfBirth" class="form-control" placeholder="Nhập ngày sinh bệnh nhân" />
         </div>
         <div class="form-group">
             <label for="Gender">Giới tính</label>
@@ -34,22 +34,19 @@
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại bệnh nhân" />
         </div>
-        <div class="form-group">
-            <label for="BHYT">Tình trạng BHYT</label>
-            <select asp-for="BHYT" class="form-control" asp-items="@ViewBag.BHYT"></select>
-        </div>
+        
         <div class="form-group">
             <label for="Address">Địa chỉ</label>
             <span asp-validation-for="Address" class="text-danger"></span>
             <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ bệnh nhân" />
         </div>
         <div class="form-group">
-            <label for="TrangThaiDieuTri">Lựa chọn</label>
-            <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.statuslist">
+            <label asp-for="TrangThaiBenhAn">Lựa chọn</label>
+            <select asp-for="TrangThaiBenhAn" class="form-control" asp-items="@ViewBag.statuslist">
                 <option value="">-- Chọn --</option>
             </select>
         </div>
-        <div class="form-group" id="DoctorGroup" style="display: none">
+        @* <div class="form-group" id="DoctorGroup" style="display: none">
             <label for="DoctorId">Bác sĩ phụ trách</label>
             <select asp-for="DoctorId" class="form-control" asp-items="@ViewBag.doctorlist" id="DoctorGroup"  disabled></select>
         </div>
@@ -64,13 +61,14 @@
         <div class="form-group" id="PhongKhamGroup" style="display: none">
             <label for="PhongKhamId">Phòng khám</label>
             <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist" id="PhongKhamGroup" disabled></select>
-        </div>
+        </div> *@
         <button type="submit" class="btn btn-primary">
             <h4>Thêm</h4>
         </button>
     </form>
 </div>
 
+@* 
 <script>
     document.getElementById("TrangThaiDieuTri").addEventListener("change", function() {
         const selectedValue = this.value; 
@@ -105,4 +103,4 @@
             phongKhamSelect.removeAttribute("disabled");
         }
     });
-</script>
+</script> *@
