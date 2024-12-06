@@ -30,8 +30,8 @@
                     <td>@record.Address</td>
                     <td>@record.TienSuBenhAn</td>
                     <td>
-                        <a class="btn btn-primary" asp-controller="MedicalRecord" asp-action="Update" asp-route-id="@record.MedicalRecordId"><i class="bi bi-pencil-square"></i> Sửa</a>
-                        <a asp-controller="MedicalRecord" asp-action="Detail" asp-route-id="@record.MedicalRecordId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                        <a class="btn btn-primary" asp-controller="MedicalRecord" asp-action="Update" asp-route-id="@record.MedicalRecordId"><i class="bi bi-pencil-square"></i> Sửa</a>                  
+                        <a asp-controller="MedicalRecord" asp-action="AdminDetail" asp-route-MedicalRecordId="@record.MedicalRecordId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
                     </td>
                 </tr>
             }

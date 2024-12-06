@@ -61,13 +61,11 @@
         </div>
     </div>
 
-    <div class="row d-flex mt-4">
-        <div class="col-auto text-primary">
-            <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white">Quay lại</a>
-        </div>
+    <div class="row mt-4">
+            <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white col col-auto">Quay lại</a>
         <div class="col-auto text-primary">
             <form asp-action="CloseMedicalRecord" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId" method="post">
-                <button type="submit">Đóng bệnh án</button>
+                <button type="submit" class="btn text-white">Đóng bệnh án</button>
             </form>
         </div>
     </div>

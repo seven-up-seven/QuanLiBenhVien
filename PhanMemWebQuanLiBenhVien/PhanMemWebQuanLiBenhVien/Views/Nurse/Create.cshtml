@@ -33,8 +33,14 @@
             <label for="NurseImgURL" class="form-control">Ảnh y tá</label>
             <input type="file" name="NurseImg" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">
-            <h4>Thêm</h4>
-        </button>
+        <br />
+        <div class="row d-flex gap-2" style="margin-left: 1px">
+            <a asp-controller="Nurse" asp-action="Index" class="col col-auto btn text-white">Quay lại</a>
+            <div class="col col-auto">
+                <button type="submit" class="btn btn-primary">
+                    Thêm
+                </button>
+            </div>
+        </div>
     </form>
 </div>
