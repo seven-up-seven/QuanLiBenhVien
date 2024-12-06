@@ -18,7 +18,13 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(Profession profession)
         {
-            _db.professions.Update(profession);
+            var objFromDb = _db.professions.FirstOrDefault(p => p.ProfessionId == profession.ProfessionId);
+            if (objFromDb != null)
+            {
+                objFromDb.ProfessionName = profession.ProfessionName;
+                objFromDb.Description = profession.Description;
+                _db.SaveChanges();
+            }
         }
     }
 }

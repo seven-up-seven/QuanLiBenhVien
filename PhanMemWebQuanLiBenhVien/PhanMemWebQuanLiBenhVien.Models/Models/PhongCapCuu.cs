@@ -1,10 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PhanMemWebQuanLiBenhVien.Models
+namespace PhanMemWebQuanLiBenhVien.Models.Models
 {
-    public class PhongKham
+    public class PhongCapCuu
     {
         [Key]
         public int RoomId { get; set; }
@@ -12,10 +17,8 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [Required(ErrorMessage = "Tên phòng là bắt buộc !")]
         //So tang nam trong ten phong
         public string Name { get; set; }
-        public ICollection<Patient>? Patients { get; set; }
 
-        public int? ProfessionId { get; set; }
-        [ForeignKey("ProfessionId")]
-        public Profession? Profession { get; set; }
+        public bool isAvailable { get; set; } = true; 
+
     }
 }

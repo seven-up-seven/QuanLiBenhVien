@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhanMemWebQuanLiBenhVien.Models
 {
@@ -17,5 +19,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
 
         //foreign key 
         public ICollection<Patient>? Patients { get; set; }
+
+        public int? ProfessionId { get; set; }
+        [ForeignKey("ProfessionId")]
+        public Profession? Profession { get; set; }
     }
 }

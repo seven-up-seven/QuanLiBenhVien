@@ -113,6 +113,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
             ViewBag.phongbenhlist = phongBenhList;
 
+            ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                           .Cast<ETinhTrangBenhNhan>()
+                                           .Select(e => new SelectListItem
+                                           {
+                                               Value = e.ToString(),
+                                               Text = e.ToString()
+                                           }).ToList();
 
             // Fetch and set the PhongKham list
             var phongKhamList = _unitOfWork.PhongKhamRepository.GetAll()
@@ -201,14 +208,24 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult CreateMedicalVisit(int MedicalRecordId)
         {
             ViewBag.MedicalRecordId = MedicalRecordId;
+            ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                          .Cast<ETinhTrangBenhNhan>()
+                                          .Select(e => new SelectListItem
+                                          {
+                                              Value = e.ToString(),
+                                              Text = e.ToString()
+                                          }).ToList();
             return View();
         }
         [HttpPost("CreateMedicalVisit/{MedicalRecordId}")]
         public IActionResult CreateMedicalVisit(MedicalVisit medicalVisit)
         {
+            var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == medicalVisit.MedicalRecordId);
+            medicalRecord.TinhTrangBenhNhan = medicalVisit.TinhTrangBenhNhan;
             if (ModelState.IsValid)
             {
                 _unitOfWork.MedicalVisitRepository.Add(medicalVisit);
+                _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
                 return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
             }

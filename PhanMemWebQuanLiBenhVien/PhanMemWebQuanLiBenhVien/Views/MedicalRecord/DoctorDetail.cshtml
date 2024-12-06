@@ -25,6 +25,10 @@
             <p><strong>Phòng khám:</strong> @Model.PhongKham?.Name</p>
             <p><strong>Phòng bệnh:</strong> @Model.PhongBenh?.Name</p>
             <p><strong>Y tá:</strong> @Model.Nurse?.NurseName</p>
+            @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+            {
+                <p><strong>Tình trạng:</strong> @Model.TinhTrangBenhNhan.ToString()</p>
+            }
         </div>
 
         <div class="col-md-6">
@@ -38,6 +42,7 @@
                             <th>Triệu chứng</th>
                             <th>Kết quả lâm sàng</th>
                             <th>Chẩn đoán</th>
+                            <th>Tình trạng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +53,7 @@
                                 <td>@visit.Symptom</td>
                                 <td>@visit.KetQuaLamSang</td>
                                 <td>@visit.ChanDoan</td>
+                                <td>@visit.TinhTrangBenhNhan.ToString()</td>
                             </tr>
                         }
                     </tbody>
