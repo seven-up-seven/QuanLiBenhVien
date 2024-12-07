@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
@@ -158,10 +159,21 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
         public IActionResult Delete(int PatientId)
         {
-            var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
-            _unitOfWork.PatientRepository.Remove(patient);
-            _unitOfWork.Save();
-            return RedirectToAction("Index");
+            if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
+                _unitOfWork.PatientRepository.Remove(patient);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+            else if (User.IsInRole("Doctor"))
+            {
+                TempData["error"] = "Không thể xóa bệnh nhân";
+                var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.Username == User.Identity.Name);
+                return RedirectToAction("DoctorPatients", "Doctor", new { DoctorId = doctor.DoctorId });
+            }
+            //nurse 
+            else return View();
         }
         public IActionResult Detail(int PatientId)
         {

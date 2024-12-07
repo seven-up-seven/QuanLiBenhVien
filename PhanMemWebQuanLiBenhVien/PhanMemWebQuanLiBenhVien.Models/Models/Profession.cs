@@ -12,5 +12,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public int? TruongKhoaId { get; set; } = null;
         public string? TruongKhoaName { get; set; } = null;
         public List<Doctor>? DoctorList { get; set; }
+
+        public List<PhongBenh>? PhongBenhList { get; set; }
+
+        public List<PhongKham>? PhongKhamList { get; set; }
     }
 }

@@ -40,11 +40,17 @@
             <input asp-for="TienSuBenhAn" class="form-control"/>
         </div>
         
+        <div class="form-group">
+            <label for="TinhTrangBenhNhan">Trạng thái bệnh nhân</label>
+            <select asp-for="TinhTrangBenhNhan" class="form-control" asp-items="@ViewBag.TinhTrangBenhNhan">
+                <option value="">--Chọn--</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label for="TrangThaiDieuTri">Trạng thái điều trị</label>
             <select asp-for="TrangThaiDieuTri" class="form-control" asp-items="@ViewBag.statuslist">
-                <option value="">---Chọn--</option>
+                <option value="">--Chọn--</option>
             </select>
         </div>
         

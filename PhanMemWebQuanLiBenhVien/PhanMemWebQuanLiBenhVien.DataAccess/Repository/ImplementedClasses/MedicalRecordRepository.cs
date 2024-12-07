@@ -33,6 +33,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
                 existingRecord.PhongKhamId = medicalRecord.PhongKhamId;
                 existingRecord.PhongBenhId = medicalRecord.PhongBenhId;
                 existingRecord.NurseId = medicalRecord.NurseId;
+                existingRecord.TinhTrangBenhNhan = medicalRecord.TinhTrangBenhNhan; 
                 _db.SaveChanges();
             }
         }

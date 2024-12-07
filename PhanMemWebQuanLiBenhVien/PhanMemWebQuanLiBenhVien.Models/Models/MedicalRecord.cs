@@ -28,6 +28,8 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public ETrangThaiDieuTri? TrangThaiDieuTri { get; set; }
 		public ETrangThaiBenhAn? TrangThaiBenhAn { get; set; }
 
+		public ETinhTrangBenhNhan? TinhTrangBenhNhan { get; set; }
+
 		// Liên kết với các lần khám
 		public ICollection<MedicalVisit>? Visits { get; set; }
 

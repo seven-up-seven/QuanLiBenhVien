@@ -37,12 +37,12 @@
             <p>Chưa có bệnh nhân.</p>
         }
     </div>
-	<div class="row d-flex">
+	<div class="row d-flex" style="margin-left: 1px">
+        <a asp-controller="PhongKham" asp-action="Index" class="btn text-white col col-auto">Quay lại</a>
 		<div class="col-auto">
 			<form method="post" asp-controller="PhongKham" asp-action="Delete" asp-route-PhongKhamId="@Model.RoomId">
 				<button class="btn text-white" type="submit">Xoá</button>
 			</form>
 		</div>
-		<div class="col-auto text-primary"><a asp-controller="PhongKham" asp-action="Index" class="btn text-white">Quay lại</a></div>
 	</div>
 </div>

@@ -109,8 +109,26 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
         public IActionResult Detail(int NurseId)
         {
-            var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
-            nurse.PatientList = (ICollection<Patient>?)_unitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == NurseId).ToList();
+            var nurse = _unitOfWork.NurseRepository.Get(n => n.NurseId == NurseId);
+            nurse.PatientList = new List<Patient>();
+            var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll();
+            var patients = _unitOfWork.PatientRepository.GetAll();
+            foreach (var patient in patients)
+            {
+                patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
+                var lastMedicalRecord = patient.MedicalRecords?.LastOrDefault();
+                if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    lastMedicalRecord != null &&
+                    lastMedicalRecord.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    lastMedicalRecord.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+                {
+                    if (lastMedicalRecord.NurseId == nurse.NurseId)
+                    {
+                        lastMedicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == lastMedicalRecord.PhongBenhId);
+                        nurse.PatientList.Add(patient);
+                    }
+                }
+            }
             return View(nurse);
         }
         public IActionResult NurseHomePage(int NurseId)
@@ -120,10 +138,30 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
         public IActionResult NursePatients(int NurseId)
         {
-            var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
-            var patients = _unitOfWork.MedicalRecordRepository.GetAll(pt => (pt.TrangThaiDieuTri == ETrangThaiDieuTri.noitru && pt.NurseId == NurseId));
-            ViewBag.Patients = patients;
-            return View(nurse);
+            var nurse = _unitOfWork.NurseRepository.Get(n => n.NurseId == NurseId);
+            nurse.PatientList = new List<Patient>();
+            var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll();
+            var patients = _unitOfWork.PatientRepository.GetAll();
+
+            foreach (var patient in patients)
+            {
+                patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
+                var lastMedicalRecord = patient.MedicalRecords?.LastOrDefault();
+
+                if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    lastMedicalRecord != null &&
+                    lastMedicalRecord.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    lastMedicalRecord.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+                {
+                    if (lastMedicalRecord.NurseId == nurse.NurseId)
+                    {
+                        lastMedicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == lastMedicalRecord.PhongBenhId);
+                        nurse.PatientList.Add(patient);
+                    }
+                }
+            }
+
+            return View(nurse.PatientList);
         }
     }
 }

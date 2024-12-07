@@ -25,6 +25,10 @@
             <p><strong>Phòng khám:</strong> @Model.PhongKham?.Name</p>
             <p><strong>Phòng bệnh:</strong> @Model.PhongBenh?.Name</p>
             <p><strong>Y tá:</strong> @Model.Nurse?.NurseName</p>
+            @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+            {
+                <p><strong>Tình trạng:</strong> @Model.TinhTrangBenhNhan.ToString()</p>
+            }
         </div>
 
         <div class="col-md-6">
@@ -38,6 +42,7 @@
                             <th>Triệu chứng</th>
                             <th>Kết quả lâm sàng</th>
                             <th>Chẩn đoán</th>
+                            <th>Tình trạng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +53,7 @@
                                 <td>@visit.Symptom</td>
                                 <td>@visit.KetQuaLamSang</td>
                                 <td>@visit.ChanDoan</td>
+                                <td>@visit.TinhTrangBenhNhan.ToString()</td>
                             </tr>
                         }
                     </tbody>
@@ -61,13 +67,11 @@
         </div>
     </div>
 
-    <div class="row d-flex mt-4">
-        <div class="col-auto text-primary">
-            <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white">Quay lại</a>
-        </div>
+    <div class="row mt-4">
+            <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white col col-auto">Quay lại</a>
         <div class="col-auto text-primary">
             <form asp-action="CloseMedicalRecord" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId" method="post">
-                <button type="submit">Đóng bệnh án</button>
+                <button type="submit" class="btn text-white">Đóng bệnh án</button>
             </form>
         </div>
     </div>

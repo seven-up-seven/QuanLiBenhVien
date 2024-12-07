@@ -18,10 +18,11 @@
 			<span asp-validation-for="Description" class="text-danger"></span>
 			<textarea asp-for="Description"  class="form-control" placeholder="Nhập Mô Tả Chuyên Khoa"></textarea>
 		</div>
+		<br />
 		<div class="row d-flex">
-			<div class="col-auto text-primary"><a asp-controller="Profession" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+			<a asp-controller="Profession" asp-action="Index" class="btn text-white col col-auto">Quay lại</a>
 			<div class="col-auto text-primary ">
-				<button type="submit" class="btn btn-primary "><h4>Thêm</h4></button>
+				<button type="submit" class="btn text-white">Thêm</button>
 			</div>
 		</div>
 	</form>

@@ -1,13 +1,13 @@
-﻿@model PhanMemWebQuanLiBenhVien.Models.PhongKham
+﻿@model PhanMemWebQuanLiBenhVien.Models.Models.PhongCapCuu
 @{
-	ViewData["Title"] = "Tạo Phòng Khám";
+	ViewData["Title"] = "Tạo Phòng Cấp Cứu";
 }
 
 <div class="container mt-4">
 	<div class="row my-2">
-		<div class="col text-primary"><h2>Thêm phòng khám mới</h2></div>
+		<div class="col text-primary"><h2>Thêm phòng mới</h2></div>
 	</div>
-	<form asp-action="Create" asp-controller="PhongKham" method="post">
+	<form asp-action="Create" asp-controller="PhongCapCuu" method="post">
 		<div class="form-group">
 			<label asp-for="Name">Tên Phòng</label>
 			<input asp-for="Name" type="text" class="form-control" placeholder="Nhập Tên Phòng">
@@ -15,7 +15,7 @@
 		<span asp-validation-for="Name" class="text-danger"></span>
 		<br />
 		<div class="row form-group" style="margin-left: 1px">
-			<a asp-controller="PhongKham" asp-action="Index" class="col col-auto btn text-white">Quay lại</a>
+			<a asp-controller="PhongCapCuu" asp-action="Index" class="col col-auto btn text-white">Quay lại</a>
 			<div class="col-auto text-primary ">
 				<button type="submit" class="btn btn-primary ">Thêm</button>
 			</div>

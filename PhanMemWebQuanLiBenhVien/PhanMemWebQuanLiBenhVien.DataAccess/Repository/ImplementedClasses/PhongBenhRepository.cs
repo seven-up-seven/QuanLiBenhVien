@@ -18,7 +18,13 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(PhongBenh phongBenh)
         {
-            throw new NotImplementedException();
+            var objFromDb = _db.phongBenhs.FirstOrDefault(p => p.RoomId == phongBenh.RoomId);
+            if (objFromDb != null)
+            {
+                objFromDb.Name = phongBenh.Name;
+                objFromDb.ProfessionId = phongBenh.ProfessionId;    
+                _db.SaveChanges();
+            }
         }
     }
 }

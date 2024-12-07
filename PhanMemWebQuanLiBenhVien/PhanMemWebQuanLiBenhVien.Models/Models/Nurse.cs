@@ -26,6 +26,6 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public string? Username { get; set; } = null;
 
 		//Foreign Keys
-		public ICollection<Patient>? PatientList { get; set; }
+		public ICollection<Patient>? PatientList { get; set; } 
     }
 }

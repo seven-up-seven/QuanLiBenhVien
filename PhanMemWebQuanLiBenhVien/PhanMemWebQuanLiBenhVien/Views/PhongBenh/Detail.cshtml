@@ -24,11 +24,11 @@
 			</tr>
 		</table>
 	</div>
-	<div class="row d-flex">
-		<div class="col-auto text-primary"><a asp-controller="PhongBenh" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
+	<div class="row" style="margin-left: 1px">
+		<a asp-controller="PhongBenh" asp-action="Index" class="btn text-white col col-auto">Quay lại</a>
 		<div class="col-auto text-primary">
 			<form method="post" asp-controller="PhongBenh" asp-action="Delete" asp-route-PhongBenhId="@Model.RoomId">
-				<button class="btn btn-outline-dark" type="submit">Xoá</button>
+				<button class="btn text-white" type="submit">Xoá</button>
 			</form>
 		</div>
 	</div>

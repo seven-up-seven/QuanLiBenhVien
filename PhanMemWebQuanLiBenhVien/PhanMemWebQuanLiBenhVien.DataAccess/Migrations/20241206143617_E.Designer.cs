@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 
@@ -11,9 +12,11 @@ using PhanMemWebQuanLiBenhVien.DataAccess;
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241206143617_E")]
+    partial class E
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,31 +398,12 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Lever")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PhongBenhId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PhongKhamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoomType")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
                     b.HasKey("MissionId");
 
                     b.HasIndex("DoctorId");
-
-                    b.HasIndex("PhongBenhId");
-
-                    b.HasIndex("PhongKhamId");
 
                     b.ToTable("missions");
                 });
@@ -783,19 +767,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.PhongBenh", "PhongBenh")
-                        .WithMany("MissionPhongBenh")
-                        .HasForeignKey("PhongBenhId");
-
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.PhongKham", "PhongKham")
-                        .WithMany("MissionPhongKham")
-                        .HasForeignKey("PhongKhamId");
-
                     b.Navigation("Doctor");
-
-                    b.Navigation("PhongBenh");
-
-                    b.Navigation("PhongKham");
                 });
 
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.Patient", b =>
@@ -870,15 +842,11 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.PhongBenh", b =>
                 {
-                    b.Navigation("MissionPhongBenh");
-
                     b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.PhongKham", b =>
                 {
-                    b.Navigation("MissionPhongKham");
-
                     b.Navigation("Patients");
                 });
 
