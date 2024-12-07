@@ -14,7 +14,7 @@
                 <th>ID</th>
                 <th>Tên phòng</th>
                 <th>Trạng thái</th>
-                <th>Actions</th>
+                <th style="width: 370px">Actions</th>
             </tr>
         </thead>
 
@@ -27,16 +27,16 @@
                     <td>
                         @if(phong.isAvailable == true)
                         {
-                            <p>Trống</p>
+                            <span class="badge bg-success">Trống</span>
                         }
                         else
                         {
-                            <p>Đang trưng dụng</p>
+                            <span class="badge bg-danger">Đang trưng dụng</span>
                         }
                     </td>
                     <td>
                         <a class="btn btn-primary" asp-controller="PhongCapCuu" asp-action="Update" asp-route-id="@phong.RoomId"><i class="bi bi-pencil-square"></i> Sửa</a>
-                        <a class="btn text-white" asp-controller="PhongCapCuu" asp-action="ChangeAvailability" asp-route-PhongCapCuuId="@phong.RoomId"><i class="bi bi-layout-text-sidebar-reverse"></i> Chuyển trạng thái</a>
+                        <a class="btn text-white" asp-controller="PhongCapCuu" asp-action="ChangeAvailability" asp-route-PhongCapCuuId="@phong.RoomId"><i class="bi bi-arrow-repeat"></i> Chuyển trạng thái</a>
                     </td>
                 </tr>
             }

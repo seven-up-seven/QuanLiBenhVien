@@ -37,7 +37,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			return View(DoctorList);
 		}
 
-		[HttpGet("Create")]
+        public IActionResult DanhSachBacSiThuocKhoa(int KhoaId)
+        {
+            var DoctorList = _unitOfWork.DoctorRepository.GetAll(dr => dr.ProfessionId == KhoaId);
+            foreach (var doctor in DoctorList)
+            {
+                var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == doctor.ProfessionId);
+                doctor.Profession = profession;
+            }
+            return View(DoctorList);
+        }
+
+        [HttpGet("Create")]
 		public IActionResult Create()
 		{
 			ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
