@@ -14,20 +14,23 @@
         <div class="container-fluid vh-100">
             <div class="row h-100">
                 <!-- Vertical Navbar -->
-                <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar h-100">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar h-100 d-flex align-content-center" style="background-image: linear-gradient(95.2deg, rgba(173,252,234,1) 26.8%, rgba(192,229,246,1) 64%);">
                     <div class="position-sticky">
                         <ul class="nav flex-column" style="font-size: 20px;">
-                            <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link active fw-bold text-white" asp-controller="Home" asp-action="Index">
-                                    <span class="bi bi-house"></span> Home
-                                </a>
-                            </li>
+                                <span class="bi bi-house"></span> Home
+                            </a>
+                        </li>
+                        @if (!(User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                        {
                             <li class="nav-item">
-                            <a class="nav-link fw-bold text-white" asp-controller="Home" asp-action="Privacy">
+                                <a class="nav-link fw-bold text-white" asp-controller="Home" asp-action="Privacy">
                                     <span class="bi bi-shield-lock"></span> Privacy
                                 </a>
                             </li>
-                            @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-controller="PhongKham" asp-action="Index">

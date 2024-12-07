@@ -133,6 +133,12 @@ namespace PhanMemWebQuanLiBenhVien.Areas.Identity.Pages.Account
                         var true_user = (CustomedUser)user;
                         return LocalRedirect($"/Doctor/DoctorHomePage?DoctorId={true_user.UserId}");
                     }
+                    else if (User.IsInRole("Nurse"))
+                    {
+                        var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                        var true_user = (CustomedUser)user;
+                        return LocalRedirect($"/Nurse/NurseHomePage?NurseId={true_user.UserId}");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
