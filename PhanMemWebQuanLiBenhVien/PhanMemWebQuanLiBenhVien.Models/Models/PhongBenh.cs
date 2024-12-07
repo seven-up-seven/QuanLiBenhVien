@@ -17,6 +17,6 @@ namespace PhanMemWebQuanLiBenhVien.Models
 
         //foreign key 
         public ICollection<Patient>? Patients { get; set; }
-        public ICollection<Mission>? MissionPhongBenh { get; set; }
+       
     }
 }

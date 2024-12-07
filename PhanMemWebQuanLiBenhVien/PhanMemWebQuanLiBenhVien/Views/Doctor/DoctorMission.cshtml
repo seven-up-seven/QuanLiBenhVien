@@ -50,8 +50,8 @@
 
                     for (int row = 0; row < 6; row++)
                     {
-                        <tr>
-                            @for (int col = 1; col <= 7; col++)
+                                <tr>
+                                    @for (int col = 1; col <= 7; col++)
                             {
                                 if (!started && col == startDayOfWeek)
                                 {
@@ -64,23 +64,23 @@
                                     bool hasMission = missionDates?.Contains(currentDay) ?? false;
                                     string isToday = currentDay == DateTime.Today ? "selected" : "";
 
-                                    <td>
-                                        <div class="day-cell @isToday" data-date="@currentDay.ToString("yyyy-MM-dd")">
-                                            <span>@day</span>
-                                            @if (hasMission)
+                                            <td>
+                                                <div class="day-cell @isToday" data-date="@currentDay.ToString("yyyy-MM-dd")">
+                                                    <span>@day</span>
+                                                    @if (hasMission)
                                             {
-                                                <div class="dot"></div>
+                                                        <div class="dot"></div>
                                             }
-                                        </div>
-                                    </td>
+                                                </div>
+                                            </td>
                                     day++;
                                 }
                                 else
                                 {
-                                    <td></td>
+                                            <td></td>
                                 }
                             }
-                        </tr>
+                                </tr>
                         if (day > daysInMonth)
                         {
                             break;
@@ -100,6 +100,66 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        const missionList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MissionList?.Select(m => new
+            {
+                Date = m.Time.ToString("yyyy-MM-dd"),
+                Content = m.Content,
+                EndTime = m.EndTime.ToString("HH:mm dd/MM/yyyy"),
+                Lever = m.Lever.ToString(),
+                Room = m.PhongKhamId.HasValue ? m.PhongKham.Name : m.PhongBenh.Name,
+                DoctorName = Model.DoctorName,
+                DoctorId = Model.DoctorId,
+                MissionId = m.MissionId // Thêm MissionId để xử lý nút "Đã hoàn thành"
+            })));
+
+        document.querySelectorAll(".day-cell").forEach(cell => {
+            cell.addEventListener("click", function () {
+                document.querySelectorAll(".day-cell.selected").forEach(c => c.classList.remove("selected"));
+                this.classList.add("selected");
+
+                const date = this.getAttribute("data-date");
+                const missions = missionList.filter(m => m.Date === date);
+
+                const missionDetailsDiv = document.getElementById("missionDetails");
+                if (missions.length > 0) 
+                {
+                    missionDetailsDiv.innerHTML = missions.map(mission => {
+                        const borderColorClass = {
+                            binhthuong: "border-success",
+                            uutien: "border-warning",
+                            nguycap: "border-danger"
+                        }[mission.Lever.toLowerCase()] || "";
+
+
+                        <div class="card ${borderColorClass}" >
+                            <div class="card-header" >
+                                <strong>Mức độ: </strong> ${mission.Lever}
+                                    < /div>
+                                    < div class="card-body" >
+                                        <h5>Bác sĩ: ${ mission.DoctorName } </h5>
+                                            < p > <strong>ID: </strong> ${mission.DoctorId}</p >
+                                                <p><strong>Nội dung: </strong> ${mission.Content}</p >
+                                                    <p><strong>Kết thúc: </strong> ${mission.EndTime}</p >
+                                                        <p><strong>Phòng: </strong> ${mission.Room}</p >
+                                                            <form asp - controller="Mission" asp - action="Delete" method = "post" >
+                                                                <input type="hidden" name = "missionId" value = "${mission.MissionId}" />
+                                                                    <button type="submit" class="btn btn-danger btn-sm" > Đã Hoàn thành < /button>
+                                                                        < /form>
+                                                                        < /div>
+                                                                        < /div>;
+                 } 
+                 else {
+                    missionDetailsDiv.innerHTML = `<p><strong>Ngày:</strong> ${new Date(date).toLocaleDateString("vi-VN")}</p><p>Không có nhiệm vụ nào.</p>`;
+                }
+            });
+        });
+
+        const todayCell = document.querySelector(`.day-cell[data-date="${new Date().toISOString().split('T')[0]}"]`);
+        if (todayCell) todayCell.click();
+    </script>
+}
 
 <style>
     .calendar {

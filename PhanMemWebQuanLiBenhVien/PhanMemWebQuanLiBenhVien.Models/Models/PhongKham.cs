@@ -11,6 +11,6 @@ namespace PhanMemWebQuanLiBenhVien.Models
         //So tang nam trong ten phong
         public string Name { get; set; }
         public ICollection<Patient>? Patients { get; set; }
-        public ICollection<Mission>? MissionPhongKham { get; set; }
+    
     }
 }
