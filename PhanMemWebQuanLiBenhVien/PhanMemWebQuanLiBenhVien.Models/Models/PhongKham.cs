@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhanMemWebQuanLiBenhVien.Models
 {
@@ -11,6 +12,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
         //So tang nam trong ten phong
         public string Name { get; set; }
         public ICollection<Patient>? Patients { get; set; }
-    
+
+        public int? ProfessionId { get; set; }
+        [ForeignKey("ProfessionId")]
+        public Profession? Profession { get; set; }
     }
 }
