@@ -61,9 +61,14 @@
                     var doctor = UnitOfWork.DoctorRepository.Get(dr=>dr.Username==User.Identity.Name);
                     <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@doctor.DoctorId" class="btn text-white">Quay lại</a>
                 }
-                else
+                else if (User.IsInRole("Nurse"))
                 {
-                    <a asp-controller="Nurse" asp-action="NursePatients" asp-route-NurseId="@Model.MedicalRecords.FirstOrDefault().NurseId" class="btn text-white">Quay lại</a>
+                    var nurse = UnitOfWork.NurseRepository.Get(dr => dr.Username == User.Identity.Name);
+                    <a asp-controller="Nurse" asp-action="NursePatients" asp-route-NurseId="@nurse.NurseId" class="btn text-white">Quay lại</a>
+                }
+                else
+                {   
+                    <a asp-controller="Patient" asp-action="Index" class="btn text-white">Quay lại</a>
                 }
             </div>
             <div class="col-auto text-primary">
