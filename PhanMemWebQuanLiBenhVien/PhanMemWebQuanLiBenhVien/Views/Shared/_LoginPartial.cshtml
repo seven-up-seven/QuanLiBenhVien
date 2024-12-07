@@ -6,15 +6,17 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item ">
-            <p class="text-decoration-underline fst-italic " style="color: gray; overflow: hidden; width: 200px; font-size: 20px;">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
+        <li class="nav-item h-50 p-0">
+            <p class="text-decoration-underline fst-italic text-center" style="color: gray; overflow: hidden; width: 200px; font-size: 15px;">@(await UserManager.GetUserNameAsync(UserManager.GetUserAsync(User).Result))</p>
         </li>
-        <li class="nav-item">
-            <div class="row d-flex justify-content-center">
-                <a id="manage" class="col col-auto btn btn-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài khoản</a>
+        <li class="nav-item m-0">
+            <div class="row d-flex justify-content-center align-items-center gap-1">
+                <form class="col col-auto p-0 mt-0">
+                    <a id="manage" class="btn text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Tài khoản</a>
+                </form>
 
-                <form id="logoutForm" class="form-inline col col-auto" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button id="logout" type="submit" class="btn btn-link text-white">Đăng xuất</button>
+                <form id="logoutForm" class=" col col-auto p-0 mt-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="btn text-white">Đăng xuất</button>
                 </form>
             </div>
         </li>

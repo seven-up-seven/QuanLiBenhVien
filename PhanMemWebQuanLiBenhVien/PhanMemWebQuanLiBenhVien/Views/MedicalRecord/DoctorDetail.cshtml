@@ -9,7 +9,10 @@
             <h2>Chi Tiết Bệnh Án</h2>
         </div>
         <div class="col col-2 text-end text-center">
-            <h5> <a asp-action="Update" asp-controller="MedicalRecord" asp-route-id="@Model.MedicalRecordId" class="text-decoration-none text-white btn btn-primary "><i class="bi bi-pencil-square"></i> Chỉnh sửa</a></h5>
+            @if (Model.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+            {
+                <h5> <a asp-action="Update" asp-controller="MedicalRecord" asp-route-id="@Model.MedicalRecordId" class="text-decoration-none text-white btn btn-primary "><i class="bi bi-pencil-square"></i> Chỉnh sửa</a></h5>
+            }
         </div>
     </div>
 
@@ -63,15 +66,24 @@
             {
                 <p>Không có thông tin về các lần khám cho bệnh án này.</p>
             }
-            <a class="btn btn-primary" asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId">Thêm lần khám</a>
+            @if (Model.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+            {
+                <a class="btn btn-primary" asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId">Thêm lần khám</a>
+            }
         </div>
     </div>
 
     <div class="row mt-4">
-            <a asp-controller="Doctor" asp-action="DoctorPatientDetail" asp-route-PatientId="@Model.PatientId" class="btn text-white col col-auto">Quay lại</a>
+        <a href="@ViewBag.ReferUrl" class="btn text-white col col-auto">Quay lại</a>
         <div class="col-auto text-primary">
             <form asp-action="CloseMedicalRecord" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId" method="post">
-                <button type="submit" class="btn text-white">Đóng bệnh án</button>
+                @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                {
+                    if (Model.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                    {
+                        <button type="submit" class="btn text-white">Đóng bệnh án</button>
+                    }
+                }
             </form>
         </div>
     </div>
