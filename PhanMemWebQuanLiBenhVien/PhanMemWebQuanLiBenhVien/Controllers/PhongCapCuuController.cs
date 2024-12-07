@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
@@ -57,9 +58,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var phongCapCuu = _unitOfWork.PhongCapCuuRepository.Get(pk => pk.RoomId == PhongCapCuuId);
             if (phongCapCuu != null)
             {
+                ViewBag.Availability = new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Trống", Value = "true" },
+                    new SelectListItem { Text = "Đang Trưng Dụng", Value = "false" }
+                };
                 return View(phongCapCuu);
             }
-            return View();
+            return View(null);
         }
 
         [HttpPost("Update/{PhongCapCuuId}")]
