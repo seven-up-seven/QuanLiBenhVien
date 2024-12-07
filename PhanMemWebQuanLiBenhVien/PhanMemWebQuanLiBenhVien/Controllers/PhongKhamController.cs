@@ -102,11 +102,16 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Update(int PhongKhamId)
         {
             var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
-            if(phongKham != null)
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            if (phongKham!=null)
             {
                 return View(phongKham);
             }
-            return View();
+            return View(null);
         }
         [HttpPost("Update/{PhongKhamId}")]
         public IActionResult Update(PhongKham phongKham)
