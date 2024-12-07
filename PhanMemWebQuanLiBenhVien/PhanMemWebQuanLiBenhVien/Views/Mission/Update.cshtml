@@ -10,10 +10,26 @@
     </div>
     <form asp-action="Update" asp-controller="Mission" method="post">
 
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- Các trường input ở đây -->
         <div class="form-group">
-            <label asp-for="Time">Thời gian</label>
-            <input asp-for="Time" class="form-control" placeholder="Nhập thời gian" />
+            <label asp-for="Time">Thời gian bắt đầu</label>
+            <input asp-for="Time" class="form-control" placeholder="Nhập thời gian bắt đầu" />
             <span asp-validation-for="Time" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="EndTime">Thời gian kết thúc</label>
+            <input asp-for="EndTime" class="form-control" placeholder="Nhập thời gian kết thúc" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Lever">Mức độ</label>
+            <select id="Lever" asp-for="Lever" asp-items="@ViewBag.Levers" class="form-control">
+                <option value="">-- Chọn mức độ --</option>
+            </select>
+            <span asp-validation-for="Lever" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -23,14 +39,70 @@
         </div>
 
         <div class="form-group">
-            <div class="form-group">
-                <label for="DoctorId" class="form-control">Bác sĩ</label>
-                <select asp-for="DoctorId" asp-items="@ViewBag.Doctors" class="form-control"></select>
-            </div>
-            <span asp-validation-for="DoctorId" class="text-danger"></span>
+            <label for="RoomType">Loại Phòng</label>
+            <select id="RoomType" asp-for="RoomType" asp-items="@ViewBag.Phongs" class="form-control">
+                <option value="">-- Chọn loại phòng --</option>
+            </select>
+            <span asp-validation-for="RoomType" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Sửa</button>
+        <div class="form-group">
+            <label>Phòng</label>
+            <!-- Các ô chọn phòng chuyên biệt -->
+            <select id="PhongKham" asp-for="PhongKhamId" asp-items="@ViewBag.PhongKhams" class="form-control" style="display: none;">
+                <option value="">-- Chọn phòng khám --</option>
+            </select>
+            <select id="PhongBenh" asp-for="PhongBenhId" asp-items="@ViewBag.PhongBenhs" class="form-control" style="display: none;">
+                <option value="">-- Chọn phòng bệnh --</option>
+            </select>
+
+            <span asp-validation-for="PhongKhamId" class="text-danger"></span>
+            <span asp-validation-for="PhongBenhId" class="text-danger"></span>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const roomTypeSelect = document.getElementById("RoomType");
+                const phongKhamSelect = document.getElementById("PhongKham");
+                const phongBenhSelect = document.getElementById("PhongBenh");
+
+                // Lấy giá trị ban đầu từ dữ liệu
+                const initialRoomType = roomTypeSelect.value;
+
+                // Hàm xử lý khi loại phòng thay đổi
+                const handleRoomTypeChange = () => {
+                    const selectedValue = roomTypeSelect.value;
+
+                    // Hiển thị đúng phòng dựa trên loại phòng
+                    if (selectedValue === "phongkham") {
+                        phongKhamSelect.style.display = "block";
+                        phongBenhSelect.style.display = "none";
+                    } else if (selectedValue === "phongbenh") {
+                        phongBenhSelect.style.display = "block";
+                        phongKhamSelect.style.display = "none";
+                    } else {
+                        phongKhamSelect.style.display = "none";
+                        phongBenhSelect.style.display = "none";
+                    }
+                };
+
+                // Gắn sự kiện thay đổi loại phòng
+                roomTypeSelect.addEventListener("change", handleRoomTypeChange);
+
+                // Gọi hàm xử lý khi trang tải (hiển thị đúng giá trị edit)
+                handleRoomTypeChange();
+            });
+        </script>
+
+
+        <div class="form-group">
+            <label for="DoctorId">Bác sĩ</label>
+            <select asp-for="DoctorId" asp-items="@ViewBag.Doctors" class="form-control">
+                <option value="">--- Chọn bác sĩ ---</option>
+            </select>
+            <span asp-validation-for="DoctorId" class="text-danger"></span>
+
+            <button type="submit" class="btn btn-primary">Sửa</button>
     </form>
 
 </div>
