@@ -27,7 +27,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
             if (patient.DateOfBirth!=null) oldobj.DateOfBirth = patient.DateOfBirth;
             if (!string.IsNullOrEmpty(patient.Address)) oldobj.Address=patient.Address;
             if (!string.IsNullOrEmpty(patient.PhoneNumber)) oldobj.PhoneNumber=patient.PhoneNumber;
-            oldobj.TrangThaiBenhAn = patient.TrangThaiBenhAn; 
+            if (patient.TrangThaiBenhAn!=null) oldobj.TrangThaiBenhAn = patient.TrangThaiBenhAn; 
             
             //if (patient.TrangThaiDieuTri!=null) oldobj.TrangThaiDieuTri=patient.TrangThaiDieuTri;
             //if (patient.DoctorId != null) oldobj.DoctorId=patient.DoctorId;
