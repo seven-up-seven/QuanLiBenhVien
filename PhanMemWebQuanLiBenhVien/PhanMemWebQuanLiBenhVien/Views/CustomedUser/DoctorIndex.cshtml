@@ -1,41 +1,53 @@
 ﻿@model IEnumerable<Doctor>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID bác sĩ</th>
-            <th>Tên bác sĩ</th>
-            <th>Tên tài khoản</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
+<div class="p-3">
+    <h2 class="text-primary">Danh sách tài khoản Bác Sĩ</h2>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID bác sĩ</th>
+                <th>Tên bác sĩ</th>
+                <th>Tên tài khoản</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var doctor in Model)
             {
-                <td>@doctor.DoctorId</td>
-                <td>@doctor.DoctorName</td>
-                if (doctor.HasAccount==false)
-                {
-                    <td>Không có tài khoản</td>
-                }
-                else
-                {
-                    <td>Đã có tài khoản với Username: @doctor.Username</td>
-                }
-                if (doctor.HasAccount==true)
-                {
+                <tr>
+                    <td>@doctor.DoctorId</td>
+                    <td>@doctor.DoctorName</td>
                     <td>
-                        <a asp-controller="CustomedUser" asp-action="DeleteDoctorAccount" class="btn btn-primary" asp-route-DoctorId="@doctor.DoctorId">Xóa tài khoản</a>
+                        @if (doctor.HasAccount)
+                        {
+                            <span class="badge bg-success">Đã có tài khoản</span>
+                            <span>Username: <b>@doctor.Username</b></span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Không có tài khoản</span>
+                        }
                     </td>
-                }
-                else
-                {
                     <td>
-                        <a asp-controller="CustomedUser" asp-action="AssignDoctorAccount" class="btn btn-primary" asp-route-DoctorId="@doctor.DoctorId">Cấp tài khoản</a>
+                        @if (doctor.HasAccount)
+                        {
+                            <a asp-controller="CustomedUser" asp-action="DeleteDoctorAccount"
+                               class="btn btn-danger btn-sm"
+                               asp-route-DoctorId="@doctor.DoctorId">
+                                Xóa tài khoản
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="CustomedUser" asp-action="AssignDoctorAccount"
+                               class="btn btn-primary btn-sm"
+                               asp-route-DoctorId="@doctor.DoctorId">
+                                Cấp tài khoản
+                            </a>
+                        }
                     </td>
-                }
+                </tr>
             }
-        </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+</div>

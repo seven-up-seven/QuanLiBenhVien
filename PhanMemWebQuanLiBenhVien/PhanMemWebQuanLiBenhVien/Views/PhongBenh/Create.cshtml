@@ -18,6 +18,10 @@
 			<input asp-for="NumberOfBeds" type="number" class="form-control" placeholder="Nhập số giường">
 		</div>
 		<span asp-validation-for="NumberOfBeds" class="text-danger"></span>
+		<div class="form-group">
+			<label for="ProfessionId">Chuyên khoa</label>
+			<select asp-for="ProfessionId" asp-items="@ViewBag.Professions" class="form-control"></select>
+		</div>
 		<br />
 		<div class="row" style="margin-left: 1px">
 			<a asp-controller="PhongBenh" asp-action="Index" class="btn text-white col col-auto">Quay lại</a>
