@@ -17,6 +17,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public string Content { get; set; }
         public EPhong RoomType { get; set; }
 
+        public bool IsCompleted { get; set; } = false;
+
+
 
         //Foreign Keys
         public int DoctorId { get; set; }

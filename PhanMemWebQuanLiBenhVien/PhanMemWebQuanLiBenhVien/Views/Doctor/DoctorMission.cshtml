@@ -22,7 +22,7 @@
     <!-- Lịch bên trái -->
     <div class="calendar" style="flex: 1;">
         <h2 class="text-center">Lịch - Tháng @selectedMonth Năm @selectedYear</h2>
-        <div class="navigation mb-3 text-center">
+        <div class="navigation mb-3">
             <a href="@Url.Action("DoctorMission", new { month = prevMonth, year = prevYear })" class="btn btn-primary">Tháng trước</a>
             <a href="@Url.Action("DoctorMission", new { month = nextMonth, year = nextYear })" class="btn btn-primary">Tháng sau</a>
         </div>
@@ -50,8 +50,8 @@
 
                     for (int row = 0; row < 6; row++)
                     {
-                                <tr>
-                                    @for (int col = 1; col <= 7; col++)
+                        <tr>
+                            @for (int col = 1; col <= 7; col++)
                             {
                                 if (!started && col == startDayOfWeek)
                                 {
@@ -64,23 +64,23 @@
                                     bool hasMission = missionDates?.Contains(currentDay) ?? false;
                                     string isToday = currentDay == DateTime.Today ? "selected" : "";
 
-                                            <td>
-                                                <div class="day-cell @isToday" data-date="@currentDay.ToString("yyyy-MM-dd")">
-                                                    <span>@day</span>
-                                                    @if (hasMission)
+                                    <td>
+                                        <div class="day-cell @isToday" data-date="@currentDay.ToString("yyyy-MM-dd")">
+                                            <span>@day</span>
+                                            @if (hasMission)
                                             {
-                                                        <div class="dot"></div>
+                                                <div class="dot"></div>
                                             }
-                                                </div>
-                                            </td>
+                                        </div>
+                                    </td>
                                     day++;
                                 }
                                 else
                                 {
-                                            <td></td>
+                                    <td></td>
                                 }
                             }
-                                </tr>
+                        </tr>
                         if (day > daysInMonth)
                         {
                             break;
@@ -102,63 +102,88 @@
 
 @section Scripts {
     <script>
-        const missionList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MissionList?.Select(m => new
-            {
-                Date = m.Time.ToString("yyyy-MM-dd"),
-                Content = m.Content,
-                EndTime = m.EndTime.ToString("HH:mm dd/MM/yyyy"),
-                Lever = m.Lever.ToString(),
-                Room = m.PhongKhamId.HasValue ? m.PhongKham.Name : m.PhongBenh.Name,
-                DoctorName = Model.DoctorName,
-                DoctorId = Model.DoctorId,
-                MissionId = m.MissionId // Thêm MissionId để xử lý nút "Đã hoàn thành"
-            })));
+        // Danh sách nhiệm vụ được truyền từ server
+        const missionList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
+        Model.MissionList.Select(m => new
+        {
+            Id = m.MissionId,
+            Date = m.Time.ToString("yyyy-MM-dd"),
+            Content = m.Content,
+            EndTime = m.EndTime.ToString("HH:mm dd/MM/yyyy"),
+            Lever = m.Lever.ToString(),
+            Room = m.PhongKhamId.HasValue ? m.PhongKham.Name : m.PhongBenh.Name,
+            IsCompleted = m.IsCompleted
+        })
+        ));
 
+
+        // Xử lý sự kiện click vào ngày
         document.querySelectorAll(".day-cell").forEach(cell => {
             cell.addEventListener("click", function () {
+                // Xóa lớp selected khỏi tất cả các ô
                 document.querySelectorAll(".day-cell.selected").forEach(c => c.classList.remove("selected"));
+
+                // Thêm lớp selected cho ô được chọn
                 this.classList.add("selected");
 
                 const date = this.getAttribute("data-date");
                 const missions = missionList.filter(m => m.Date === date);
 
                 const missionDetailsDiv = document.getElementById("missionDetails");
-                if (missions.length > 0) 
-                {
+                if (missions.length > 0) {
                     missionDetailsDiv.innerHTML = missions.map(mission => {
-                        const borderColorClass = {
-                            binhthuong: "border-success",
-                            uutien: "border-warning",
-                            nguycap: "border-danger"
-                        }[mission.Lever.toLowerCase()] || "";
+                        let borderColorClass = "";
+                        switch (mission.Lever.toLowerCase()) {
+                            case "binhthuong":
+                                borderColorClass = "border-success"; // Xanh lá cây
+                                break;
+                            case "uutien":
+                                borderColorClass = "border-warning"; // Cam
+                                break;
+                            case "nguycap":
+                                borderColorClass = "border-danger"; // Đỏ
+                                break;
+                        }
 
+                        return `
+            <div class="card ${borderColorClass}">
+                <div class="card-header">
+                    <p class="card-text"><strong>Mức độ:</strong> ${mission.Lever}</p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Thời gian kết thúc:</strong> ${mission.EndTime}</p>
+                    <p class="card-text"><strong>Nội dung:</strong> ${mission.Content}</p>
+                    <p class="card-text"><strong>Phòng:</strong> ${mission.Room}</p>
+                    <a href="/Mission/DetailMission?missionId=${mission.Id}" class="btn btn-primary">Xem chi tiết</a>
 
-                        <div class="card ${borderColorClass}" >
-                            <div class="card-header" >
-                                <strong>Mức độ: </strong> ${mission.Lever}
-                                    < /div>
-                                    < div class="card-body" >
-                                        <h5>Bác sĩ: ${ mission.DoctorName } </h5>
-                                            < p > <strong>ID: </strong> ${mission.DoctorId}</p >
-                                                <p><strong>Nội dung: </strong> ${mission.Content}</p >
-                                                    <p><strong>Kết thúc: </strong> ${mission.EndTime}</p >
-                                                        <p><strong>Phòng: </strong> ${mission.Room}</p >
-                                                            <form asp - controller="Mission" asp - action="Delete" method = "post" >
-                                                                <input type="hidden" name = "missionId" value = "${mission.MissionId}" />
-                                                                    <button type="submit" class="btn btn-danger btn-sm" > Đã Hoàn thành < /button>
-                                                                        < /form>
-                                                                        < /div>
-                                                                        < /div>;
-                 } 
-                 else {
-                    missionDetailsDiv.innerHTML = `<p><strong>Ngày:</strong> ${new Date(date).toLocaleDateString("vi-VN")}</p><p>Không có nhiệm vụ nào.</p>`;
+                </div>
+            </div>`;
+
+                    }).join('');
+                } else {
+                    missionDetailsDiv.innerHTML =
+                        `<p><strong>Ngày:</strong> ${new Date(date).toLocaleDateString("vi-VN")}</p>
+                                 <p>Không có nhiệm vụ nào.</p>`;
                 }
             });
         });
 
-        const todayCell = document.querySelector(`.day-cell[data-date="${new Date().toISOString().split('T')[0]}"]`);
-        if (todayCell) todayCell.click();
+        // Mặc định chọn ngày hiện tại nếu tồn tại trong lịch
+        const todayCell = document.querySelector(".day-cell[data-date='" + new Date().toISOString().split('T')[0] + "']");
+        if (todayCell) {
+            todayCell.click();
+        }
+
+        function redirectToDetail(missionId) {
+            window.location.href = `/Mission/DetailMission?missionId=${missionId}`;
+        }
+
     </script>
+
+
+
+
+
 }
 
 <style>
@@ -237,4 +262,15 @@
     .card-text {
         margin: 5px 0;
     }
+
+    .card-body .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .card-body .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
 </style>

@@ -365,22 +365,39 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult DetailMission(int missionId)
+        {
+            var mission = _unitOfWork.MissionRepository.Get(m => m.MissionId == missionId);
+            if (mission == null)
+            {
+                return NotFound(); // Nếu không tìm thấy nhiệm vụ
+            }
+            if (mission.PhongKhamId != null)
+                mission.PhongKham = _unitOfWork.PhongKhamRepository.Get(m => m.RoomId == mission.PhongKhamId);
+            else
+                mission.PhongBenh = _unitOfWork.PhongBenhRepository.Get(m => m.RoomId == mission.PhongBenhId);
+            mission.Doctor= _unitOfWork.DoctorRepository.Get(d=>d.DoctorId == mission.DoctorId);
 
-        [HttpGet]
-        public IActionResult Xem(int missionId)
+            return View(mission);
+        }
+
+
+        [HttpPost]
+        public IActionResult Tick(int missionId,int day,int month,int year)
         {
             var mission = _unitOfWork.MissionRepository.Get(u => u.MissionId == missionId);
             if (mission == null)
             {
                 return NotFound(); // Nếu không tìm thấy nhiệm vụ
             }
-            return View(mission);
+
+            // Đánh dấu nhiệm vụ là hoàn thành
+            mission.IsCompleted = !mission.IsCompleted;
+            _unitOfWork.MissionRepository.Update(mission);
+            _unitOfWork.Save();
+
+            return RedirectToAction("DoctorMission", "Doctor", new {day, month, year});
         }
 
-
-
-
-
-
-        }
+    }
 }

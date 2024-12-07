@@ -239,13 +239,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 m.Time.Year == year).ToList();
             foreach (var mission in doctor.MissionList)
             {
-               if(mission.PhongKhamId!=null)
-				{
+                if (mission.PhongKhamId != null)
+                {
                     var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == mission.PhongKhamId);
                     mission.PhongKham = phongkham;
                 }
-				else
-				{
+                else
+                {
                     var phongbenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == mission.PhongBenhId);
                     mission.PhongBenh = phongbenh;
                 }
@@ -256,11 +256,6 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
             return View(doctor);
         }
-
-
-
-
-
 
     }
 }
