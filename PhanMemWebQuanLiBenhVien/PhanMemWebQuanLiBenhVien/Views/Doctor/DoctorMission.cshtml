@@ -1,0 +1,276 @@
+﻿@model PhanMemWebQuanLiBenhVien.Models.Doctor
+
+@{
+    ViewData["Title"] = "Lịch nhiệm vụ bác sĩ";
+
+    // Lấy tháng và năm được truyền từ Controller
+    int selectedMonth = (int)ViewBag.SelectedMonth;
+    int selectedYear = (int)ViewBag.SelectedYear;
+
+    // Điều hướng tháng
+    int prevMonth = selectedMonth == 1 ? 12 : selectedMonth - 1;
+    int prevYear = selectedMonth == 1 ? selectedYear - 1 : selectedYear;
+
+    int nextMonth = selectedMonth == 12 ? 1 : selectedMonth + 1;
+    int nextYear = selectedMonth == 12 ? selectedYear + 1 : selectedYear;
+
+    // Danh sách ngày có nhiệm vụ
+    var missionDates = Model.MissionList?.Select(m => m.Time.Date).Distinct().ToList();
+}
+
+<div class="d-flex">
+    <!-- Lịch bên trái -->
+    <div class="calendar" style="flex: 1;">
+        <h2 class="text-center">Lịch - Tháng @selectedMonth Năm @selectedYear</h2>
+        <div class="navigation mb-3">
+            <a href="@Url.Action("DoctorMission", new { month = prevMonth, year = prevYear })" class="btn btn-primary">Tháng trước</a>
+            <a href="@Url.Action("DoctorMission", new { month = nextMonth, year = nextYear })" class="btn btn-primary">Tháng sau</a>
+        </div>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>T2</th>
+                    <th>T3</th>
+                    <th>T4</th>
+                    <th>T5</th>
+                    <th>T6</th>
+                    <th>T7</th>
+                    <th>CN</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var firstDayOfMonth = new DateTime(selectedYear, selectedMonth, 1);
+                    var daysInMonth = DateTime.DaysInMonth(selectedYear, selectedMonth);
+                    int startDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
+                    startDayOfWeek = startDayOfWeek == 0 ? 7 : startDayOfWeek;
+
+                    int day = 1;
+                    bool started = false;
+
+                    for (int row = 0; row < 6; row++)
+                    {
+                        <tr>
+                            @for (int col = 1; col <= 7; col++)
+                            {
+                                if (!started && col == startDayOfWeek)
+                                {
+                                    started = true;
+                                }
+
+                                if (started && day <= daysInMonth)
+                                {
+                                    var currentDay = new DateTime(selectedYear, selectedMonth, day);
+                                    bool hasMission = missionDates?.Contains(currentDay) ?? false;
+                                    string isToday = currentDay == DateTime.Today ? "selected" : "";
+
+                                    <td>
+                                        <div class="day-cell @isToday" data-date="@currentDay.ToString("yyyy-MM-dd")">
+                                            <span>@day</span>
+                                            @if (hasMission)
+                                            {
+                                                <div class="dot"></div>
+                                            }
+                                        </div>
+                                    </td>
+                                    day++;
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                        if (day > daysInMonth)
+                        {
+                            break;
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Nhiệm vụ bên phải -->
+    <div class="mission-details" style="flex: 1; padding: 20px; border-left: 1px solid #ddd;">
+        <h2 class="text-center">Nhiệm vụ</h2>
+        <div id="missionDetails" class="mission-cards">
+            <p>Chọn một ngày trong lịch để xem nhiệm vụ.</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Danh sách nhiệm vụ được truyền từ server
+        const missionList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
+        Model.MissionList.Select(m => new
+        {
+            Id = m.MissionId,
+            Date = m.Time.ToString("yyyy-MM-dd"),
+            Content = m.Content,
+            EndTime = m.EndTime.ToString("HH:mm dd/MM/yyyy"),
+            Lever = m.Lever.ToString(),
+            Room = m.PhongKhamId.HasValue ? m.PhongKham.Name : m.PhongBenh.Name,
+            IsCompleted = m.IsCompleted
+        })
+        ));
+
+
+        // Xử lý sự kiện click vào ngày
+        document.querySelectorAll(".day-cell").forEach(cell => {
+            cell.addEventListener("click", function () {
+                // Xóa lớp selected khỏi tất cả các ô
+                document.querySelectorAll(".day-cell.selected").forEach(c => c.classList.remove("selected"));
+
+                // Thêm lớp selected cho ô được chọn
+                this.classList.add("selected");
+
+                const date = this.getAttribute("data-date");
+                const missions = missionList.filter(m => m.Date === date);
+
+                const missionDetailsDiv = document.getElementById("missionDetails");
+                if (missions.length > 0) {
+                    missionDetailsDiv.innerHTML = missions.map(mission => {
+                        let borderColorClass = "";
+                        switch (mission.Lever.toLowerCase()) {
+                            case "binhthuong":
+                                borderColorClass = "border-success"; // Xanh lá cây
+                                break;
+                            case "uutien":
+                                borderColorClass = "border-warning"; // Cam
+                                break;
+                            case "nguycap":
+                                borderColorClass = "border-danger"; // Đỏ
+                                break;
+                        }
+
+                        return `
+            <div class="card ${borderColorClass}">
+                <div class="card-header">
+                    <p class="card-text"><strong>Mức độ:</strong> ${mission.Lever}</p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Thời gian kết thúc:</strong> ${mission.EndTime}</p>
+                    <p class="card-text"><strong>Nội dung:</strong> ${mission.Content}</p>
+                    <p class="card-text"><strong>Phòng:</strong> ${mission.Room}</p>
+                    <a href="/Mission/DetailMission?missionId=${mission.Id}" class="btn btn-primary">Xem chi tiết</a>
+
+                </div>
+            </div>`;
+
+                    }).join('');
+                } else {
+                    missionDetailsDiv.innerHTML =
+                        `<p><strong>Ngày:</strong> ${new Date(date).toLocaleDateString("vi-VN")}</p>
+                                 <p>Không có nhiệm vụ nào.</p>`;
+                }
+            });
+        });
+
+        // Mặc định chọn ngày hiện tại nếu tồn tại trong lịch
+        const todayCell = document.querySelector(".day-cell[data-date='" + new Date().toISOString().split('T')[0] + "']");
+        if (todayCell) {
+            todayCell.click();
+        }
+
+        function redirectToDetail(missionId) {
+            window.location.href = `/Mission/DetailMission?missionId=${missionId}`;
+        }
+
+    </script>
+
+
+
+
+
+}
+
+<style>
+    .calendar {
+        margin: 20px auto;
+        max-width: 600px;
+        user-select: none; /* Ngăn chặn chọn nội dung */
+    }
+
+    .day-cell {
+        position: relative;
+        padding: 15px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+        .day-cell.selected {
+            background-color: #d1ecf1;
+            cursor: default;
+        }
+
+        .day-cell .dot {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: green;
+            border-radius: 50%;
+        }
+
+    .mission-details {
+        background-color: #f9f9f9;
+        height: 100%;
+    }
+
+    .mission-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+        max-height: 525px;
+        overflow-y: auto;
+    }
+
+    .card {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        background-color: white;
+    }
+
+        .card.border-success {
+            border-color: #28a745; /* Xanh lá cây */
+        }
+
+        .card.border-warning {
+            border-color: #ffc107; /* Cam */
+        }
+
+        .card.border-danger {
+            border-color: #dc3545; /* Đỏ */
+        }
+
+    .card-body {
+        text-align: left;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .card-text {
+        margin: 5px 0;
+    }
+
+    .card-body .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .card-body .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+</style>
