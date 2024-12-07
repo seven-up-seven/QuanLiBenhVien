@@ -7,8 +7,9 @@
 
 
 <div style="padding: 150px" >
-    <h1>@ViewData["Title"]</h1>
-    <div class="border border-2 rounded p-2">
+    
+    <div class="border border-dark rounded p-2" style="background-color: aliceblue">
+        <h1>@ViewData["Title"]</h1>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
             <hr />
@@ -42,3 +43,11 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<style>
+    body {
+        background-image: url("/images/bg.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
