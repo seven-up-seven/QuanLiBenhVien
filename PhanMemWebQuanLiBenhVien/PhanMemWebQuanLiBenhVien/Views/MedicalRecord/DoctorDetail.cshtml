@@ -17,7 +17,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h5>ID Bệnh Án: @Model.MedicalRecordId</h5>
             <p><strong>Tên bệnh nhân:</strong> @Model.PatientName</p>
             <p><strong>Giới tính:</strong> @Model.PatientGender</p>
@@ -34,29 +34,38 @@
             }
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-7">
             <h5>Thông Tin Các Lần Khám</h5>
             @if (ViewBag.MedicalVisits != null)
             {
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
+                            <th>Lần khám</th>
                             <th>Ngày khám</th>
                             <th>Triệu chứng</th>
                             <th>Kết quả lâm sàng</th>
                             <th>Chẩn đoán</th>
                             <th>Tình trạng</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @{
+                            int i = 1;
+                        }
                         @foreach (var visit in ViewBag.MedicalVisits)
                         {
                             <tr>
+                                <td>@(i++)</td>
                                 <td>@visit.VisitDate.ToString("dd/MM/yyyy")</td>
                                 <td>@visit.Symptom</td>
                                 <td>@visit.KetQuaLamSang</td>
                                 <td>@visit.ChanDoan</td>
                                 <td>@visit.TinhTrangBenhNhan.ToString()</td>
+                                <td>
+                                    <a asp-controller="MedicalRecord" asp-action="MedicalVisitUpdate" asp-route-MedicalVisitId="@visit.VisitId" asp-route-MedicalRecordId="@Model.MedicalRecordId" class="btn btn-primary">Sửa</a>
+                                </td>
                             </tr>
                         }
                     </tbody>

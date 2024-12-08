@@ -153,6 +153,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Update(Patient patient)
         {
             _unitOfWork.PatientRepository.Update(patient);
+            var medicalrecordlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
+            foreach (var medicalrecord in medicalrecordlist)
+            {
+                medicalrecord.PatientName = patient.Name;
+                medicalrecord.PatientGender = patient.Gender.ToString();
+                medicalrecord.Address = patient.Address;
+                _unitOfWork.MedicalRecordRepository.Update(medicalrecord);
+            }
             _unitOfWork.Save();
             return RedirectToAction("Index");
         }

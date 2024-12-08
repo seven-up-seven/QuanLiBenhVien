@@ -254,7 +254,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 return View(medicalRecord);
             }
-            return View();
+            return View(MedicalRecordId);
         }
         [HttpPost("Update/{MedicalRecordId}")]
         public IActionResult Update(MedicalRecord medicalRecord)
@@ -263,9 +263,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
+                if (User.IsInRole("Doctor"))
+                {
+                    return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalRecord.MedicalRecordId });
+                }
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(medicalRecord.MedicalRecordId);
         }
 
         [HttpPost("Delete/{MedicalRecordId}")]
@@ -307,6 +311,27 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
             }
             return View();
+        }
+
+        public IActionResult MedicalVisitUpdate(int MedicalVisitId, int MedicalRecordId)
+        {
+            ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                          .Cast<ETinhTrangBenhNhan>()
+                                          .Select(e => new SelectListItem
+                                          {
+                                              Value = e.ToString(),
+                                              Text = e.ToString()
+                                          }).ToList();
+            var medicalvisit=_unitOfWork.MedicalVisitRepository.Get(mv=>mv.VisitId == MedicalVisitId);
+            ViewBag.MedicalRecordId = MedicalRecordId;
+            return View(medicalvisit);
+        }
+        [HttpPost]
+        public IActionResult MedicalVisitUpdate(MedicalVisit medicalVisit, int MedicalRecordId)
+        {
+            _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
+            _unitOfWork.Save();
+            return RedirectToAction("DoctorDetail", new { MedicalRecordId = MedicalRecordId });
         }
 
         [HttpPost("CloseMedicalRecord/{MedicalRecordId}")]
