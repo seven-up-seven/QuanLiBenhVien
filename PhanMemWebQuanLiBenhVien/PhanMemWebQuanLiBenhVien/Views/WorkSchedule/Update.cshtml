@@ -1,5 +1,27 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhanMemWebQuanLiBenhVien.Models.WorkSchedule
 @{
+	ViewData["Title"] = "Sửa lịch";
 }
+
+<div class="container mt-4">
+	<div class="row my-2">
+		<div class="col text-primary"><h2>Thêm lịch mới</h2></div>
+	</div>
+	<form method="post">
+		<input asp-for="@Model.WorkScheduleId" hidden />
+		<input value="@ViewBag.phongkham.Name" disabled />
+		<input asp-for="@Model.PhongKhamId" value="@ViewBag.phongkham.RoomId" hidden />
+		<input asp-for="DayOfWeek" value="@ViewBag.Thu" readonly />
+		<label>Chọn bác sĩ</label>
+		<select asp-for="DoctorId1" asp-items="@ViewBag.doctorlist">
+			<option value="">--Chọn--</option>
+		</select>
+		<select asp-for="DoctorId2" asp-items="@ViewBag.doctorlist">
+			<option value="">--Chọn--</option>
+		</select>
+		<select asp-for="DoctorId3" asp-items="@ViewBag.doctorlist">
+			<option value="">--Chọn--</option>
+		</select>
+		<button type="submit" class="btn btn-primary">Cập nhật</button>
+	</form>
+</div>

@@ -178,9 +178,31 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult DoctorWorkSchedule(int DoctorId)
         {
             var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
-			var workschedule = _unitOfWork.WorkScheduleRepository.Get(ws => ws.DoctorId == DoctorId);
-			ViewBag.WS = workschedule; 
-            return View(doctor);
+			Dictionary<string, Dictionary<int, string>> CaTruc = new Dictionary<string, Dictionary<int, string>>();
+			var workschedules = _unitOfWork.WorkScheduleRepository.GetAll();
+			foreach(var ws in workschedules)
+			{
+                if (!CaTruc.ContainsKey(ws.DayOfWeek))
+                {
+                    CaTruc[ws.DayOfWeek] = new Dictionary<int, string>();
+                }
+                if (ws.DoctorId1 == doctor.DoctorId)
+                {
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == ws.PhongKhamId);
+                    CaTruc[ws.DayOfWeek][1] = phongkham.Name; 
+                }
+                if (ws.DoctorId2 == doctor.DoctorId)
+                {
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == ws.PhongKhamId);
+                    CaTruc[ws.DayOfWeek][2] = phongkham.Name;
+                }
+                if (ws.DoctorId3 == doctor.DoctorId)
+                {
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == ws.PhongKhamId);
+                    CaTruc[ws.DayOfWeek][3] = phongkham.Name;
+                }
+            }
+            return View(CaTruc);
         }
 
         public IActionResult DoctorPatients(int DoctorId)
