@@ -222,6 +222,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			//patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId); \
 			var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId);
 			patient.MedicalRecords = (ICollection<MedicalRecord>?)medicalRecord;
+			patient.Profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == patient.ProfesisonId);
             return View(patient);
         }
         public async Task<IActionResult> DoctorMission(int month, int year)

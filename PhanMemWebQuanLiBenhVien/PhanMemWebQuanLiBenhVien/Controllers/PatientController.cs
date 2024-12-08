@@ -71,7 +71,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Text=p.NurseName,
                 Value=p.NurseId.ToString()
             });
-            ViewBag.nurselist=nurselist;    
+            ViewBag.nurselist=nurselist;
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
             return View();
         }
         [HttpPost]
@@ -147,6 +152,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Text = e.ToString()
             }).ToList();
             ViewBag.specialstatuslist = specialstatuslist;
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
             return View(patient);
         }
         [HttpPost]
@@ -190,7 +200,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			//if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
 			//if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
 			//if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
-			return View(patient);
+            patient.Profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == patient.ProfesisonId); 
+            return View(patient);
         }
     }
 }

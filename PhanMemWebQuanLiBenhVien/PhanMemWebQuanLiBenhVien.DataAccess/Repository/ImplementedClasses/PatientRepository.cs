@@ -27,26 +27,27 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
             if (patient.DateOfBirth!=null) oldobj.DateOfBirth = patient.DateOfBirth;
             if (!string.IsNullOrEmpty(patient.Address)) oldobj.Address=patient.Address;
             if (!string.IsNullOrEmpty(patient.PhoneNumber)) oldobj.PhoneNumber=patient.PhoneNumber;
-            if (patient.TrangThaiBenhAn!=null) oldobj.TrangThaiBenhAn = patient.TrangThaiBenhAn; 
-            
+            if (patient.TrangThaiBenhAn!=null) oldobj.TrangThaiBenhAn = patient.TrangThaiBenhAn;
+            if (patient.ProfesisonId != null) oldobj.ProfesisonId = patient.ProfesisonId;
+
             //if (patient.TrangThaiDieuTri!=null) oldobj.TrangThaiDieuTri=patient.TrangThaiDieuTri;
             //if (patient.DoctorId != null) oldobj.DoctorId=patient.DoctorId;
             //if (patient.NurseId != null) oldobj.NurseId=patient.NurseId;
             //if (patient.PhongBenhId != null) oldobj.PhongBenhId=patient.PhongBenhId;
             //if (patient.PhongKhamId != null) oldobj.PhongKhamId=patient.PhongKhamId;
-   //         if (patient.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.xuatvien)
-   //         {
-   //             if (oldobj.PhongKhamId != null) oldobj.PhongKhamId = null;
-   //             if (oldobj.PhongBenhId != null) oldobj.PhongBenhId = null;
-   //             if (oldobj.DoctorId != null) oldobj.DoctorId = null;
-   //             if (oldobj.NurseId != null) oldobj.NurseId = null;
-   //         }
-   //         if(patient.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.nhapvien)
-			//{
-   //             if (oldobj.PhongKhamId!=null) oldobj.PhongKhamId = null;
-   //             if (patient.PhongBenhId != null) oldobj.PhongBenhId = patient.PhongBenhId;
-			//}
-			_db.Update(oldobj);
+            //         if (patient.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.xuatvien)
+            //         {
+            //             if (oldobj.PhongKhamId != null) oldobj.PhongKhamId = null;
+            //             if (oldobj.PhongBenhId != null) oldobj.PhongBenhId = null;
+            //             if (oldobj.DoctorId != null) oldobj.DoctorId = null;
+            //             if (oldobj.NurseId != null) oldobj.NurseId = null;
+            //         }
+            //         if(patient.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.nhapvien)
+            //{
+            //             if (oldobj.PhongKhamId!=null) oldobj.PhongKhamId = null;
+            //             if (patient.PhongBenhId != null) oldobj.PhongBenhId = patient.PhongBenhId;
+            //}
+            _db.Update(oldobj);
         }
     }
 }

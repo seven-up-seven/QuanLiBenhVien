@@ -28,6 +28,7 @@
             <p><strong>Phòng khám:</strong> @Model.PhongKham?.Name</p>
             <p><strong>Phòng bệnh:</strong> @Model.PhongBenh?.Name</p>
             <p><strong>Y tá:</strong> @Model.Nurse?.NurseName</p>
+            <p><strong>Khoa điều trị:</strong> @Model.Profession?.ProfessionName</p>
             @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
             {
                 <p><strong>Tình trạng:</strong> @Model.TinhTrangBenhNhan.ToString()</p>

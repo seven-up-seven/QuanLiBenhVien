@@ -65,6 +65,7 @@
         <p><strong>Giới tính:</strong> @Model.Gender.ToString()</p>
         <p><strong>Địa chỉ:</strong> @Model.Address</p>
         <p><strong>Trạng thái:</strong> @Model.TrangThaiBenhAn.ToString()</p>
+        <p><strong>Khoa đang điều trị hiện tại: @Model.Profession.ProfessionName</strong></p>
        @*  @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.nhapvien || Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.chikham)
         {
                 <p><strong>Trạng thái:</strong> @Model.TrangThaiDieuTri.ToString()</p>

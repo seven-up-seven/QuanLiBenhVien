@@ -34,6 +34,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
                 if (medicalRecord.PhongBenhId != null) existingRecord.PhongBenhId = medicalRecord.PhongBenhId;
                 if (medicalRecord.NurseId != null) existingRecord.NurseId = medicalRecord.NurseId;
                 if (medicalRecord.TinhTrangBenhNhan != null) existingRecord.TinhTrangBenhNhan = medicalRecord.TinhTrangBenhNhan;
+                existingRecord.ProfesisonId = medicalRecord.ProfesisonId;
                 _db.SaveChanges();
             }
         }

@@ -40,9 +40,12 @@
             <span asp-validation-for="Address" class="text-danger"></span>
             <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ bệnh nhân" />
         </div>
+        <div class="form-group" hidden>
+            <input  asp-for="TrangThaiBenhAn" value="@PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri"/>
+        </div>
         <div class="form-group">
-            <label asp-for="TrangThaiBenhAn">Lựa chọn</label>
-            <select asp-for="TrangThaiBenhAn" class="form-control" asp-items="@ViewBag.statuslist">
+            <label asp-for="ProfesisonId">Lựa chọn khoa điều trị</label>
+            <select asp-for="ProfesisonId" class="form-control" asp-items="@ViewBag.Professions">
                 <option value="">-- Chọn --</option>
             </select>
         </div>

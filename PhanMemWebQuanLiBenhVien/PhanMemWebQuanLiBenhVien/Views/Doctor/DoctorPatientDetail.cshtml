@@ -5,7 +5,10 @@
     ViewData["Title"] = "Chi Tiết Bệnh Nhân";
 }
 <div>
-    <h2 class="my-5">Chi tiết bệnh nhân</h2>
+    <div class="row mt-5">
+        <h2 class="col col-auto">Chi tiết bệnh nhân</h2>
+        <a class="btn btn-primary col col-auto" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@Model.PatientId"><i class="bi bi-pencil-square"></i> Sửa thông tin</a>
+    </div>
     <div class="mt-5">
         <p><strong>ID:</strong> @Model.PatientId</p>
         <p><strong>Tên bệnh nhân:</strong> @Model.Name</p>
@@ -13,7 +16,15 @@
         <p><strong>Ngày sinh:</strong> @Model.DateOfBirth</p>
         <p><strong>Giới tính:</strong> @Model.Gender.ToString()</p>
         <p><strong>Địa chỉ:</strong> @Model.Address</p>
-        <p><strong>Trạng thái: @Model.TrangThaiBenhAn.ToString()</strong></p>
+        @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+        {
+            <p><strong>Trạng thái: Đang chữa trị</strong></p>
+            <p><strong>Khoa đang điều trị hiện tại: @Model.Profession.ProfessionName</strong></p>
+        }
+        else
+        {
+            <p><strong>Trạng thái: Đang không chữa trị</strong></p>
+        }
     </div>
 
     <div class="row d-flex">
@@ -37,7 +48,7 @@
                     <th>Địa Chỉ</th>
                     <th>Tiền Sử Bệnh Án</th>
                     <th>Trạng thái</th>
-                    <th>Hành Động</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,7 +72,7 @@
                                 <span class="badge bg-success">Bệnh án đã đóng</span>
                             </td>
                         }
-                        <td class="d-flex justify-content-center align-items-center gap-1">
+                        <td class="d-flex align-items-center gap-1">
                             <a class="btn btn-sm btn-primary col col-auto" asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-id="@record.MedicalRecordId">Chi tiết</a>
                             @if (record.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
                             {

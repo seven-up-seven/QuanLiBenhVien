@@ -24,6 +24,15 @@
             <input asp-for="PatientGender" class="form-control" value="@ViewBag.Patient.Gender.ToString()" readonly />
         </div>
         <div class="form-group">
+            <label asp-for="Profession">Khoa điều trị</label>
+            <input class="form-control" readonly value="@ViewBag.Patient.Profession.ProfessionName" />
+            <input hidden asp-for="ProfesisonId" value="@ViewBag.Patient.ProfesisonId" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Address">Địa chỉ</label>
+            <input asp-for="Address" class="form-control" value="@ViewBag.Patient.Address" readonly />
+        </div>
+        <div class="form-group">
             <label asp-for="BHYT">BHYT</label>
             <select asp-for="BHYT" class="form-control">
                 <option value="">--Chọn--</option>
@@ -31,10 +40,7 @@
                 <option value="Không">Không</option>
             </select>
         </div>
-        <div class="form-group">
-            <label asp-for="Address">Địa chỉ</label>
-            <input asp-for="Address" class="form-control" value="@ViewBag.Patient.Address" readonly />
-        </div>
+        
         <div class="form-group">
             <label asp-for="TienSuBenhAn">Tiền sử bệnh án</label>
             <input asp-for="TienSuBenhAn" class="form-control"/>
@@ -46,6 +52,8 @@
                 <option value="">--Chọn--</option>
             </select>
         </div>
+
+        
 
         <div class="form-group">
             <label for="TrangThaiDieuTri">Trạng thái điều trị</label>
@@ -70,7 +78,7 @@
             <label for="PhongKhamId">Phòng khám</label>
             <select asp-for="PhongKhamId" class="form-control" asp-items="@ViewBag.phongkhamlist" ></select>
         </div>
-
+        
         <br />
         <div class="row d-flex gap-2">
             <button type="submit" class="col col-auto">
@@ -78,6 +86,7 @@
             </button>
             <button asp-action="DoctorPatientDetail" asp-controller="Doctor" asp-route-PatientId="@ViewBag.PatientId" class="col col-auto">Quay lại</button>
         </div>
+
     </form>
 </div>
 
