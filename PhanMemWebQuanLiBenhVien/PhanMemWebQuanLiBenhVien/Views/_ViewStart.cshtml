@@ -3,13 +3,13 @@
 @{
     if (User.IsInRole("Doctor"))
     {
-        var doctor = UnitOfWork.DoctorRepository.Get(u => u.Username == User.Identity.Name);
+        var doctor = UnitOfWork.DoctorRepository.GetAll(u => u.Username == User.Identity.Name).LastOrDefault();
         ViewBag.Doctor = doctor;
         Layout = "_CustomedLayout";
     }
     else if (User.IsInRole("Nurse"))
     {
-        var nurse = UnitOfWork.NurseRepository.Get(u => u.Username == User.Identity.Name);
+        var nurse = UnitOfWork.NurseRepository.GetAll(u => u.Username == User.Identity.Name).LastOrDefault();
         ViewBag.Nurse = nurse;
         Layout = "_CustomedLayout";
     }

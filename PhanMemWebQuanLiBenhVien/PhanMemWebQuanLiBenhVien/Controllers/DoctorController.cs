@@ -201,7 +201,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     if (lastMedicalRecord.DoctorId == doctor.DoctorId)
 					{
                         lastMedicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == lastMedicalRecord.PhongBenhId);
-                        doctor.PatientList.Add(patient); 
+                        doctor.PatientList.Add(patient);
+					
 					}
                 }
             }

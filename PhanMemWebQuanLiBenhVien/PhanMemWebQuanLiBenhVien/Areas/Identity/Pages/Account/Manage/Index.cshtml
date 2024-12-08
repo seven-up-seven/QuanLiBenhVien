@@ -36,7 +36,7 @@
     <h2 class="text-center mt-3">Thông tin cá nhân</h2>
     @if (User.IsInRole("Doctor"))
     {
-        var doctor = UnitOfWork.DoctorRepository.Get(u => u.Username == User.Identity.Name);
+        var doctor = UnitOfWork.DoctorRepository.GetAll(u => u.Username == User.Identity.Name).LastOrDefault();
         <form method="post" asp-controller="Doctor" asp-action="Update" enctype="multipart/form-data">
             <input asp-for="@doctor.DoctorId" hidden />
             <input asp-for="@doctor.HasAccount" hidden />
@@ -75,7 +75,7 @@
     }
     else if (User.IsInRole("Nurse"))
     {
-        var nurse = UnitOfWork.NurseRepository.Get(u => u.Username == User.Identity.Name);
+        var nurse = UnitOfWork.NurseRepository.GetAll(u => u.Username == User.Identity.Name).LastOrDefault();
         <form method="post" asp-controller="Nurse" asp-action="Update" enctype="multipart/form-data">
             <input asp-for="@nurse.NurseId" hidden />
             <input asp-for="@nurse.HasAccount" hidden />
