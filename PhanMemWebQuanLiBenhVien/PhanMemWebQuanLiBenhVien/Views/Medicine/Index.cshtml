@@ -1,0 +1,69 @@
+﻿@model IEnumerable<PhanMemWebQuanLiBenhVien.Models.Models.Medicine>
+
+@{
+    ViewData["Title"] = "Medicine Index";
+}
+
+<h2>Medicine Index</h2>
+<a asp-action="Create" asp-controller="Medicine" class="btn btn-primary">Create New</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID 
+            </th>
+            <th>
+                Tên
+            </th>
+            <th>
+                Công dụng
+            </th>
+            <th>
+                Đơn vị
+            </th>
+            <th>
+                Giá (VNĐ)
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Ngày hết hạn
+            </th>
+            <th style="width:260px">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicineId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpiryDate)
+            </td>
+            <td>
+                <div class="row gap-1">
+                        <a class="col col-auto" asp-action="Edit" asp-route-id="@item.MedicineId">Edit</a>
+                        <a class="col col-auto" asp-action="Delete" asp-controller="Medicine" asp-route-id="@item.MedicineId">Delete</a>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

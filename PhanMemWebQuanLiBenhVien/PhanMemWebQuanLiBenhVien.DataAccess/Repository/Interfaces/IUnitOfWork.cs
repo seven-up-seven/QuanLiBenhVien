@@ -21,6 +21,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
         IWorkScheduleRepository WorkScheduleRepository { get; }
         IMedicalVisitRepository MedicalVisitRepository { get; }
         IPhongCapCuu PhongCapCuuRepository { get; } 
+        IMedicineRepository MedicineRepository { get; }
         public void Save();
 		public Task SaveAsync();
 	}
