@@ -17,7 +17,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-3">
             <h5>ID Bệnh Án: @Model.MedicalRecordId</h5>
             <p><strong>Tên bệnh nhân:</strong> @Model.PatientName</p>
             <p><strong>Giới tính:</strong> @Model.PatientGender</p>
@@ -35,7 +35,7 @@
             }
         </div>
 
-        <div class="col-md-7">
+        <div class="col-md-9">
             <h5>Thông Tin Các Lần Khám</h5>
             @if (ViewBag.MedicalVisits != null)
             {
@@ -48,6 +48,7 @@
                             <th>Kết quả lâm sàng</th>
                             <th>Chẩn đoán</th>
                             <th>Tình trạng</th>
+                            <th>Ngày tái khám</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -64,8 +65,10 @@
                                 <td>@visit.KetQuaLamSang</td>
                                 <td>@visit.ChanDoan</td>
                                 <td>@visit.TinhTrangBenhNhan.ToString()</td>
+                                <td>@visit.NgayTaiKham.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a asp-controller="MedicalRecord" asp-action="MedicalVisitUpdate" asp-route-MedicalVisitId="@visit.VisitId" asp-route-MedicalRecordId="@Model.MedicalRecordId" class="btn btn-primary">Sửa</a>
+                                    <a asp-controller="Medicine" asp-action="KeDonThuoc" asp-route-MedicalVisitId="@visit.VisitId">Đơn thuốc</a>
                                 </td>
                             </tr>
                         }

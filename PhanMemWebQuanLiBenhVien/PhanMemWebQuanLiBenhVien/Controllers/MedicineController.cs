@@ -80,6 +80,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _unitOfWork.Save();
             return RedirectToAction("Index");
         }
+
+        public IActionResult KeDonThuoc(int MedicalVisitId)
+        {
+            
+            return View();
+        }
+
     }
 
 }

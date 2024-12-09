@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/PhanMemWebQuanLiBenhVien.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
         <div class="container-fluid vh-100">
@@ -85,7 +86,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white" asp-controller="Medicine" asp-action="Index">
-                                        <span class="bi bi-medicine"></span> Thuốc
+                                        <span class="bi bi-capsule"></span> Thuốc
                                     </a>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -116,6 +117,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

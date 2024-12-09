@@ -50,6 +50,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public int? NurseId { get; set; }
 		[ForeignKey("NurseId")]
 		public Nurse? Nurse { get; set; }
+
 	}
 
 }

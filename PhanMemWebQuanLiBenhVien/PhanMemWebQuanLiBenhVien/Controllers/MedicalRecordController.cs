@@ -307,6 +307,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                                               Value = e.ToString(),
                                               Text = e.ToString()
                                           }).ToList();
+            ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll()
+                                    .Select(m => new SelectListItem
+                                    {
+                                        Value = m.MedicineId.ToString(),
+                                        Text = m.Name + " (" + m.Unit + ") "
+                                    }).ToList();
             return View();
         }
         [HttpPost("CreateMedicalVisit/{MedicalRecordId}")]
