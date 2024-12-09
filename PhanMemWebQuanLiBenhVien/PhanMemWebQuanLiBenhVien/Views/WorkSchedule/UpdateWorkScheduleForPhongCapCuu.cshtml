@@ -1,15 +1,16 @@
-﻿@model WorkSchedule
+﻿@model PhanMemWebQuanLiBenhVien.Models.WorkSchedule
 @{
-	ViewData["Title"] = "Đặt lịch";
+	ViewData["Title"] = "Sửa lịch";
 }
 
 <div class="container mt-4">
 	<div class="row my-2">
-		<div class="col text-primary"><h2>Thêm lịch mới</h2></div>
+		<div class="col text-primary"><h2>Sửa lịch</h2></div>
 	</div>
 	<form method="post">
-		<input value="@ViewBag.phongkham.Name" disabled/>
-		<input asp-for="PhongKhamId" value="@ViewBag.phongkham.RoomId" hidden />
+		<input asp-for="@Model.WorkScheduleId" hidden />
+		<input value="@ViewBag.phongcapcuu.Name" disabled />
+		<input asp-for="@Model.PhongCapCuuId" value="@ViewBag.phongcapcuu.RoomId" hidden />
 		<input asp-for="DayOfWeek" value="@ViewBag.Thu" readonly />
 		<label>Chọn bác sĩ</label>
 		<select asp-for="DoctorId1" asp-items="@ViewBag.doctorlistca1">
@@ -21,6 +22,6 @@
 		<select asp-for="DoctorId3" asp-items="@ViewBag.doctorlistca3">
 			<option value="">--Chọn--</option>
 		</select>
-		<button type="submit" class="btn btn-primary">Đặt</button>
+		<button type="submit" class="btn btn-primary">Cập nhật</button>
 	</form>
 </div>
