@@ -18,7 +18,10 @@ namespace PhanMemWebQuanLiBenhVien.Models.Models
         //So tang nam trong ten phong
         public string Name { get; set; }
 
-        public bool isAvailable { get; set; } = true; 
-
+        public bool isAvailable { get; set; } = true;
+        public List<WorkSchedule> WorkSchedules { get; set; } = new List<WorkSchedule> {
+        new WorkSchedule(), new WorkSchedule(), new WorkSchedule(),
+        new WorkSchedule(), new WorkSchedule(), new WorkSchedule(), new WorkSchedule()
+        };
     }
 }

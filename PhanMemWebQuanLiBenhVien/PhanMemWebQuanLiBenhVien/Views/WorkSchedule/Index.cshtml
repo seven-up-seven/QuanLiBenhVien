@@ -53,7 +53,7 @@
                             @{
                                 if (dayOfWeek == "Monday")
                                 {
-                                    if (phongKham.WorkSchedules[0].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[0].DoctorId1 == null && phongKham.WorkSchedules[0].DoctorId2 == null && phongKham.WorkSchedules[0].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -64,7 +64,7 @@
                                 }
                                 if (dayOfWeek == "Tuesday")
                                 {
-                                    if (phongKham.WorkSchedules[1].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[1].DoctorId1 == null && phongKham.WorkSchedules[1].DoctorId2 == null && phongKham.WorkSchedules[1].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -75,7 +75,7 @@
                                 }
                                 if (dayOfWeek == "Wednesday")
                                 {
-                                    if (phongKham.WorkSchedules[2].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[2].DoctorId1 == null && phongKham.WorkSchedules[2].DoctorId2 == null && phongKham.WorkSchedules[2].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -86,7 +86,7 @@
                                 }
                                 if (dayOfWeek == "Thursday")
                                 {
-                                    if (phongKham.WorkSchedules[3].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[3].DoctorId1 == null && phongKham.WorkSchedules[3].DoctorId2 == null && phongKham.WorkSchedules[3].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -97,7 +97,7 @@
                                 }
                                 if (dayOfWeek == "Friday")
                                 {
-                                    if (phongKham.WorkSchedules[4].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[4].DoctorId1 == null && phongKham.WorkSchedules[4].DoctorId2 == null && phongKham.WorkSchedules[4].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -108,7 +108,7 @@
                                 }
                                 if (dayOfWeek == "Saturday")
                                 {
-                                    if (phongKham.WorkSchedules[5].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[5].DoctorId1 == null && phongKham.WorkSchedules[5].DoctorId2 == null && phongKham.WorkSchedules[5].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -119,7 +119,7 @@
                                 }
                                 if (dayOfWeek == "Sunday")
                                 {
-                                    if (phongKham.WorkSchedules[6].DoctorId1 == null)
+                                    if (phongKham.WorkSchedules[6].DoctorId1 == null && phongKham.WorkSchedules[6].DoctorId2 == null && phongKham.WorkSchedules[6].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
                                     }
@@ -150,12 +150,94 @@
                         <div class="card-body">
                             <h5 class="card-title text-center">@phongcapcuu.Name</h5>
                             <hr />
-                            <p class="text-center mb-1"><strong>Sáng:</strong> 6:00 - 12:00</p>
-                            <p class="text-center mb-1"><strong>Chiều:</strong> 12:00 - 18:00</p>
-                            <p class="text-center mb-1"><strong>Tối:</strong> 18:00 - 24:00</p>
-                            <div class="text-center">
-                                <a asp-action="Create" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" class="btn btn-primary">Đặt lịch</a>
+                            <div class="text-center mb-1 row">
+                                <p class="col col-auto"><strong>Sáng:</strong> 6:00 - 12:00</p>
                             </div>
+                            <div class="text-center mb-1 row">
+                                <p class="col col-auto"><strong>Chiều:</strong> 12:00 - 18:00</p>
+                            </div>
+                            <div class="text-center mb-1 row">
+                                <p class="col col-auto"><strong>Tối:</strong> 18:00 - 24:00</p>
+                            </div>
+                            @{
+                                if (dayOfWeek == "Monday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[0].DoctorId1 == null && phongcapcuu.WorkSchedules[0].DoctorId2 == null && phongcapcuu.WorkSchedules[0].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                                if (dayOfWeek == "Tuesday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[1].DoctorId1 == null && phongcapcuu.WorkSchedules[1].DoctorId2 == null && phongcapcuu.WorkSchedules[1].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                                if (dayOfWeek == "Wednesday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[2].DoctorId1 == null && phongcapcuu.WorkSchedules[2].DoctorId2 == null && phongcapcuu.WorkSchedules[2].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                                if (dayOfWeek == "Thursday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[3].DoctorId1 == null && phongcapcuu.WorkSchedules[3].DoctorId2 == null && phongcapcuu.WorkSchedules[3].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                                if (dayOfWeek == "Friday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[4].DoctorId1 == null && phongcapcuu.WorkSchedules[4].DoctorId2 == null && phongcapcuu.WorkSchedules[4].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                                if (dayOfWeek == "Saturday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[5].DoctorId1 == null && phongcapcuu.WorkSchedules[5].DoctorId2 == null && phongcapcuu.WorkSchedules[5].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                                if (dayOfWeek == "Sunday")
+                                {
+                                    if (phongcapcuu.WorkSchedules[6].DoctorId1 == null && phongcapcuu.WorkSchedules[6].DoctorId2 == null && phongcapcuu.WorkSchedules[6].DoctorId3 == null)
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="WorkSchedule" asp-action="UpdateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Sửa lịch</a>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
                 </div>

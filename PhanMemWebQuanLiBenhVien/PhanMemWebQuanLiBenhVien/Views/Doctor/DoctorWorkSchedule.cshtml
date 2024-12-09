@@ -1,9 +1,9 @@
-﻿@model Dictionary<string, Dictionary<int, string>>
-<h2 class="text-primary">Lịch tuần</h2>
+﻿@model Dictionary<string, Dictionary<int, PhongKham>>
+<h2 class="text-primary">Lịch tuần trực phòng khám</h2>
 <div class="d-flex justify-content-center mt-5">
     @if (Model.Count==0)
     {
-        <h4 class="text-muted">Nothing here.</h4>
+        <h4 class="text-muted">Chưa có lịch</h4>
     }
     else
     {
@@ -28,15 +28,24 @@
                             {
                                 if (catruc.Key==1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key==2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key==3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>
@@ -52,15 +61,24 @@
                             {
                                 if (catruc.Key == 1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>
@@ -76,15 +94,24 @@
                             {
                                 if (catruc.Key == 1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>
@@ -100,15 +127,24 @@
                             {
                                 if (catruc.Key == 1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>
@@ -124,15 +160,24 @@
                             {
                                 if (catruc.Key == 1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>
@@ -148,15 +193,24 @@
                             {
                                 if (catruc.Key == 1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>
@@ -172,15 +226,283 @@
                             {
                                 if (catruc.Key == 1)
                                 {
-                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                    <p>Ca sáng:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 2)
                                 {
-                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca chiều:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                                 if (catruc.Key == 3)
                                 {
-                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                    <p>
+                                        Ca tối:
+                                        <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    }
+</div>
+
+
+<h2 class="text-primary">Lịch tuần trực phòng cấp cứu</h2>
+<div class="d-flex justify-content-center mt-5">
+    @if (ViewBag.CaTrucPhongCapCuu.Count == 0)
+    {
+        <h4 class="text-muted">Chưa có lịch</h4>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Thứ hai</th>
+                    <th>Thứ ba</th>
+                    <th>Thứ tư</th>
+                    <th>Thứ năm</th>
+                    <th>Thứ sáu</th>
+                    <th>Thứ bảy</th>
+                    <th>Chủ nhật</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Monday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Monday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Tuesday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Tuesday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Wednesday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Wednesday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Thursday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Thursday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Friday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Friday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Saturday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Saturday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Sunday"))
+                    {
+                        <td>
+                            @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Sunday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>
+                                        Ca sáng:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>
+                                        Ca chiều:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>
+                                        Ca tối:
+                                        <a class="btn btn-primary">@catruc.Value.Name</a>
+                                    </p>
                                 }
                             }
                         </td>

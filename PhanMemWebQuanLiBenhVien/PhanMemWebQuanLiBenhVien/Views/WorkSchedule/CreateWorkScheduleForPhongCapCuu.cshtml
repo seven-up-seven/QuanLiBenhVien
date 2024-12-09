@@ -8,8 +8,8 @@
 		<div class="col text-primary"><h2>Thêm lịch mới</h2></div>
 	</div>
 	<form method="post">
-		<input value="@ViewBag.phongkham.Name" disabled/>
-		<input asp-for="PhongKhamId" value="@ViewBag.phongkham.RoomId" hidden />
+		<input value="@ViewBag.phongcapcuu.Name" disabled />
+		<input asp-for="PhongCapCuuId" value="@ViewBag.phongcapcuu.RoomId" hidden />
 		<input asp-for="DayOfWeek" value="@ViewBag.Thu" readonly />
 		<label>Chọn bác sĩ</label>
 		<select asp-for="DoctorId1" asp-items="@ViewBag.doctorlistca1">
