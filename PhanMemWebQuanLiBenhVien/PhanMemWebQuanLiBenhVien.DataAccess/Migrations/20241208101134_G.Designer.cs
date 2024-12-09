@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 
@@ -11,9 +12,11 @@ using PhanMemWebQuanLiBenhVien.DataAccess;
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208101134_G")]
+    partial class G
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,40 +435,6 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     b.ToTable("missions");
                 });
 
-            modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.Models.Medicine", b =>
-                {
-                    b.Property<int>("MedicineId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MedicineId"));
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Usage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MedicineId");
-
-                    b.ToTable("medicines");
-                });
-
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.Models.PhongCapCuu", b =>
                 {
                     b.Property<int>("RoomId")
@@ -671,39 +640,28 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkScheduleId"));
 
                     b.Property<string>("DayOfWeek")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DoctorId1")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DoctorId2")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DoctorId3")
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int?>("NurseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PhongCapCuuId")
-                        .HasColumnType("int");
+                    b.Property<string>("ShiftType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PhongKhamId")
-                        .HasColumnType("int");
+                    b.Property<string>("TimeSlot")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("WorkScheduleId");
 
-                    b.HasIndex("DoctorId1");
-
-                    b.HasIndex("DoctorId2");
-
-                    b.HasIndex("DoctorId3");
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("NurseId");
-
-                    b.HasIndex("PhongCapCuuId");
-
-                    b.HasIndex("PhongKhamId");
 
                     b.ToTable("workSchedules");
                 });
@@ -903,41 +861,17 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.WorkSchedule", b =>
                 {
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.Doctor", "Doctor1")
+                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId1");
-
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.Doctor", "Doctor2")
-                        .WithMany()
-                        .HasForeignKey("DoctorId2");
-
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.Doctor", "Doctor3")
-                        .WithMany()
-                        .HasForeignKey("DoctorId3");
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("PhanMemWebQuanLiBenhVien.Models.Nurse", "Nurse")
                         .WithMany()
                         .HasForeignKey("NurseId");
 
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.Models.PhongCapCuu", "PhongCapCuu")
-                        .WithMany()
-                        .HasForeignKey("PhongCapCuuId");
-
-                    b.HasOne("PhanMemWebQuanLiBenhVien.Models.PhongKham", "PhongKham")
-                        .WithMany("WorkSchedules")
-                        .HasForeignKey("PhongKhamId");
-
-                    b.Navigation("Doctor1");
-
-                    b.Navigation("Doctor2");
-
-                    b.Navigation("Doctor3");
+                    b.Navigation("Doctor");
 
                     b.Navigation("Nurse");
-
-                    b.Navigation("PhongCapCuu");
-
-                    b.Navigation("PhongKham");
                 });
 
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.Doctor", b =>
@@ -970,8 +904,6 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.PhongKham", b =>
                 {
                     b.Navigation("Patients");
-
-                    b.Navigation("WorkSchedules");
                 });
 
             modelBuilder.Entity("PhanMemWebQuanLiBenhVien.Models.Profession", b =>

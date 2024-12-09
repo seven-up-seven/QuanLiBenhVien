@@ -1,57 +1,27 @@
-﻿@model PhanMemWebQuanLiBenhVien.Models.WorkSchedule
+﻿@model WorkSchedule
 @{
-	ViewData["Title"] = "Tạo lịch";
+	ViewData["Title"] = "Đặt lịch";
 }
 
 <div class="container mt-4">
 	<div class="row my-2">
 		<div class="col text-primary"><h2>Thêm lịch mới</h2></div>
 	</div>
-	<form asp-action="Create" asp-controller="WorkSchedule" method="post" enctype="multipart/form-data">
-		@* <div class="form-group">
-			<label asp-for="RoomOfMonday">Tên Phòng</label>
-			<input asp-for="RoomOfMonday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfMonday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="RoomOfTuesday">Tên Phòng</label>
-			<input asp-for="RoomOfTuesday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfTuesday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="RoomOfWednesday">Tên Phòng</label>
-			<input asp-for="RoomOfWednesday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfWednesday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="RoomOfThurday">Tên Phòng</label>
-			<input asp-for="RoomOfThurday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfThurday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="RoomOfFriday">Tên Phòng</label>
-			<input asp-for="RoomOfFriday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfFriday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="RoomOfSaturday">Tên Phòng</label>
-			<input asp-for="RoomOfSaturday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfSaturday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="RoomOfSunday">Tên Phòng</label>
-			<input asp-for="RoomOfSunday" type="text" class="form-control" placeholder="Nhập Phòng">
-		</div>
-		<span asp-validation-for="RoomOfSunday" class="text-danger"></span>
-		<div class="form-group">
-			<label asp-for="DoctorId" class="form-control">Bác sĩ</label>
-			<select asp-for="DoctorId" asp-items="@ViewBag.listDoctor" class="form-control"></select>
-		</div>
-		<div class="row d-flex">
-			<div class="col-auto text-primary"><a asp-controller="WorkSchedule" asp-action="Index" class="btn btn-outline-dark">Quay lại</a></div>
-			<div class="col-auto text-primary ">
-				<button type="submit" class="btn btn-primary "><h4>Thêm</h4></button>
-			</div>
-		</div> *@
+	<form method="post">
+		<input value="@ViewBag.phongkham.Name" disabled/>
+		<input asp-for="PhongKhamId" value="@ViewBag.phongkham.RoomId" hidden />
+		<input name="Ca" value="@ViewBag.Ca" readonly />
+		<input asp-for="DayOfWeek" value="@ViewBag.Thu" readonly />
+		<label>Chọn bác sĩ</label>
+		<select asp-for="DoctorId1" asp-items="@ViewBag.doctorlist">
+			<option value="">--Chọn--</option>
+		</select>
+		<select asp-for="DoctorId2" asp-items="@ViewBag.doctorlist">
+			<option value="">--Chọn--</option>
+		</select>
+		<select asp-for="DoctorId3" asp-items="@ViewBag.doctorlist">
+			<option value="">--Chọn--</option>
+		</select>
+		<button type="submit" class="btn btn-primary">Đặt</button>
 	</form>
 </div>

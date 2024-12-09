@@ -17,5 +17,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public int? ProfessionId { get; set; }
         [ForeignKey("ProfessionId")]
         public Profession? Profession { get; set; }
+        public List<WorkSchedule> WorkSchedules { get; set; } = new List<WorkSchedule> {
+        new WorkSchedule(), new WorkSchedule(), new WorkSchedule(),
+        new WorkSchedule(), new WorkSchedule(), new WorkSchedule(), new WorkSchedule()
+        };
     }
 }

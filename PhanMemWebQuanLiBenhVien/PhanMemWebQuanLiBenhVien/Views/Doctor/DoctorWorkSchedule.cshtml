@@ -1,10 +1,7 @@
-﻿@model Doctor
-@{
-    Layout = "~/Views/Shared/_CustomedLayout.cshtml";
-}
+﻿@model Dictionary<string, Dictionary<int, string>>
 <h2 class="text-primary">Lịch tuần</h2>
 <div class="d-flex justify-content-center mt-5">
-    @if (ViewBag.WS == null)
+    @if (Model.Count==0)
     {
         <h4 class="text-muted">Nothing here.</h4>
     }
@@ -24,13 +21,174 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>@ViewBag.WS.RoomOfMonday</td>
-                    <td>@ViewBag.WS.RoomOfTuesday</td>
-                    <td>@ViewBag.WS.RoomOfWednesday</td>
-                    <td>@ViewBag.WS.RoomOfThurday</td>
-                    <td>@ViewBag.WS.RoomOfFriday</td>
-                    <td>@ViewBag.WS.RoomOfSaturday</td>
-                    <td>@ViewBag.WS.RoomOfSunday</td>
+                    @if (Model.ContainsKey("Monday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Monday"])
+                            {
+                                if (catruc.Key==1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key==2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key==3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (Model.ContainsKey("Tuesday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Tuesday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (Model.ContainsKey("Wednesday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Wednesday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (Model.ContainsKey("Thursday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Thursday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (Model.ContainsKey("Friday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Friday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (Model.ContainsKey("Saturday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Saturday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    @if (Model.ContainsKey("Sunday"))
+                    {
+                        <td>
+                            @foreach (var catruc in Model["Sunday"])
+                            {
+                                if (catruc.Key == 1)
+                                {
+                                    <p>Làm ca sáng: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 2)
+                                {
+                                    <p>Làm ca chiều: @catruc.Value.ToString()</p>
+                                }
+                                if (catruc.Key == 3)
+                                {
+                                    <p>Làm ca tối: @catruc.Value.ToString()</p>
+                                }
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                 </tr>
             </tbody>
         </table>

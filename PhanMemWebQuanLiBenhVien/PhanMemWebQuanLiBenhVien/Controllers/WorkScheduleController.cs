@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -15,33 +17,70 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
 
         [HttpGet("Index")]
-        public IActionResult Index()
+        public IActionResult Index(string date)
         {
-			var listWorkChedule = _unitOfWork.WorkScheduleRepository.GetAll();
-			return View(listWorkChedule);
+            var listphongkham = _unitOfWork.PhongKhamRepository.GetAll();
+
+            var listphongcapcuu = _unitOfWork.PhongCapCuuRepository.GetAll();
+            ViewBag.listphongcapcuu = listphongcapcuu;
+            
+            foreach(var phongkham in listphongkham)
+            {
+                var workschedule = _unitOfWork.WorkScheduleRepository.Get(ws => ws.PhongKhamId == phongkham.RoomId);
+                string Thu = workschedule.DayOfWeek; 
+                switch (Thu)
+                {
+                    case "Monday":
+                        phongkham.WorkSchedules[0] = workschedule;
+                        break;
+                    case "Tuesday":
+                        phongkham.WorkSchedules[1] = workschedule;
+                        break;
+                    case "Wednesday":
+                        phongkham.WorkSchedules[2] = workschedule;
+                        break;
+                    case "Thursday":
+                        phongkham.WorkSchedules[3] = workschedule;
+                        break;
+                    case "Friday":
+                        phongkham.WorkSchedules[4] = workschedule;
+                        break;
+                    case "Saturday":
+                        phongkham.WorkSchedules[5] = workschedule;
+                        break;
+                    case "Sunday":
+                        phongkham.WorkSchedules[6] = workschedule;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return View(listphongkham);
         }
 
 
         [HttpGet("Create")]
-        public IActionResult Create()
+        public IActionResult Create(int PhongKhamId, string Thu)
         {
-			ViewBag.listDoctor = _unitOfWork.DoctorRepository.GetAll().Select(u => new SelectListItem
-			{
-				Text = u.DoctorName,
-				Value = u.DoctorId.ToString()
-			});
-			return View();
-        }
+            var phongkham=_unitOfWork.PhongKhamRepository.Get(u=>u.RoomId==PhongKhamId);
+            ViewBag.Thu=Thu;
+            ViewBag.phongkham= phongkham;
+            ViewBag.doctorlist = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == phongkham.ProfessionId).Select(u => new SelectListItem { 
+                Text=u.DoctorName+" "+u.DoctorId,
+                Value=u.DoctorId.ToString()
+            });
+            return View();
+        } 
         [HttpPost("Create")]
-        public IActionResult Create(WorkSchedule workSchedule)
+        public IActionResult Create(WorkSchedule workschedule)
         {
+            var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == workschedule.PhongKhamId);
             if (ModelState.IsValid)
             {
-                _unitOfWork.WorkScheduleRepository.Add(workSchedule);
+                _unitOfWork.WorkScheduleRepository.Add(workschedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-
             return View();
         }
 
@@ -54,17 +93,22 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
 
 
-        [HttpGet("Update/{WorkScheduleId}")]
-        public IActionResult Update(int WorkScheduleId)
+        [HttpGet]
+        public IActionResult Update(int PhongKhamId, string Thu)
         {
-            var workSchedule = _unitOfWork.WorkScheduleRepository.Get(ws => ws.WorkScheduleId == WorkScheduleId);
-            if (workSchedule != null)
+            var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == PhongKhamId);
+            ViewBag.Thu = Thu;
+            ViewBag.phongkham = phongkham;
+            ViewBag.doctorlist = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == phongkham.ProfessionId).Select(u => new SelectListItem
             {
-                return View(workSchedule);
-            }
-            return View();
+                Text = u.DoctorName + " " + u.DoctorId,
+                Value = u.DoctorId.ToString()
+            });
+            var workschedule = _unitOfWork.WorkScheduleRepository.Get(ws => ws.PhongKhamId == PhongKhamId);
+            
+            return View(workschedule);
         }
-        [HttpPost("Update/{WorkScheduleId}")]
+        [HttpPost]
         public IActionResult Update(WorkSchedule workSchedule)
         {
             if (ModelState.IsValid)
