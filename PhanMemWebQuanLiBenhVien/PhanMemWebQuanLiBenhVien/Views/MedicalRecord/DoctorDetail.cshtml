@@ -67,7 +67,11 @@
                                 <td>@visit.TinhTrangBenhNhan.ToString()</td>
                                 <td>@visit.NgayTaiKham.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <a asp-controller="MedicalRecord" asp-action="MedicalVisitUpdate" asp-route-MedicalVisitId="@visit.VisitId" asp-route-MedicalRecordId="@Model.MedicalRecordId" class="btn btn-primary">Sửa</a>
+                                    @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                                    {
+                                        <a asp-controller="MedicalRecord" asp-action="MedicalVisitUpdate" asp-route-MedicalVisitId="@visit.VisitId" asp-route-MedicalRecordId="@Model.MedicalRecordId" class="btn btn-primary">Sửa</a>
+                                        <br />
+                                    }
                                     <a asp-controller="Medicine" asp-action="KeDonThuoc" asp-route-MedicalVisitId="@visit.VisitId">Đơn thuốc</a>
                                 </td>
                             </tr>

@@ -307,11 +307,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                                               Value = e.ToString(),
                                               Text = e.ToString()
                                           }).ToList();
-            ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll()
+            ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now)
                                     .Select(m => new SelectListItem
                                     {
                                         Value = m.MedicineId.ToString(),
-                                        Text = m.Name + " (" + m.Unit + ") "
+                                        Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
                                     }).ToList();
             return View();
         }
@@ -367,7 +367,5 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        
     }
 }

@@ -1,98 +1,141 @@
-﻿<div class="prescription-header">
-    <h1>Đơn Thuốc</h1>
-    <p><strong>Phòng khám ABC</strong></p>
-    <p>Địa chỉ: 123 Đường ABC, TP XYZ</p>
-    <p>Số điện thoại: 0123-456-789</p>
+﻿@model MedicalVisit
+<div class="p-1">
+    <div class="p-5">
+        <div class="prescription-header">
+            <h5><strong>Đơn Thuốc</strong></h5>
+        </div>
+
+        <div class="doctor-info">
+            <h5>Thông tin bác sĩ:</h5>
+            <p><strong>Tên bác sĩ:</strong> @ViewBag.Doctor.DoctorName</p>
+            <p><strong>Chuyên khoa:</strong> @ViewBag.Doctor.Profession.ProfessionName</p>
+        </div>
+
+        <div class="patient-info">
+            <h5>Thông tin bệnh nhân:</h5>
+            <p><strong>Tên bệnh nhân:</strong> @ViewBag.Patient.Name</p>
+            <p><strong>Ngày sinh: @ViewBag.Patient.DateOfBirth</strong></p>
+            <p><strong>Giới tính:</strong> @ViewBag.Patient.Gender.ToString()</p>
+            <p><strong>Ngày kê đơn:</strong> @DateTime.Now</p>
+        </div>
+
+        <h5>Chi tiết đơn thuốc:</h5>
+        <table class="prescription-details">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên thuốc</th>
+                    <th>Đơn vị</th>
+                    <th>Số lượng</th>
+                    <th>Cách dùng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @foreach (var medicine in ViewBag.medicine)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@medicine.Medicine.Name</td>
+                        <td>@medicine.Medicine.Unit</td>
+                        <td>@medicine.Quantity</td>
+                        <td>@medicine.Medicine.Usage</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <p><strong>Bác sĩ kê đơn:</strong> @ViewBag.Doctor.DoctorName</p>
+            <p><i>Chữ ký:</i> ________________________</p>
+        </div>
+    </div>
 </div>
-
-<div class="doctor-info">
-    <h3>Thông tin bác sĩ:</h3>
-    <p><strong>Tên bác sĩ:</strong> Nguyễn Văn A</p>
-    <p><strong>Chuyên khoa:</strong> Nội khoa</p>
-</div>
-
-<div class="patient-info">
-    <h3>Thông tin bệnh nhân:</h3>
-    <p><strong>Tên bệnh nhân:</strong> Trần Văn B</p>
-    <p><strong>Tuổi:</strong> 30</p>
-    <p><strong>Giới tính:</strong> Nam</p>
-    <p><strong>Ngày kê đơn:</strong> 09/12/2024</p>
-</div>
-
-<h3>Chi tiết đơn thuốc:</h3>
-<table class="prescription-details">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Tên thuốc</th>
-            <th>Liều lượng</th>
-            <th>Cách sử dụng</th>
-            <th>Ghi chú</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>Paracetamol 500mg</td>
-            <td>2 viên/ngày</td>
-            <td>Uống sau ăn</td>
-            <td>Không dùng quá 4 viên/ngày</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Amoxicillin 500mg</td>
-            <td>3 viên/ngày</td>
-            <td>Uống trước ăn</td>
-            <td>Dùng liên tục 7 ngày</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Vitamin C 1000mg</td>
-            <td>1 viên/ngày</td>
-            <td>Uống sau bữa sáng</td>
-            <td>-</td>
-        </tr>
-    </tbody>
-</table>
-
-<div class="footer">
-    <p><strong>Bác sĩ kê đơn:</strong> Nguyễn Văn A</p>
-    <p><i>Chữ ký:</i> ________________________</p>
-</div>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-    }
-
-    .prescription-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .doctor-info, .patient-info {
-        margin-bottom: 20px;
-    }
-
-    .prescription-details {
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-        .prescription-details th, .prescription-details td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+<button id="download-pdf">In Trang Thành PDF</button>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
 
-        .prescription-details th {
-            background-color: #f2f2f2;
+        .prescription-header {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-    .footer {
-        text-align: right;
-        margin-top: 30px;
-        font-size: 0.9em;
-    }
-</style>
+        .doctor-info, .patient-info {
+            margin-bottom: 20px;
+        }
+
+        .prescription-details {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+            .prescription-details th, .prescription-details td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .prescription-details th {
+                background-color: #f2f2f2;
+            }
+
+        .footer {
+            text-align: right;
+            margin-top: 30px;
+            font-size: 0.9em;
+            margin-right: 30px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("download-pdf").addEventListener("click", function () {
+                const button = document.getElementById("download-pdf"); // Lấy phần tử nút
+                const element = document.body; // Lấy toàn bộ trang
+
+                // Ẩn nút trước khi chụp
+                button.style.display = "none";
+
+                html2canvas(element, {
+                    x: 270, // Bỏ 270px bên trái
+                    y: 0,
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: element.offsetWidth - 270,
+                    height: element.offsetHeight
+                }).then(function (canvas) {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const imgWidth = canvas.width;
+                    const imgHeight = canvas.height;
+                    const ratio = pdfWidth / imgWidth;
+                    const adjustedHeight = imgHeight * ratio;
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, adjustedHeight);
+                    pdf.save("trang-hien-tai.pdf");
+                }).catch(function (error) {
+                    console.error("Lỗi khi chụp màn hình:", error);
+                }).finally(function () {
+                    // Hiển thị lại nút sau khi hoàn tất
+                    button.style.display = "block";
+                });
+            });
+        });
+
+
+    </script>
+}

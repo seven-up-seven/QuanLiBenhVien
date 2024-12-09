@@ -83,8 +83,22 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
         public IActionResult KeDonThuoc(int MedicalVisitId)
         {
-            
-            return View();
+            var medicalVisit = _unitOfWork.MedicalVisitRepository.Get(mv => mv.VisitId == MedicalVisitId);
+            var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == medicalVisit.MedicalRecordId);
+            var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == medicalRecord.DoctorId);
+            doctor.Profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == doctor.ProfessionId);
+            var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == medicalRecord.PatientId);
+            ViewBag.doctor = doctor;
+            ViewBag.patient = patient;
+
+            var idThuocs = medicalVisit.IdThuocs.Split(',').Select(int.Parse).ToList();
+            var soLuongs = medicalVisit.SoLuongThuocs.Split(',').Select(int.Parse).ToList();
+            var medicineList = idThuocs.Select(id => _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id ))
+                                       .Zip(soLuongs, (medicine, qty) => new { Medicine = medicine, Quantity = qty })
+                                       .ToList();
+            ViewBag.medicine = medicineList;
+
+            return View(medicalVisit);
         }
 
     }
