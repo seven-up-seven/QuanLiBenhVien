@@ -43,7 +43,7 @@ namespace PhanMemWebQuanLiBenhVien.Ultilities
             tronang
         }
 
-        public enum ELever
+        public enum Elever
         {
             binhthuong,
             uutien,

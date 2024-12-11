@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
@@ -56,16 +57,29 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             .Select(phong => new SelectListItem
             {
                 Value = phong.ToString(),
-                Text = phong.ToString()
+                Text = phong switch
+                {
+                    EPhong.phongkham => "Phòng khám",
+                    EPhong.phongbenh => "Phòng bệnh",
+                    _ => phong.ToString() // Trường hợp dự phòng
+                }
             }).ToList();
-            var LeverList = Enum.GetValues(typeof(ELever))
-           .Cast<ELever>()
-           .Select(lever => new SelectListItem
-           {
-               Value = lever.ToString(),
-               Text = lever.ToString()
-           }).ToList();
+            var LeverList = Enum.GetValues(typeof(Elever))
+            .Cast<Elever>()
+            .Select(lever => new SelectListItem
+            {
+                Value = lever.ToString(),
+                Text = lever switch
+                {
+                    Elever.binhthuong => "Bình Thường",
+                    Elever.uutien => "Ưu Tiên",
+                    Elever.nguycap => "Nguy Cấp",
+                    _ => lever.ToString() // Trường hợp dự phòng
+                }
+            }).ToList();
+
             ViewBag.Levers = LeverList;
+
             ViewBag.Phongs = PhongList;
             return View();
         }
@@ -73,116 +87,65 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult Create(Mission mission)
         {
-            // Hàm hỗ trợ: Lấy lại dữ liệu cho dropdowns trong trường hợp có lỗi
             void PopulateDropdowns()
             {
                 ViewBag.Doctors = _unitOfWork.DoctorRepository.GetAll().Select(u => new SelectListItem
                 {
-                    Text = u.DoctorName,
+                    Text = "Tên: " + u.DoctorName + " ID: " + u.DoctorId,
                     Value = u.DoctorId.ToString()
                 });
 
                 ViewBag.PhongKhams = _unitOfWork.PhongKhamRepository.GetAll().Select(u => new SelectListItem
                 {
-                    Text = u.Name,
+                    Text = "Tên: " + u.Name + " ID: " + u.RoomId,
                     Value = u.RoomId.ToString()
                 });
 
                 ViewBag.PhongBenhs = _unitOfWork.PhongBenhRepository.GetAll().Select(u => new SelectListItem
                 {
-                    Text = u.Name,
+                    Text = "Tên: " + u.Name + " ID: " + u.RoomId,
                     Value = u.RoomId.ToString()
                 });
 
-                ViewBag.Phongs = Enum.GetValues(typeof(EPhong))
+                var PhongList = Enum.GetValues(typeof(EPhong))
                     .Cast<EPhong>()
                     .Select(phong => new SelectListItem
                     {
                         Value = phong.ToString(),
-                        Text = phong.ToString()
+                        Text = phong switch
+                        {
+                            EPhong.phongkham => "Phòng khám",
+                            EPhong.phongbenh => "Phòng bệnh",
+                            _ => phong.ToString()
+                        }
                     }).ToList();
-                ViewBag.Levers = Enum.GetValues(typeof(ELever))
-                   .Cast<ELever>()
-                   .Select(lever => new SelectListItem
-                   {
-                       Value = lever.ToString(),
-                       Text = lever.ToString()
-                   }).ToList();
 
+                var LeverList = Enum.GetValues(typeof(Elever))
+                    .Cast<Elever>()
+                    .Select(lever => new SelectListItem
+                    {
+                        Value = lever.ToString(),
+                        Text = lever switch
+                        {
+                            Elever.binhthuong => "Bình Thường",
+                            Elever.uutien => "Ưu Tiên",
+                            Elever.nguycap => "Nguy Cấp",
+                            _ => lever.ToString()
+                        }
+                    }).ToList();
 
-            }
-
-            int count = 0;
-
-            // Kiểm tra thời gian bắt đầu
-            if (mission.Time == default(DateTime))
-            {
-                ModelState.AddModelError("Time", "Vui lòng chọn ngày bắt đầu.");
-                count++;
-            }
-
-            // Kiểm tra thời gian kết thúc
-            if (mission.EndTime == default(DateTime))
-            {
-                ModelState.AddModelError("EndTime", "Vui lòng chọn ngày kết thúc.");
-                count++;
-            }
-
-            // Kiểm tra thời gian kết thúc phải lớn hơn thời gian bắt đầu
-            if (mission.EndTime <= mission.Time)
-            {
-                ModelState.AddModelError("EndTime", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
-                count++;
-            }
-
-            // Kiểm tra bác sĩ
-            if (mission.DoctorId == 0)
-            {
-                ModelState.AddModelError("DoctorId", "Vui lòng chọn bác sĩ.");
-                count++;
-            }
-
-            // Kiểm tra loại phòng
-            if (!Enum.IsDefined(typeof(EPhong), mission.RoomType))
-            {
-                ModelState.AddModelError("RoomType", "Vui lòng chọn loại phòng.");
-                count++;
+                ViewBag.Levers = LeverList;
+                ViewBag.Phongs = PhongList;
             }
 
 
-            if (!Enum.IsDefined(typeof(ELever), mission.Lever))
-            {
-                ModelState.AddModelError("Lever", "Vui lòng chọn mức độ.");
-                count++;
-            }
-
-            // Kiểm tra phòng dựa trên loại phòng
-            if (mission.RoomType == EPhong.phongkham && mission.PhongKhamId == null)
-            {
-                ModelState.AddModelError("PhongKhamId", "Vui lòng chọn phòng khám.");
-                count++;
-            }
-
-            if (mission.RoomType == EPhong.phongbenh && mission.PhongBenhId == null)
-            {
-                ModelState.AddModelError("PhongBenhId", "Vui lòng chọn phòng bệnh.");
-                count++;
-            }
-
-            if (mission.Content == "")
-            {
-                ModelState.AddModelError("Content", "Vui lòng nhập nội dung.");
-                count++;
-            }
-            if (count != 0)
+            if (!ModelState.IsValid)
             {
                 PopulateDropdowns();
                 return View(mission);
             }
-            // Thêm nhiệm vụ và lưu
             _unitOfWork.MissionRepository.Add(mission);
             _unitOfWork.Save();
-
             return RedirectToAction("Index");
         }
 
@@ -213,24 +176,33 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Value = u.RoomId.ToString()
             });
             var PhongList = Enum.GetValues(typeof(EPhong))
-            .Cast<EPhong>()
-            .Select(phong => new SelectListItem
-            {
-                Value = phong.ToString(),
-                Text = phong.ToString()
-            }).ToList();
-
-            var LeverList = Enum.GetValues(typeof(ELever))
-            .Cast<ELever>()
+           .Cast<EPhong>()
+           .Select(phong => new SelectListItem
+           {
+               Value = phong.ToString(),
+               Text = phong switch
+               {
+                   EPhong.phongkham => "Phòng khám",
+                   EPhong.phongbenh => "Phòng bệnh",
+                   _ => phong.ToString() // Trường hợp dự phòng
+               }
+           }).ToList();
+            var LeverList = Enum.GetValues(typeof(Elever))
+            .Cast<Elever>()
             .Select(lever => new SelectListItem
             {
                 Value = lever.ToString(),
-                Text = lever.ToString()
+                Text = lever switch
+                {
+                    Elever.binhthuong => "Bình Thường",
+                    Elever.uutien => "Ưu Tiên",
+                    Elever.nguycap => "Nguy Cấp",
+                    _ => lever.ToString() // Trường hợp dự phòng
+                }
             }).ToList();
 
             ViewBag.Levers = LeverList;
             ViewBag.Phongs = PhongList;
-
             return View(mission); // Trả nhiệm vụ hiện tại cho View
         }
 
@@ -259,92 +231,40 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     Value = u.RoomId.ToString()
                 });
 
-                ViewBag.Phongs = Enum.GetValues(typeof(EPhong))
-                    .Cast<EPhong>()
-                    .Select(phong => new SelectListItem
+                var PhongList = Enum.GetValues(typeof(EPhong))
+               .Cast<EPhong>()
+               .Select(phong => new SelectListItem
+               {
+                   Value = phong.ToString(),
+                   Text = phong switch
+                   {
+                       EPhong.phongkham => "Phòng khám",
+                       EPhong.phongbenh => "Phòng bệnh",
+                       _ => phong.ToString() // Trường hợp dự phòng
+                   }
+               }).ToList();
+                var LeverList = Enum.GetValues(typeof(Elever))
+                .Cast<Elever>()
+                .Select(lever => new SelectListItem
+                {
+                    Value = lever.ToString(),
+                    Text = lever switch
                     {
-                        Value = phong.ToString(),
-                        Text = phong.ToString()
-                    }).ToList();
-                ViewBag.Levers = Enum.GetValues(typeof(ELever))
-                  .Cast<ELever>()
-                  .Select(lever => new SelectListItem
-                  {
-                      Value = lever.ToString(),
-                      Text = lever.ToString()
-                  }).ToList();
+                        Elever.binhthuong => "Bình Thường",
+                        Elever.uutien => "Ưu Tiên",
+                        Elever.nguycap => "Nguy Cấp",
+                        _ => lever.ToString() // Trường hợp dự phòng
+                    }
+                }).ToList();
+                ViewBag.Levers = LeverList;
+                ViewBag.Phongs = PhongList;
             }
-
-            int count = 0;
-
-            // Kiểm tra thời gian bắt đầu
-            if (mission.Time == default(DateTime))
-            {
-                ModelState.AddModelError("Time", "Vui lòng chọn ngày bắt đầu.");
-                count++;
-            }
-
-            // Kiểm tra thời gian kết thúc
-            if (mission.EndTime == default(DateTime))
-            {
-                ModelState.AddModelError("EndTime", "Vui lòng chọn ngày kết thúc.");
-                count++;
-            }
-
-            // Kiểm tra thời gian kết thúc phải lớn hơn thời gian bắt đầu
-            if (mission.EndTime <= mission.Time)
-            {
-                ModelState.AddModelError("EndTime", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
-                count++;
-            }
-
-            // Kiểm tra bác sĩ
-            if (mission.DoctorId == 0)
-            {
-                ModelState.AddModelError("DoctorId", "Vui lòng chọn bác sĩ.");
-                count++;
-            }
-
-            // Kiểm tra loại phòng
-            if (!Enum.IsDefined(typeof(EPhong), mission.RoomType))
-            {
-                ModelState.AddModelError("RoomType", "Vui lòng chọn loại phòng.");
-                count++;
-            }
-
-            if (!Enum.IsDefined(typeof(ELever), mission.Lever))
-            {
-                ModelState.AddModelError("Lever", "Vui lòng chọn mức độ.");
-                count++;
-            }
-
-            // Kiểm tra phòng dựa trên loại phòng
-            if (mission.RoomType == EPhong.phongkham && mission.PhongKhamId == null)
-            {
-                ModelState.AddModelError("PhongKhamId", "Vui lòng chọn phòng khám.");
-                count++;
-            }
-
-            if (mission.RoomType == EPhong.phongbenh && mission.PhongBenhId == null)
-            {
-                ModelState.AddModelError("PhongBenhId", "Vui lòng chọn phòng bệnh.");
-                count++;
-            }
-
-            if (mission.Content == "")
-            {
-                ModelState.AddModelError("Content", "Vui lòng nhập nội dung.");
-                count++;
-            }
-            if (count != 0)
+            if (!ModelState.IsValid)
             {
                 PopulateDropdowns();
                 return View(mission);
             }
-            // Thêm nhiệm vụ và lưu
-            _unitOfWork.MissionRepository.Add(mission);
-            _unitOfWork.Save();
-
+            _unitOfWork.MissionRepository.Update(mission);
             return RedirectToAction("Index");
         }
 
@@ -365,6 +285,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public IActionResult DetailMission(int missionId)
         {
             var mission = _unitOfWork.MissionRepository.Get(m => m.MissionId == missionId);
@@ -382,10 +303,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Tick(int missionId,int day,int month,int year)
+
+        public IActionResult Tick(int id)
         {
-            var mission = _unitOfWork.MissionRepository.Get(u => u.MissionId == missionId);
+            var mission = _unitOfWork.MissionRepository.Get(u => u.MissionId == id);
             if (mission == null)
             {
                 return NotFound(); // Nếu không tìm thấy nhiệm vụ
@@ -396,8 +317,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _unitOfWork.MissionRepository.Update(mission);
             _unitOfWork.Save();
 
-            return RedirectToAction("DoctorMission", "Doctor", new {day, month, year});
+            // Chuyển hướng về trang chi tiết
+            return RedirectToAction("DetailMission", new { missionId = id });
         }
+
 
     }
 }

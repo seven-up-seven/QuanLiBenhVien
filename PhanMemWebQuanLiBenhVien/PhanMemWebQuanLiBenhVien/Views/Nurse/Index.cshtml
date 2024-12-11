@@ -15,6 +15,7 @@
                 <th>Họ và tên</th>
                 <th>Giới tính</th>
                 <th>Tuổi</th>
+                <th>Ảnh</th>
                 <th style="width: 330px">Actions</th>
             </tr>
         </thead>
@@ -28,6 +29,10 @@
                     <td>@nurse.NurseName</td>
                     <td>@nurse.NurseGender.ToString()</td>
                     <td>@nurse.NurseAge</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <img src="@nurse.NurseImgURL" width="100" />
+                    </td>
+
                     <td>
                         <a class="btn btn-primary" asp-controller="Nurse" asp-action="Update" asp-route-NurseId="@nurse.NurseId"><i class="bi bi-pencil-square"></i> Sửa</a>
                         <a asp-controller="Nurse" asp-action="Detail" asp-route-NurseId="@nurse.NurseId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>

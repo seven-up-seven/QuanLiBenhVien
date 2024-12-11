@@ -15,7 +15,15 @@
     int nextYear = selectedMonth == 12 ? selectedYear + 1 : selectedYear;
 
     // Danh sách ngày có nhiệm vụ
-    var missionDates = Model.MissionList?.Select(m => m.Time.Date).Distinct().ToList();
+    var missionDateNon_Completed = Model.MissionList
+     ?.Where(m => !m.IsCompleted) // Lọc các nhiệm vụ chưa hoàn thành
+     .Select(m => m.Time.Date)
+     .Distinct()
+     .ToList();
+    var missionDates = Model.MissionList?
+    .Select(m => m.Time.Date)
+    .Distinct()
+    .ToList();
 }
 
 <div class="d-flex gap-3">
@@ -61,15 +69,20 @@
                                 if (started && day <= daysInMonth)
                                 {
                                     var currentDay = new DateTime(selectedYear, selectedMonth, day);
-                                    bool hasMission = missionDates?.Contains(currentDay) ?? false;
+                                    bool hasMissionNon_Completed = missionDateNon_Completed?.Contains(currentDay) ?? false;
+                                    bool hasMissionCompleted = missionDates?.Contains(currentDay) ?? false;
                                     string isToday = currentDay == DateTime.Today ? "selected" : "";
 
                                     <td>
                                         <div class="day-cell @isToday" data-date="@currentDay.ToString("yyyy-MM-dd")">
                                             <span>@day</span>
-                                            @if (hasMission)
+                                            @if (hasMissionNon_Completed)
                                             {
-                                                <div class="dot"></div>
+                                                <div class="chtdot"></div>
+                                            }
+                                            else if(hasMissionCompleted)
+                                            {
+                                                <div class="htdot"></div>
                                             }
                                         </div>
                                     </td>
@@ -116,7 +129,6 @@
         })
         ));
 
-
         // Xử lý sự kiện click vào ngày
         document.querySelectorAll(".day-cell").forEach(cell => {
             cell.addEventListener("click", function () {
@@ -133,37 +145,46 @@
                 if (missions.length > 0) {
                     missionDetailsDiv.innerHTML = missions.map(mission => {
                         let borderColorClass = "";
+                        let leverText = "";
+
                         switch (mission.Lever.toLowerCase()) {
                             case "binhthuong":
                                 borderColorClass = "border-success"; // Xanh lá cây
+                                leverText = "Bình Thường";
                                 break;
                             case "uutien":
                                 borderColorClass = "border-warning"; // Cam
+                                leverText = "Ưu Tiên";
                                 break;
                             case "nguycap":
                                 borderColorClass = "border-danger"; // Đỏ
+                                leverText = "Nguy Cấp";
                                 break;
                         }
 
+                        // Thêm màu sắc cho trạng thái
+                        const statusClass = mission.IsCompleted ? "text-success" : "text-danger";
+                        const statusText = mission.IsCompleted ? "Hoàn thành" : "Chưa hoàn thành";
+
                         return `
-            <div class="card ${borderColorClass}">
-                <div class="card-header">
-                    <p class="card-text"><strong>Mức độ:</strong> ${mission.Lever}</p>
-                </div>
-                <div class="card-body">
-                    <p class="card-text"><strong>Thời gian kết thúc:</strong> ${mission.EndTime}</p>
-                    <p class="card-text"><strong>Nội dung:</strong> ${mission.Content}</p>
-                    <p class="card-text"><strong>Phòng:</strong> ${mission.Room}</p>
-                    <a href="/Mission/DetailMission?missionId=${mission.Id}" class="btn btn-primary">Xem chi tiết</a>
-
-                </div>
-            </div>`;
-
+                <div class="card ${borderColorClass}">
+                    <div class="card-header">
+                        <p class="card-text"><strong>Mức độ:</strong> ${leverText}</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Thời gian kết thúc:</strong> ${mission.EndTime}</p>
+                        <p class="card-text"><strong>Nội dung:</strong> ${mission.Content}</p>
+                        <p class="card-text"><strong><i class="bi bi-geo-alt"></i> Phòng:</strong> ${mission.Room}</p>
+                        <p class="card-text"><strong>Trạng thái:</strong> <span class="${statusClass}">${statusText}</span></p>
+                        <a href="/Mission/DetailMission?missionId=${mission.Id}" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
+                </div>`;
                     }).join('');
+
                 } else {
                     missionDetailsDiv.innerHTML =
                         `<p><strong>Ngày:</strong> ${new Date(date).toLocaleDateString("vi-VN")}</p>
-                                 <p>Không có nhiệm vụ nào.</p>`;
+                             <p>Không có nhiệm vụ nào.</p>`;
                 }
             });
         });
@@ -177,8 +198,8 @@
         function redirectToDetail(missionId) {
             window.location.href = `/Mission/DetailMission?missionId=${missionId}`;
         }
-
     </script>
+
 
 
 
@@ -187,6 +208,9 @@
 }
 
 <style>
+
+
+
     .calendar {
         margin: 20px auto;
         max-width: 600px;
@@ -205,7 +229,7 @@
             cursor: default;
         }
 
-        .day-cell .dot {
+        .day-cell .htdot {
             position: absolute;
             bottom: 5px;
             left: 50%;
@@ -213,6 +237,17 @@
             width: 8px;
             height: 8px;
             background-color: green;
+            border-radius: 50%;
+        }
+
+        .day-cell .chtdot {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background-color: red;
             border-radius: 50%;
         }
 

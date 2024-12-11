@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<PhanMemWebQuanLiBenhVien.Models.Mission>
+@using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities
 
 <div class="container mt-4">
     <div class="row my-2">
@@ -28,9 +29,22 @@
                 <tr>
                     <td>@mission.Time</td>
                     <td>@mission.EndTime</td>
-                    <td>@mission.Lever</td>
+                    <td>
+                        @switch (mission.Lever)
+                        {
+                            case Elever.binhthuong:
+                                @:Bình Thường
+                                break;
+                            case Elever.uutien:
+                                @:Ưu Tiên
+                                break;
+                            case Elever.nguycap:
+                                @:Nguy Cấp
+                                break;
+                        }
+                    </td>
                     <td>@mission.Content</td>
-                    @if (mission.PhongKham == null)
+                    @if (mission.PhongKhamId == null)
                     {
                         <td>@mission.PhongBenh.Name</td>
                     }
@@ -39,7 +53,7 @@
                         <td>@mission.PhongKham.Name</td>
                     }
                     <td>@mission.DoctorId</td>
-                    <td>@mission.Doctor?.DoctorName</td> <!-- Hiển thị tên bác sĩ -->
+                    <td>@mission.Doctor.DoctorName</td> <!-- Hiển thị tên bác sĩ -->
                     <td>
                         <a class="btn btn-primary" asp-controller="Mission" asp-action="Update" asp-route-MissionId="@mission.MissionId">
                             <i class="bi bi-pencil-square"></i> Sửa
