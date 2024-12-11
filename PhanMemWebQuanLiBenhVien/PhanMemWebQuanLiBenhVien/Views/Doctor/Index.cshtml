@@ -15,6 +15,7 @@
                 <th>Họ và tên</th>
                 <th>Giới tính</th>
                 <th>Tuổi</th>
+                <th>Ảnh</th>
                 <th>Chuyên khoa</th>
                 <th>Actions</th>
             </tr>
@@ -29,6 +30,9 @@
                     <td>@doctor.DoctorName</td>
                     <td>@doctor.DoctorGender.ToString()</td>
                     <td>@doctor.DoctorAge</td>
+                    <td style="text-align: center; vertical-align: middle;"  >
+                        <img src="@doctor.DoctorImgURL" width="120" />
+                    </td>
                     @if (doctor.Profession==null)
                     {
                         <td>nothing</td>
