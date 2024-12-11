@@ -1,45 +1,75 @@
-﻿@model MedicalVisit
-@{
-    ViewData["Title"] = "Thêm lần khám";
-}
+﻿@model MedicalVisit  
+@{  
+   ViewData["Title"] = "Thêm lần khám";  
+}  
+<link rel="stylesheet" href="~/css/MedicalRecord/CreateMedicalVisit.css" />
+<div class="container mt-4">  
+   <div class="row my-2">  
+       <div class="col text-primary">  
+           <h2>Thêm mới</h2>  
+       </div>  
+   </div>  
+   <form asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" method="post">  
+       <div class="form-group">  
+           <label asp-for="MedicalRecordId">ID bệnh án</label>  
+           <input asp-for="MedicalRecordId" class="form-control" value="@ViewBag.MedicalRecordId" readonly />  
+       </div>  
+       <div class="form-group">  
+           <label asp-for="VisitDate">Ngày khám</label>  
+           <input asp-for="VisitDate" class="form-control"/>  
+       </div>  
+       <div class="form-group">  
+           <label asp-for="Symptom">Triệu chứng</label>  
+           <input asp-for="Symptom" class="form-control"/>  
+       </div>  
+       <div class="form-group">  
+           <label asp-for="KetQuaLamSang">Kết quả lâm sàng</label>  
+           <input asp-for="KetQuaLamSang" class="form-control" />  
+       </div>  
+       <div class="form-group">  
+           <label asp-for="ChanDoan">Chẩn đoán</label>  
+           <input asp-for="ChanDoan" class="form-control" />  
+       </div>  
+       <div class="form-group">  
+           <label for="TinhTrangBenhNhan">Trạng thái bệnh nhân</label>  
+           <select asp-for="TinhTrangBenhNhan" class="form-control" asp-items="@ViewBag.TinhTrangBenhNhan">  
+               <option value="">--Chọn--</option>  
+           </select>  
+       </div>  
+       <label>Chọn ngày tái khám</label>  
+       <input asp-for="NgayTaiKham" class="form-control" />  
+       <label>Chọn các loại thuốc để kê đơn</label>  
+       <select id="mySelect2" class="form-control" multiple="multiple" style="width: 100%;">  
+           @foreach (var item in ViewBag.ThuocList)  
+           {  
+               <option value="@item.Value">@item.Text</option>  
+           }  
+       </select>  
+       <input type="hidden" id="IdThuocs" name="IdThuocs" />  
+       <label>Chọn số lượng thuốc</label>  
+       <input asp-for="SoLuongThuocs" class="form-control" />  
+       <br />  
+       <button type="submit" class="btn btn-primary">  
+           Thêm lần khám  
+       </button>  
+       <a asp-action="DoctorDetail" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@ViewBag.Id" class="btn text-white">Quay lại</a>  
+   </form>  
+</div>  
+@section Scripts {  
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />  
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
+   <script>  
+       $(document).ready(function () {  
+           $('#mySelect2').select2({  
+               placeholder: "--Chọn thuốc--",  
+               allowClear: true // Thêm nút clear để xóa lựa chọn  
+           });  
 
-<div class="container mt-4">
-    <div class="row my-2">
-        <div class="col text-primary">
-            <h2>Thêm mới</h2>
-        </div>
-    </div>
-    <form asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" method="post">
-        <div class="form-group">
-            <label asp-for="MedicalRecordId">ID bệnh án</label>
-            <input asp-for="MedicalRecordId" class="form-control" value="@ViewBag.MedicalRecordId" readonly />
-        </div>
-        <div class="form-group">
-            <label asp-for="VisitDate">Ngày khám</label>
-            <input asp-for="VisitDate" class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label asp-for="Symptom">Triệu chứng</label>
-            <input asp-for="Symptom" class="form-control"/>
-        </div>
-        <div class="form-group">
-            <label asp-for="KetQuaLamSang">Kết quả lâm sàng</label>
-            <input asp-for="KetQuaLamSang" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label asp-for="ChanDoan">Chẩn đoán</label>
-            <input asp-for="ChanDoan" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="TinhTrangBenhNhan">Trạng thái bệnh nhân</label>
-            <select asp-for="TinhTrangBenhNhan" class="form-control" asp-items="@ViewBag.TinhTrangBenhNhan">
-                <option value="">--Chọn--</option>
-            </select>
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary">
-            Thêm lần khám
-        </button>
-        <a asp-action="DoctorDetail" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@ViewBag.Id" class="btn text-white">Quay lại</a>
-    </form>
-</div>
+           $('#mySelect2').on('change', function () {  
+               var selectedValues = $(this).val();  
+               $('#IdThuocs').val(selectedValues.join(','));  
+           });  
+       });  
+   </script>  
+}

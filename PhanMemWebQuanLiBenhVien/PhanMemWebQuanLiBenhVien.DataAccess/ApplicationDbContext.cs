@@ -23,8 +23,8 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess
         public DbSet<Profession> professions { get; set; }
         public DbSet<WorkSchedule> workSchedules { get; set; }
         public DbSet<MedicalVisit> medicalVisits { get; set; }
-        
         public DbSet<PhongCapCuu> phongCapCuus { get; set; }
+        public DbSet<Medicine> medicines { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

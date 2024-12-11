@@ -1,5 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhanMemWebQuanLiBenhVien.Models.Models.PhongCapCuu
 @{
+    ViewData["Title"] = "Sửa Phòng Cấp Cứu";
+}
+
+@if (Model == null)
+{
+    <p>Không tìm thấy phòng cấp cứu cần sửa</p>
+}
+else
+{
+    <link rel="stylesheet" href="~/css/PhongCapCuu/Update.css"/>
+    <div class="container mt-4">
+        <div class="row my-2">
+            <div class="col text-primary">
+                <h2>Sửa phòng cấp cứu</h2>
+            </div>
+        </div>
+        <form method="post">
+            <input asp-for="RoomId" hidden />
+            <div class="form-group">
+                <label for="Name">Tên phòng cấp cứu</label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên phòng cấp cứu" />
+            </div>
+            <input asp-for="isAvailable" hidden />
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px">
+                Sửa
+            </button>
+        </form>
+    </div>
 }

@@ -23,6 +23,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
         public IWorkScheduleRepository WorkScheduleRepository { get; }
         public IMedicalVisitRepository MedicalVisitRepository { get; }
         public IPhongCapCuu PhongCapCuuRepository { get; }
+        public IMedicineRepository MedicineRepository { get; }
         public ApplicationDbContext db_ { get { return _db; } }
         
         public UnitOfWork(ApplicationDbContext db)                 
@@ -39,6 +40,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
             WorkScheduleRepository = new WorkScheduleRepository(_db);
             MedicalVisitRepository = new MedicalVisitRepository(_db);
             PhongCapCuuRepository = new PhongCapCuuRepository(_db);
+            MedicineRepository = new MedicineRepository(_db);
         }
 
         public void Save()

@@ -1,0 +1,141 @@
+﻿@model MedicalVisit
+<div class="p-1">
+    <div class="p-5">
+        <div class="prescription-header">
+            <h5><strong>Đơn Thuốc</strong></h5>
+        </div>
+
+        <div class="doctor-info">
+            <h5>Thông tin bác sĩ:</h5>
+            <p><strong>Tên bác sĩ:</strong> @ViewBag.Doctor.DoctorName</p>
+            <p><strong>Chuyên khoa:</strong> @ViewBag.Doctor.Profession.ProfessionName</p>
+        </div>
+
+        <div class="patient-info">
+            <h5>Thông tin bệnh nhân:</h5>
+            <p><strong>Tên bệnh nhân:</strong> @ViewBag.Patient.Name</p>
+            <p><strong>Ngày sinh: @ViewBag.Patient.DateOfBirth</strong></p>
+            <p><strong>Giới tính:</strong> @ViewBag.Patient.Gender.ToString()</p>
+            <p><strong>Ngày kê đơn:</strong> @DateTime.Now</p>
+        </div>
+
+        <h5>Chi tiết đơn thuốc:</h5>
+        <table class="prescription-details">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên thuốc</th>
+                    <th>Đơn vị</th>
+                    <th>Số lượng</th>
+                    <th>Cách dùng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @foreach (var medicine in ViewBag.medicine)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@medicine.Medicine.Name</td>
+                        <td>@medicine.Medicine.Unit</td>
+                        <td>@medicine.Quantity</td>
+                        <td>@medicine.Medicine.Usage</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <p><strong>Bác sĩ kê đơn:</strong> @ViewBag.Doctor.DoctorName</p>
+            <p><i>Chữ ký:</i> ________________________</p>
+        </div>
+    </div>
+</div>
+<button id="download-pdf">In Trang Thành PDF</button>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .prescription-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .doctor-info, .patient-info {
+            margin-bottom: 20px;
+        }
+
+        .prescription-details {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+            .prescription-details th, .prescription-details td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .prescription-details th {
+                background-color: #f2f2f2;
+            }
+
+        .footer {
+            text-align: right;
+            margin-top: 30px;
+            font-size: 0.9em;
+            margin-right: 30px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("download-pdf").addEventListener("click", function () {
+                const button = document.getElementById("download-pdf"); // Lấy phần tử nút
+                const element = document.body; // Lấy toàn bộ trang
+
+                // Ẩn nút trước khi chụp
+                button.style.display = "none";
+
+                html2canvas(element, {
+                    x: 270, // Bỏ 270px bên trái
+                    y: 0,
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: element.offsetWidth - 270,
+                    height: element.offsetHeight
+                }).then(function (canvas) {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const imgWidth = canvas.width;
+                    const imgHeight = canvas.height;
+                    const ratio = pdfWidth / imgWidth;
+                    const adjustedHeight = imgHeight * ratio;
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, adjustedHeight);
+                    pdf.save("trang-hien-tai.pdf");
+                }).catch(function (error) {
+                    console.error("Lỗi khi chụp màn hình:", error);
+                }).finally(function () {
+                    // Hiển thị lại nút sau khi hoàn tất
+                    button.style.display = "block";
+                });
+            });
+        });
+
+
+    </script>
+}

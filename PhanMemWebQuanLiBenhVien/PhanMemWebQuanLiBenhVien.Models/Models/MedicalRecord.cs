@@ -30,8 +30,12 @@ namespace PhanMemWebQuanLiBenhVien.Models
 
 		public ETinhTrangBenhNhan? TinhTrangBenhNhan { get; set; }
 
-		// Liên kết với các lần khám
-		public ICollection<MedicalVisit>? Visits { get; set; }
+		public int? ProfesisonId { get; set; }
+        [ForeignKey("ProfesisonId")]
+        public Profession? Profession { get; set; }
+
+        // Liên kết với các lần khám
+        public ICollection<MedicalVisit>? Visits { get; set; }
 
 		public int? DoctorId { get; set; }
 		[ForeignKey("DoctorId")]
@@ -46,6 +50,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public int? NurseId { get; set; }
 		[ForeignKey("NurseId")]
 		public Nurse? Nurse { get; set; }
+
 	}
 
 }

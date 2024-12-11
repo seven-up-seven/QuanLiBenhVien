@@ -18,7 +18,21 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(WorkSchedule workSchedule)
         {
-            throw new NotImplementedException();
+            var oldobj = _db.workSchedules.FirstOrDefault(u => u.WorkScheduleId == workSchedule.WorkScheduleId);
+            if (workSchedule.DoctorId1 != null)
+            {
+                oldobj.DoctorId1 = workSchedule.DoctorId1; 
+            }
+            if (workSchedule.DoctorId2 != null)
+            {
+                oldobj.DoctorId2 = workSchedule.DoctorId2;
+            }
+            if (workSchedule.DoctorId3 != null)
+            {
+                oldobj.DoctorId3 = workSchedule.DoctorId3;
+            }
+            _db.Update(oldobj);
+            _db.SaveChanges();
         }
     }
 }

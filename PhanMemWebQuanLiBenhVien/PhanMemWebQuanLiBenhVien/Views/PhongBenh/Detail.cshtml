@@ -2,26 +2,34 @@
 @{
 	ViewData["Title"] = "Chi Tiết Phòng Bệnh";
 }
+<link rel="stylesheet" href="~/css/PhongBenh/Detail.css"/>
 <div>
-	<h2 class="my-5">Chi tiết</h2>
+	<h2 class="my-5">Chi Tiết Phòng Bệnh</h2>
 	<div class="mt-5">
 		<p>ID: @Model.RoomId</p>
 		<p>Tên phòng: @Model.Name</p>
 		<p>Số giường: @Model.NumberOfBeds</p>
+		<p>Khoa: @Model.Profession.ProfessionName</p>
 	</div>
 	<div class="my-4">
 		<table>
+			<thead>
 			<tr>
 				<th><h4>Danh sách bệnh nhân: </h4></th>
+
+			</tr>
+			</thead>
+			<tbody>
 				@{
-					if(Model.Patients!=null){
-					foreach (var patient in Model.Patients)
+					if (Model.Patients != null)
 					{
+						foreach (var patient in Model.Patients)
+						{
 						<td><a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
-					}
+						}
 					}
 				}
-			</tr>
+			</tbody>
 		</table>
 	</div>
 	<div class="row" style="margin-left: 1px">

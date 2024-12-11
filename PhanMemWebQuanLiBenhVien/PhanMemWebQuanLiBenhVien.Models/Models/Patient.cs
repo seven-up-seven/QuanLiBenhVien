@@ -28,6 +28,10 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [Required(ErrorMessage = "BHYT là bắt buộc !")]
 
         public ETrangThaiBenhAn? TrangThaiBenhAn { get; set; }
+
+        public int? ProfesisonId { get; set; }
+        [ForeignKey("ProfesisonId")]
+        public Profession? Profession { get; set; }
         //Khi benh nhan xuat vien thi cac gia tri sau duoc chuyen sang null
 
         //Foreign Keys

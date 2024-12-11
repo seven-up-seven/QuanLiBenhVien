@@ -18,13 +18,13 @@
     var missionDates = Model.MissionList?.Select(m => m.Time.Date).Distinct().ToList();
 }
 
-<div class="d-flex">
+<div class="d-flex gap-3">
     <!-- Lịch bên trái -->
     <div class="calendar" style="flex: 1;">
         <h2 class="text-center">Lịch - Tháng @selectedMonth Năm @selectedYear</h2>
-        <div class="navigation mb-3">
-            <a href="@Url.Action("DoctorMission", new { month = prevMonth, year = prevYear })" class="btn btn-primary">Tháng trước</a>
-            <a href="@Url.Action("DoctorMission", new { month = nextMonth, year = nextYear })" class="btn btn-primary">Tháng sau</a>
+        <div class="navigation mb-3 row justify-content-between px-2">
+            <a href="@Url.Action("DoctorMission", new { month = prevMonth, year = prevYear })" class="col col-auto btn btn-primary ">Tháng trước</a>
+            <a href="@Url.Action("DoctorMission", new { month = nextMonth, year = nextYear })" class="col col-auto btn btn-primary ">Tháng sau</a>
         </div>
         <table class="table table-bordered text-center">
             <thead>

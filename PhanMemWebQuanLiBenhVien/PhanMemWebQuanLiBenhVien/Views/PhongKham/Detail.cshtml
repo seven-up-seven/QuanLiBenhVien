@@ -2,11 +2,13 @@
 @{
 	ViewData["Title"] = "Chi Tiết Phòng Khám";
 }
+<link rel="stylesheet" href="~/css/Patient/Detail.css"/>
 <div>
 	<h2 class="my-5">Chi tiết</h2>
 	<div class="mt-5">
 		<p>ID: @Model.RoomId</p>
 		<p>Tên phòng: @Model.Name</p>
+        <p>Khoa: @Model.Profession.ProfessionName</p>
 	</div>
     <div class="my-4">
         <h4>Danh sách bệnh nhân:</h4>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
+using PhanMemWebQuanLiBenhVien.Models.Models;
 
 namespace PhanMemWebQuanLiBenhVien.Models
 {
@@ -24,5 +25,8 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public string ChanDoan { get; set; } // Chẩn đoán
 
 		public ETinhTrangBenhNhan? TinhTrangBenhNhan { get; set; }
+		public string? IdThuocs { get; set; }
+		public string? SoLuongThuocs { get; set; }
+		public DateTime? NgayTaiKham { get; set; }
     }
 }

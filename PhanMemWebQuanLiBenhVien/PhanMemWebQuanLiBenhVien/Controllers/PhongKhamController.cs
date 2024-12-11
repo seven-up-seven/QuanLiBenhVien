@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using System.Linq;
@@ -50,7 +51,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            return View();
+			ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+			{
+				Text = u.ProfessionName,
+				Value = u.ProfessionId.ToString()
+			});
+			return View();
         }
         [HttpPost("Create")]
         public IActionResult Create(PhongKham phongKham)
@@ -70,9 +76,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Detail(int PhongKhamId)
         {
             var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
-            var listBenhNhan = _unitOfWork.PatientRepository.GetAll(); 
-            //var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(pt => pt.PhongKhamId == phongKham.RoomId && pt.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru && pt.Patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri);
-            phongKham.Patients = new List<Patient>();
+            var listBenhNhan = _unitOfWork.PatientRepository.GetAll();
+			phongKham.Profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == phongKham.ProfessionId);
+			//var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(pt => pt.PhongKhamId == phongKham.RoomId && pt.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru && pt.Patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri);
+			phongKham.Patients = new List<Patient>();
             foreach (var patient in listBenhNhan)
             {
                 patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId && mr.PhongKhamId == phongKham.RoomId);
@@ -95,11 +102,16 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Update(int PhongKhamId)
         {
             var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
-            if(phongKham != null)
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            if (phongKham!=null)
             {
                 return View(phongKham);
             }
-            return View();
+            return View(null);
         }
         [HttpPost("Update/{PhongKhamId}")]
         public IActionResult Update(PhongKham phongKham)

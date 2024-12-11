@@ -13,6 +13,10 @@
 			<input asp-for="Name" type="text" class="form-control" placeholder="Nhập Tên Phòng">
 		</div>
 		<span asp-validation-for="Name" class="text-danger"></span>
+		<div class="form-group">
+			<label for="ProfessionId">Chuyên khoa</label>
+			<select asp-for="ProfessionId" asp-items="@ViewBag.Professions" class="form-control"></select>
+		</div>
 		<br />
 		<div class="row form-group" style="margin-left: 1px">
 			<a asp-controller="PhongKham" asp-action="Index" class="col col-auto btn text-white">Quay lại</a>

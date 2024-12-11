@@ -5,22 +5,39 @@
     ViewData["Title"] = "Chi Tiết Bệnh Nhân";
 }
 <div>
-    <h2 class="my-5">Chi tiết bệnh nhân</h2>
+    <div class="row mt-5">
+        <h2 class="col col-auto">Chi tiết bệnh nhân</h2>
+        <a class="btn btn-primary col col-auto" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@Model.PatientId"><i class="bi bi-pencil-square"></i> Sửa thông tin</a>
+    </div>
     <div class="mt-5">
         <p><strong>ID:</strong> @Model.PatientId</p>
         <p><strong>Tên bệnh nhân:</strong> @Model.Name</p>
         <p><strong>CCCD:</strong> @Model.CCCD</p>
-        <p><strong>Tuổi:</strong> @Model.DateOfBirth</p>
+        <p><strong>Ngày sinh:</strong> @Model.DateOfBirth</p>
         <p><strong>Giới tính:</strong> @Model.Gender.ToString()</p>
         <p><strong>Địa chỉ:</strong> @Model.Address</p>
-        <p><strong>Trạng thái: @Model.TrangThaiBenhAn.ToString()</strong></p>
+        @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+        {
+            <p><strong>Trạng thái: Đang chữa trị</strong></p>
+            if(Model.Profession  != null)
+            {
+                <p><strong>Khoa đang điều trị hiện tại: @Model.Profession.ProfessionName</strong></p>
+            }
+        }
+        else
+        {
+            <p><strong>Trạng thái: Đang không chữa trị</strong></p>
+        }
     </div>
 
     <div class="row d-flex">
         <div class="col-auto text-primary"><h3>Danh sách bệnh án</h3></div>
         @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
         {
-            <div class="col-auto"><a class="btn btn-primary" asp-action="DoctorCreate" asp-controller="MedicalRecord" asp-route-PatientId="@Model.PatientId"><i class="bi bi-plus"></i>Thêm bệnh án</a></div>
+            if (Model.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri)
+            {
+                <div class="col-auto"><a class="btn btn-primary" asp-action="DoctorCreate" asp-controller="MedicalRecord" asp-route-PatientId="@Model.PatientId"><i class="bi bi-plus"></i>Thêm bệnh án</a></div>
+            }
         }
     </div>
     @if (Model.MedicalRecords != null && Model.MedicalRecords.Count > 0)
@@ -28,13 +45,13 @@
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>ID Hồ Sơ</th>
+                    <th>ID</th>
                     <th>Tên Bệnh Nhân</th>
                     <th>Giới Tính</th>
                     <th>Địa Chỉ</th>
                     <th>Tiền Sử Bệnh Án</th>
                     <th>Trạng thái</th>
-                    <th>Hành Động</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,9 +63,26 @@
                         <td>@record.PatientGender</td>
                         <td>@record.Address</td>
                         <td>@record.TienSuBenhAn</td>
-                        <td>@record.TrangThaiBenhAn.ToString()</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-id="@record.MedicalRecordId">Chi tiết</a>
+                        @if (record.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                        {
+                            <td>
+                                <span class="badge bg-danger">Đang chữa trị</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span class="badge bg-success">Bệnh án đã đóng</span>
+                            </td>
+                        }
+                        <td class="d-flex align-items-center gap-1">
+                            <a class="btn btn-sm btn-primary col col-auto" asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-id="@record.MedicalRecordId">Chi tiết</a>
+                            @if (record.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                            {
+                                <form method="post" class="col col-auto">
+                                    <button type="submit" asp-controller="MedicalRecord" asp-action="CloseMedicalRecord" class="btn btn-sm btn-primary" asp-route-MedicalRecordId="@record.MedicalRecordId">Đóng bệnh án</button>
+                                </form> 
+                            }
                         </td>
                     </tr>
                 }
@@ -58,12 +92,17 @@
             <div class="col-auto">
                 @if (User.IsInRole("Doctor"))
                 {
-                    var doctor = UnitOfWork.DoctorRepository.Get(dr=>dr.Username==User.Identity.Name);
+                    var doctor = UnitOfWork.DoctorRepository.GetAll(dr=>dr.Username==User.Identity.Name).LastOrDefault();
                     <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@doctor.DoctorId" class="btn text-white">Quay lại</a>
                 }
-                else
+                else if (User.IsInRole("Nurse"))
                 {
-                    <a asp-controller="Nurse" asp-action="NursePatients" asp-route-NurseId="@Model.MedicalRecords.FirstOrDefault().NurseId" class="btn text-white">Quay lại</a>
+                    var nurse = UnitOfWork.NurseRepository.GetAll(dr => dr.Username == User.Identity.Name).LastOrDefault();
+                    <a asp-controller="Nurse" asp-action="NursePatients" asp-route-NurseId="@nurse.NurseId" class="btn text-white">Quay lại</a>
+                }
+                else
+                {   
+                    <a asp-controller="Patient" asp-action="Index" class="btn text-white">Quay lại</a>
                 }
             </div>
             <div class="col-auto text-primary">

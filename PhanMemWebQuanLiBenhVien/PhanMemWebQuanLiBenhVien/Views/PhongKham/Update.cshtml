@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PhongKham
 @{
+    ViewData["Title"] = "Sửa Phòng Khám";
 }
+
+@if (Model==null)
+{
+    <p>Không tìm thấy phòng khám cần sửa</p>
+}
+else
+{
+    <div class="container mt-4">
+        <div class="row my-2">
+            <div class="col text-primary">
+                <h2>Sửa phòng khám</h2>
+            </div>
+        </div>
+        <form method="post">
+            <input asp-for="RoomId" hidden />
+            <div class="form-group">
+                <label for="Name">Tên phòng khám</label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên phòng khám" />
+            </div>
+            <div class="form-group">
+                <label for="ProfessionId">Chuyên khoa</label>
+                <select asp-for="ProfessionId" asp-items="@ViewBag.Professions" class="form-control">
+                    <option value="">Chọn khoa của phòng</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 10px">
+                Sửa
+            </button>
+        </form>
+    </div>
+}
+

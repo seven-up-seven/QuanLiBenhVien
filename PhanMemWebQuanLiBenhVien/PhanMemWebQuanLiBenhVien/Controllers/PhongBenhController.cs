@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 
@@ -42,6 +43,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpGet("Create")]
 		public IActionResult Create()
 		{
+			ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+			{
+				Text = u.ProfessionName,
+				Value = u.ProfessionId.ToString()
+			});
 			return View();
 		}
 		[HttpPost("Create")]
@@ -63,6 +69,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PhongBenhId == PhongBenhId);
             var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
+			phongBenh.Profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == phongBenh.ProfessionId); 
             if (phongBenh == null)
             {
                 return NotFound(); // or handle the null case appropriately
@@ -92,12 +99,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpGet("Update/{PhongBenhId}")]
 		public IActionResult Update(int PhongBenhId)
 		{
-			var phongBenh = _unitOfWork.PhongKhamRepository.Get(pb => pb.RoomId == PhongBenhId);
+			var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
 			if (phongBenh != null)
 			{
-				return View(phongBenh);
+                ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.ProfessionName,
+                    Value = u.ProfessionId.ToString()
+                });
+                return View(phongBenh);
 			}
-			return View();
+			return View(null);
 		}
 		[HttpPost("Update/{PhongBenhId}")]
 		public IActionResult Update(PhongBenh phongBenh)

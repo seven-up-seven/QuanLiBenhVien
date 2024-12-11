@@ -1,0 +1,27 @@
+﻿@model PhanMemWebQuanLiBenhVien.Models.WorkSchedule
+@{
+	ViewData["Title"] = "Sửa lịch";
+}
+
+<div class="container mt-4">
+	<div class="row my-2">
+		<div class="col text-primary"><h2>Sửa lịch</h2></div>
+	</div>
+	<form method="post">
+		<input asp-for="@Model.WorkScheduleId" hidden />
+		<input value="@ViewBag.phongcapcuu.Name" disabled />
+		<input asp-for="@Model.PhongCapCuuId" value="@ViewBag.phongcapcuu.RoomId" hidden />
+		<input asp-for="DayOfWeek" value="@ViewBag.Thu" readonly />
+		<label>Chọn bác sĩ</label>
+		<select asp-for="DoctorId1" asp-items="@ViewBag.doctorlistca1">
+			<option value="">--Chọn--</option>
+		</select>
+		<select asp-for="DoctorId2" asp-items="@ViewBag.doctorlistca2">
+			<option value="">--Chọn--</option>
+		</select>
+		<select asp-for="DoctorId3" asp-items="@ViewBag.doctorlistca3">
+			<option value="">--Chọn--</option>
+		</select>
+		<button type="submit" class="btn btn-primary">Cập nhật</button>
+	</form>
+</div>

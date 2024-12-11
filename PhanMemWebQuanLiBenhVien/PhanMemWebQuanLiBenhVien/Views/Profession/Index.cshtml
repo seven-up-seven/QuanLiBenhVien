@@ -13,7 +13,7 @@
                 <th>ID</th>
                 <th>Tên chuyên khoa</th>
                 <th>Trưởng khoa</th>
-                <th>Actions</th>
+                <th style="width: 370px;">Actions</th>
             </tr>
         </thead>
 
@@ -50,6 +50,7 @@
                     <td>
                         <a class="btn btn-primary" asp-controller="Profession" asp-action="Update" asp-route-id="@chuyenKhoa.ProfessionId"><i class="bi bi-pencil-square"></i> Sửa</a>
                         <a asp-controller="Profession" asp-action="Detail" asp-route-id="@chuyenKhoa.ProfessionId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                        <a asp-controller="Doctor" asp-action="DanhSachBacSiThuocKhoa" asp-route-KhoaId="@chuyenKhoa.ProfessionId" class="btn btn-primary"><i class="bi bi-person"></i> Danh sách bác sĩ</a>
                     </td>
                 </tr>
             }

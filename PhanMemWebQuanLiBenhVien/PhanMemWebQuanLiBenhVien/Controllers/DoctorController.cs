@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using PhanMemWebQuanLiBenhVien.Models.Models;
 using System.Security.Principal;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -37,7 +38,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			return View(DoctorList);
 		}
 
-		[HttpGet("Create")]
+        public IActionResult DanhSachBacSiThuocKhoa(int KhoaId)
+        {
+            var DoctorList = _unitOfWork.DoctorRepository.GetAll(dr => dr.ProfessionId == KhoaId);
+            foreach (var doctor in DoctorList)
+            {
+                var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == doctor.ProfessionId);
+                doctor.Profession = profession;
+            }
+            return View(DoctorList);
+        }
+
+        [HttpGet("Create")]
 		public IActionResult Create()
 		{
 			ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
@@ -167,9 +179,56 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult DoctorWorkSchedule(int DoctorId)
         {
             var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
-			var workschedule = _unitOfWork.WorkScheduleRepository.Get(ws => ws.DoctorId == DoctorId);
-			ViewBag.WS = workschedule; 
-            return View(doctor);
+			Dictionary<string, Dictionary<int, PhongKham>> CaTrucPhongKham = new Dictionary<string, Dictionary<int, PhongKham>>();
+            Dictionary<string, Dictionary<int, PhongCapCuu>> CaTrucPhongCapCuu = new Dictionary<string, Dictionary<int, PhongCapCuu>>();
+            var phongkhamworkschedules = _unitOfWork.WorkScheduleRepository.GetAll(u=>u.PhongKhamId!=null);
+            var phongcapcuuworkschedules = _unitOfWork.WorkScheduleRepository.GetAll(u => u.PhongCapCuuId != null);
+			foreach(var ws in phongkhamworkschedules)
+			{
+                if (!CaTrucPhongKham.ContainsKey(ws.DayOfWeek))
+                {
+                    CaTrucPhongKham[ws.DayOfWeek] = new Dictionary<int, PhongKham>();
+                }
+                if (ws.DoctorId1 == doctor.DoctorId)
+                {
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == ws.PhongKhamId);
+                    CaTrucPhongKham[ws.DayOfWeek][1] = phongkham; 
+                }
+                if (ws.DoctorId2 == doctor.DoctorId)
+                {
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == ws.PhongKhamId);
+                    CaTrucPhongKham[ws.DayOfWeek][2] = phongkham;
+                }
+                if (ws.DoctorId3 == doctor.DoctorId)
+                {
+                    var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == ws.PhongKhamId);
+                    CaTrucPhongKham[ws.DayOfWeek][3] = phongkham;
+                }
+            }
+            foreach (var ws in phongcapcuuworkschedules)
+            {
+                if (!CaTrucPhongCapCuu.ContainsKey(ws.DayOfWeek))
+                {
+                    CaTrucPhongCapCuu[ws.DayOfWeek] = new Dictionary<int, PhongCapCuu>();
+                }
+                if (ws.DoctorId1 == doctor.DoctorId)
+                {
+                    var phongcapcuu = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == ws.PhongCapCuuId);
+                    CaTrucPhongCapCuu[ws.DayOfWeek][1] = phongcapcuu;
+                }
+                if (ws.DoctorId2 == doctor.DoctorId)
+                {
+                    var phongcapcuu = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == ws.PhongCapCuuId);
+                    CaTrucPhongCapCuu[ws.DayOfWeek][2] = phongcapcuu;
+                }
+                if (ws.DoctorId3 == doctor.DoctorId)
+                {
+                    var phongcapcuu = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == ws.PhongCapCuuId);
+                    CaTrucPhongCapCuu[ws.DayOfWeek][3] = phongcapcuu;
+                }
+            }
+            ViewBag.CaTrucPhongCapCuu = CaTrucPhongCapCuu;
+            return View(CaTrucPhongKham);
         }
 
         public IActionResult DoctorPatients(int DoctorId)
@@ -190,7 +249,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     if (lastMedicalRecord.DoctorId == doctor.DoctorId)
 					{
                         lastMedicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == lastMedicalRecord.PhongBenhId);
-                        doctor.PatientList.Add(patient); 
+                        doctor.PatientList.Add(patient);
+					
 					}
                 }
             }
@@ -211,6 +271,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			//patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId); \
 			var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId);
 			patient.MedicalRecords = (ICollection<MedicalRecord>?)medicalRecord;
+			patient.Profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == patient.ProfesisonId);
             return View(patient);
         }
         public async Task<IActionResult> DoctorMission(int month, int year)
