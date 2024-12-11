@@ -1,0 +1,25 @@
+﻿h2 {
+    font-size: 1.8rem; 
+    font-weight: bold;
+    text-align: left;
+    color: #004a99;
+}
+body{
+    background-color: #f8f9fa;
+}
+.container{
+    background-color: white;
+    border: 0.5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 1px 4px 8px rgba(0,0,0,0.5);
+}
+       .form-group{
+           font-size: 16px;
+           font-weight: 700;
+           margin-bottom:8px;
+       }
+.btn{
+    margin-top: 10px;
+}
+

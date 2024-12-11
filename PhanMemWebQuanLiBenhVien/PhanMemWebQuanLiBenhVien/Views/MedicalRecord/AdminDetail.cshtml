@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Chi Tiết Bệnh Án";
 }
-
+<link rel="stylesheet" href="~/css/MedicalRecord/AdminDetail.css" />
 <div class="container mt-4">
     <div class="row my-2">
         <div class="col text-primary">
@@ -13,8 +13,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6  row-2">
             <h5>ID Bệnh Án: @Model.MedicalRecordId</h5>
             <p><strong>Tên bệnh nhân:</strong> @Model.PatientName</p>
             <p><strong>Giới tính:</strong> @Model.PatientGender</p>
@@ -23,7 +22,7 @@
             <p><strong>Tiền sử bệnh án:</strong> @Model.TienSuBenhAn</p>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 row-1">
             <h5>Thông Tin Các Lần Khám</h5>
             @if (ViewBag.MedicalVisits != null)
             {
@@ -55,7 +54,6 @@
             }
             <a class="btn btn-primary" asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId">Thêm lần khám</a>
         </div>
-    </div>
 
     <div class="row d-flex mt-4">
         <div class="col-auto text-primary">
