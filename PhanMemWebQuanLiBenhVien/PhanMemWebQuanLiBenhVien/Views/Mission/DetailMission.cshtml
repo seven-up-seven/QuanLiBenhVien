@@ -39,11 +39,11 @@
             <p class="card-text"><strong>Nội dung:</strong> @Model.Content</p>
             @if (Model.PhongKhamId == null)
             {
-                <p class="card-text"><strong>Phòng:</strong>@Model.PhongBenh.Name</p>
+                <p class="card-text"><strong><i class="bi bi-geo-alt"></i> Phòng:</strong>@Model.PhongBenh.Name</p>
             }
             else
             {
-                <p class="card-text"><strong>Phòng:</strong> @Model.PhongKham.Name</p>
+                <p class="card-text"><strong><i class="bi bi-geo-alt"></i> Phòng:</strong> @Model.PhongKham.Name</p>
             }
 
             <!-- Checkbox cập nhật trạng thái -->

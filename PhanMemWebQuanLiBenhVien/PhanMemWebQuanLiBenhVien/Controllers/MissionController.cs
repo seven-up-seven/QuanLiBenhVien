@@ -137,16 +137,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ViewBag.Levers = LeverList;
                 ViewBag.Phongs = PhongList;
             }
-            if (mission.EndTime <= mission.Time)
-                ModelState.AddModelError("EndTime", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
+
 
             if (!ModelState.IsValid)
             {
                 PopulateDropdowns();
                 return View(mission);
             }
-
-            // Nếu không có lỗi thì lưu dữ liệu
             _unitOfWork.MissionRepository.Add(mission);
             _unitOfWork.Save();
             return RedirectToAction("Index");
@@ -259,71 +256,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         _ => lever.ToString() // Trường hợp dự phòng
                     }
                 }).ToList();
+                ViewBag.Levers = LeverList;
+                ViewBag.Phongs = PhongList;
             }
-
-            int count = 0;
-
-            // Kiểm tra thời gian bắt đầu
-            if (mission.Time == default(DateTime))
-            {
-                ModelState.AddModelError("Time", "Vui lòng chọn ngày bắt đầu.");
-                count++;
-            }
-
-            // Kiểm tra thời gian kết thúc
-            if (mission.EndTime == default(DateTime))
-            {
-                ModelState.AddModelError("EndTime", "Vui lòng chọn ngày kết thúc.");
-                count++;
-            }
-
-            // Kiểm tra thời gian kết thúc phải lớn hơn thời gian bắt đầu
-            if (mission.EndTime <= mission.Time)
-            {
-                ModelState.AddModelError("EndTime", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
-                count++;
-            }
-
-            // Kiểm tra bác sĩ
-            if (mission.DoctorId == 0)
-            {
-                ModelState.AddModelError("DoctorId", "Vui lòng chọn bác sĩ.");
-                count++;
-            }
-    
-
-            // Kiểm tra loại phòng
-            if (!Enum.IsDefined(typeof(EPhong), mission.RoomType))
-            {
-                ModelState.AddModelError("RoomType", "Vui lòng chọn loại phòng.");
-                count++;
-            }
-
-            if (!Enum.IsDefined(typeof(Elever), mission.Lever))
-            {
-                ModelState.AddModelError("Lever", "Vui lòng chọn mức độ.");
-                count++;
-            }
-
-            // Kiểm tra phòng dựa trên loại phòng
-            if (mission.RoomType == EPhong.phongkham && mission.PhongKhamId == null)
-            {
-                ModelState.AddModelError("PhongKhamId", "Vui lòng chọn phòng khám.");
-                count++;
-            }
-
-            if (mission.RoomType == EPhong.phongbenh && mission.PhongBenhId == null)
-            {
-                ModelState.AddModelError("PhongBenhId", "Vui lòng chọn phòng bệnh.");
-                count++;
-            }
-
-            if (mission.Content == "")
-            {
-                ModelState.AddModelError("Content", "Vui lòng nhập nội dung.");
-                count++;
-            }
-            if (count != 0)
+            if (!ModelState.IsValid)
             {
                 PopulateDropdowns();
                 return View(mission);
