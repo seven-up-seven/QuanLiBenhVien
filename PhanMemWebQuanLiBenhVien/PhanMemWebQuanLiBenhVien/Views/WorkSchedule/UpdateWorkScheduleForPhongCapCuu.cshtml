@@ -14,13 +14,13 @@
 		<input asp-for="DayOfWeek" value="@ViewBag.Thu" readonly />
 		<label>Chọn bác sĩ</label>
 		<select asp-for="DoctorId1" asp-items="@ViewBag.doctorlistca1">
-			<option value="">--Chọn--</option>
+			<option value="0">--Trống--</option>
 		</select>
 		<select asp-for="DoctorId2" asp-items="@ViewBag.doctorlistca2">
-			<option value="">--Chọn--</option>
+			<option value="0">--Trống--</option>
 		</select>
 		<select asp-for="DoctorId3" asp-items="@ViewBag.doctorlistca3">
-			<option value="">--Chọn--</option>
+			<option value="0">--Trống--</option>
 		</select>
 		<button type="submit" class="btn btn-primary">Cập nhật</button>
 	</form>

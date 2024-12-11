@@ -1,10 +1,34 @@
-﻿@model Doctor
+﻿@model AccountModel
 
-<form method="post">
-   <p>ID bác sĩ: @Model.DoctorId</p>
-   <p>Tên bác sĩ: @Model.DoctorName</p>
-   <input name="DoctorId" asp-for="@Model.DoctorId" hidden />
-   <input name="username" placeholder="Nhập tên đăng nhập của tài khoản"/>
-   <input name="password" placeholder="Nhập mật khẩu cho tài khoản"/>
-   <button type="submit" class="btn-primary">Cấp</button>
+<form method="post" class="container p-4 shadow-sm border rounded">
+    <h2 class="mb-4 text-center">Cấp tài khoản bác sĩ</h2>
+    <div class="mb-3">
+        <label class="form-label">ID bác sĩ</label>
+        <p class="form-control-plaintext">@ViewBag.Doctor.DoctorId</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tên bác sĩ</label>
+        <p class="form-control-plaintext">@ViewBag.Doctor.DoctorName</p>
+    </div>
+    @{
+        int doctorid = ViewBag.Doctor.DoctorId;
+    }
+    <input name="DoctorId" asp-for="@doctorid" type="hidden" />
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Tên đăng nhập</label>
+        <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Mật khẩu</label>
+        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Cấp tài khoản</button>
+    </div>
 </form>
+

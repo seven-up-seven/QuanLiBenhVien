@@ -26,11 +26,11 @@
             <input asp-for="NurseAge" class="form-control" placeholder="Nhập tuổi y tá" />
         </div>
         <div class="form-group">
-            <label for="NurseGender" class="form-control">Giới tính</label>
+            <label for="NurseGender">Giới tính</label>
             <select asp-for="NurseGender" asp-items="@ViewBag.Genders" class="form-control"></select>
         </div>
         <div class="form-group">
-            <label for="NurseImgURL" class="form-control">Ảnh y tá</label>
+            <label for="NurseImgURL">Ảnh y tá</label>
             <input type="file" name="NurseImg" class="form-control" />
         </div>
         <br />

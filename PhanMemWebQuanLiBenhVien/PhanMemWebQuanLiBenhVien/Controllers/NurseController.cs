@@ -44,21 +44,36 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult Create(Nurse nurse, IFormFile? NurseImg)
         {
-            wwwroot = _webHostEnvironment.WebRootPath;
-            if (NurseImg != null)
+            if (ModelState.IsValid)
             {
-                string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
-                string filepath = Path.Combine(wwwroot, @"images\");
-                using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                wwwroot = _webHostEnvironment.WebRootPath;
+                if (NurseImg != null)
                 {
-                    NurseImg.CopyTo(filestream);
+                    string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
+                    string filepath = Path.Combine(wwwroot, @"images\");
+                    using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                    {
+                        NurseImg.CopyTo(filestream);
+                    }
+                    nurse.NurseImgURL = @"\images\" + filename;
                 }
-                nurse.NurseImgURL = @"\images\" + filename;
+                else nurse.NurseImgURL = "";
+                _unitOfWork.NurseRepository.Add(nurse);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
             }
-            else nurse.NurseImgURL = "";
-            _unitOfWork.NurseRepository.Add(nurse);
-            _unitOfWork.Save();
-            return RedirectToAction("Index");
+            else
+            {
+                var genderList = Enum.GetValues(typeof(EGender))
+                .Cast<EGender>()
+                .Select(gender => new SelectListItem
+                {
+                    Value = gender.ToString(),
+                    Text = gender.ToString()
+                }).ToList();
+                ViewBag.Genders = genderList;
+                return View();
+            }
         }
         public IActionResult Update(int NurseId)
         {
@@ -76,21 +91,36 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult Update(Nurse nurse, IFormFile? NurseImg)
         {
-            wwwroot = _webHostEnvironment.WebRootPath;
-            if (NurseImg != null)
+            if (ModelState.IsValid)
             {
-                string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
-                string filepath = Path.Combine(wwwroot, @"images\");
-                using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                wwwroot = _webHostEnvironment.WebRootPath;
+                if (NurseImg != null)
                 {
-                    NurseImg.CopyTo(filestream);
+                    string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
+                    string filepath = Path.Combine(wwwroot, @"images\");
+                    using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                    {
+                        NurseImg.CopyTo(filestream);
+                    }
+                    nurse.NurseImgURL = @"\images\" + filename;
                 }
-                nurse.NurseImgURL = @"\images\" + filename;
+                _unitOfWork.NurseRepository.Update(nurse);
+                _unitOfWork.Save();
+                if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
+                return RedirectToAction("Index");
             }
-            _unitOfWork.NurseRepository.Update(nurse);
-            _unitOfWork.Save();
-            if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
-            return RedirectToAction("Index");
+            else
+            {
+                var genderList = Enum.GetValues(typeof(EGender))
+                .Cast<EGender>()
+                .Select(gender => new SelectListItem
+                {
+                    Value = gender.ToString(),
+                    Text = gender.ToString()
+                }).ToList();
+                ViewBag.Genders = genderList;
+                return View(nurse);
+            }
         }
         public async Task<IActionResult> Delete(int NurseId)
         {
