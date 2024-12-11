@@ -61,9 +61,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			var profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == ProfessionId);
 			if (profession != null)
 			{
-				return View(profession);
+                ViewBag.DoctorsInProfession = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == ProfessionId).Select(u => new SelectListItem
+                {
+                    Text = u.DoctorName,
+                    Value = u.DoctorId.ToString()
+                });
+                return View(profession);
 			}
-			return View();
+			return View(null);
 		}
 		[HttpPost("Update/{ProfessionId}")]
 		public IActionResult Update(Profession profession)
@@ -89,7 +94,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			}
 			return View();
 		}
-
+		[HttpGet("ThemTruongKhoa")]
 		public IActionResult ThemTruongKhoa(int ProfessionId)
 		{
 			var doctorlist = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == ProfessionId);
@@ -100,12 +105,19 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			var profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==ProfessionId);
 			return View(profession);
 		}
-		[HttpPost]
+		[HttpPost("ThemTruongKhoa")]
 		public IActionResult ThemTruongKhoa(int TruongKhoaId, int ProfessionId)
 		{
 			var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == ProfessionId);
 			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == TruongKhoaId);
+			if (profession.TruongKhoaId!=null)
+			{
+				var olddoctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId);
+				olddoctor.IsTruongKhoa = false;
+				_unitOfWork.DoctorRepository.Update(olddoctor);
+			}
 			profession.TruongKhoaId= TruongKhoaId;
+			profession.TruongKhoaName = doctor.DoctorName;
 			doctor.IsTruongKhoa= true;
 			_unitOfWork.ProfessionRepository.Update(profession);
 			_unitOfWork.DoctorRepository.Update(doctor);

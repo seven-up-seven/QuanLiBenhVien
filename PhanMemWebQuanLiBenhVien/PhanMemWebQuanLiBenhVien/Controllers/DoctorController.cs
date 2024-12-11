@@ -87,12 +87,26 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.DoctorRepository.Add(doctor);
 				TempData["success"] = "Tạo bác sĩ mới thành công!";
                 _unitOfWork.Save();
+                return RedirectToAction("Index");
             }
 			else
 			{
 				TempData["error"] = "Thông tin bác sĩ không hợp lệ!";
+                ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.ProfessionName,
+                    Value = u.ProfessionId.ToString()
+                });
+                var genderList = Enum.GetValues(typeof(EGender))
+                .Cast<EGender>()
+                .Select(gender => new SelectListItem
+                {
+                    Value = gender.ToString(),
+                    Text = gender.ToString()
+                }).ToList();
+                ViewBag.Genders = genderList;
+                return View();
 			}
-			return RedirectToAction("Index");
 		}
 		public IActionResult Update(int DoctorId)
 		{
@@ -115,25 +129,42 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost]
 		public IActionResult Update(Doctor doctor, IFormFile? DoctorImg)
 		{
-			if (ModelState.IsValid)
-			{
-				wwwroot = _webHostEnvironment.WebRootPath;
-				if (DoctorImg != null)
-				{
-					string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
-					string filepath = Path.Combine(wwwroot, @"images\");
-					using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
-					{
-						DoctorImg.CopyTo(filestream);
-					}
-					doctor.DoctorImgURL = @"\images\" + filename;
-				}
-				_unitOfWork.DoctorRepository.Update(doctor);
-				_unitOfWork.Save();
-				TempData["success"] = "Cập nhật bác sĩ thành công!";
-			}
-			else TempData["error"] = "Thông tin bác sĩ không hợp lệ!";
-			if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new {DoctorId=doctor.DoctorId});
+            if (ModelState.IsValid)
+            {
+                wwwroot = _webHostEnvironment.WebRootPath;
+                if (DoctorImg != null)
+                {
+                    string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
+                    string filepath = Path.Combine(wwwroot, @"images\");
+                    using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                    {
+                        DoctorImg.CopyTo(filestream);
+                    }
+                    doctor.DoctorImgURL = @"\images\" + filename;
+                }
+                _unitOfWork.DoctorRepository.Update(doctor);
+                _unitOfWork.Save();
+                TempData["success"] = "Cập nhật bác sĩ thành công!";
+            }
+            else
+            {
+                TempData["error"] = "Thông tin bác sĩ không hợp lệ!";
+                ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.ProfessionName,
+                    Value = u.ProfessionId.ToString()
+                });
+                var genderList = Enum.GetValues(typeof(EGender))
+                .Cast<EGender>()
+                .Select(gender => new SelectListItem
+                {
+                    Value = gender.ToString(),
+                    Text = gender.ToString()
+                }).ToList();
+                ViewBag.Genders = genderList;
+                return View(doctor);
+            }
+            if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new {DoctorId=doctor.DoctorId});
 			return RedirectToAction("Index");
 		}
 		public async Task<IActionResult> Delete(int DoctorId)

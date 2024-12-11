@@ -23,6 +23,8 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
             {
                 objFromDb.ProfessionName = profession.ProfessionName;
                 objFromDb.Description = profession.Description;
+                objFromDb.TruongKhoaId = profession.TruongKhoaId;
+                objFromDb.TruongKhoaName = profession.TruongKhoaName;
                 _db.SaveChanges();
             }
         }

@@ -59,8 +59,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				_unitOfWork.Save();
 				return RedirectToAction("Index");
 			}
-
-			return View();
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View();
 		}
 
 
