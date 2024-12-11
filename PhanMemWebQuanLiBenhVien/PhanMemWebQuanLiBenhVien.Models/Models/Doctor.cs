@@ -11,6 +11,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [Key]
         public int DoctorId { get; set; }
 		[MaxLength(12, ErrorMessage = "CCCD có 12 số !")]
+        [MinLength(12, ErrorMessage ="CCCD có 12 số!")]
 		[Required(ErrorMessage = "Chưa nhập CCCD !")]
 		[RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số !")]
 		public string DoctorCCCD { get; set; }

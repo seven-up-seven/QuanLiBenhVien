@@ -27,15 +27,15 @@
             <input asp-for="DoctorAge" class="form-control" placeholder="Nhập tuổi bác sĩ" />
         </div>
         <div class="form-group">
-            <label for="ProfessionId" class="form-control">Chuyên khoa</label>
+            <label for="ProfessionId">Chuyên khoa</label>
             <select asp-for="ProfessionId" asp-items="@ViewBag.Professions" class="form-control"></select>
         </div>
         <div class="form-group">
-            <label for="DoctorGender" class="form-control">Giới tính</label>
+            <label for="DoctorGender">Giới tính</label>
             <select asp-for="DoctorGender" asp-items="@ViewBag.Genders" class="form-control"></select>
         </div>
         <div class="form-group">
-            <label for="DoctorImgURL" class="form-control">Ảnh bác sĩ</label>
+            <label for="DoctorImgURL">Ảnh bác sĩ</label>
             <input type="file" name="DoctorImg" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">
