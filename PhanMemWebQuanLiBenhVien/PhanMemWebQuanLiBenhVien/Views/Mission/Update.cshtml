@@ -12,6 +12,7 @@
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <!-- Các trường input ở đây -->
+        <input asp-for="MissionId" hidden />
         <div class="form-group">
             <label asp-for="Time">Thời gian bắt đầu</label>
             <input asp-for="Time" class="form-control" placeholder="Nhập thời gian bắt đầu" />

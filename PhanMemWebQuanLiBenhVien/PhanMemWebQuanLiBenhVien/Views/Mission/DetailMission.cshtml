@@ -1,33 +1,111 @@
-﻿@model PhanMemWebQuanLiBenhVien.Models.Mission
+﻿@using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities
+@model PhanMemWebQuanLiBenhVien.Models.Mission
 
 @{
     ViewData["Title"] = "Chi tiết nhiệm vụ";
+    var cardBorderClass = Model.Lever switch
+    {
+        Elever.binhthuong => "border-primary", // Xanh dương
+        Elever.uutien => "border-warning", // Cam
+        Elever.nguycap => "border-danger", // Đỏ
+        _ => "border-secondary" // Mặc định
+    };
 }
 
 <div class="container mt-5">
-    <h2 class="text-center">Chi tiết Nhiệm Vụ</h2>
-    <div class="card border-secondary">
+    <h2 class="text-center">CHI TIẾT NHIỆM VỤ</h2>
+    <div class="card @cardBorderClass">
         <div class="card-header">
-            <p class="card-text"><strong>Mức độ:</strong> @Model.Lever</p>
+            <p class="card-text">
+                <strong>Mức độ:</strong>
+                @switch (Model.Lever)
+                {
+                    case Elever.binhthuong:
+                        @:Bình Thường
+                        break;
+                    case Elever.uutien:
+                        @:Ưu Tiên
+                        break;
+                    case Elever.nguycap:
+                        @:Nguy Cấp
+                        break;
+                }
+            </p>
         </div>
         <div class="card-body">
             <p class="card-text"><strong>Thời gian bắt đầu:</strong> @Model.Time.ToString("HH:mm dd/MM/yyyy")</p>
             <p class="card-text"><strong>Thời gian kết thúc:</strong> @Model.EndTime.ToString("HH:mm dd/MM/yyyy")</p>
-            <p class="card-text"><strong>Tên bác sĩ:</strong>@Model.Doctor.DoctorName</p>
-            <p class="card-text"><strong>ID:</strong> @Model.DoctorId</p>
+            <p class="card-text"><strong>Tên bác sĩ:</strong> @Model.Doctor.DoctorName <strong>ID:</strong> @Model.DoctorId</p>
             <p class="card-text"><strong>Nội dung:</strong> @Model.Content</p>
+            @if (Model.PhongKhamId == null)
+            {
+                <p class="card-text"><strong>Phòng:</strong>@Model.PhongBenh.Name</p>
+            }
+            else
+            {
+                <p class="card-text"><strong>Phòng:</strong> @Model.PhongKham.Name</p>
+            }
+
+            <!-- Checkbox cập nhật trạng thái -->
+            <form asp-controller="Mission" asp-action="Tick" method="post">
+                <input type="hidden" name="id" value="@Model.MissionId" />
+                <div class="form-check text-center p-3 border rounded">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           id="missionCompletedCheckbox"
+                           name="isCompleted"
+                    @(Model.IsCompleted ? "checked" : "")
+                           onchange="this.form.submit()" />
+                    <label class="form-check-label font-weight-bold" for="missionCompletedCheckbox">
+                        Hoàn thành
+                    </label>
+                </div>
+            </form>
         </div>
-    </div>
-    <div class="mt-3 text-center">
-        <a href="@Url.Action("DoctorMission", "Doctor", new { month = ViewBag.Month, year = ViewBag.Year })" class="btn btn-primary">Quay lại</a>
+        <div class="mt-3 text-center">
+            <a href="@Url.Action("DoctorMission", "Doctor", new { month = ViewBag.Month, year = ViewBag.Year })" class="btn btn-primary">Quay lại</a>
+        </div>
     </div>
 </div>
 
 <style>
+    .border-primary {
+        border: 2px solid #007bff; /* Xanh dương */
+    }
+
+    .border-warning {
+        border: 2px solid #ffc107; /* Cam */
+    }
+
+    .border-danger {
+        border: 2px solid #dc3545; /* Đỏ */
+    }
+
     .card {
         max-width: 600px;
         margin: 0 auto;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Khoảng cách giữa checkbox và nhãn */
+        border: 2px solid #ccc; /* Khung bao quanh */
+        border-radius: 8px; /* Góc bo tròn */
+        padding: 10px; /* Khoảng cách bên trong */
+        margin-top: 20px; /* Khoảng cách phía trên */
+    }
+
+    .form-check-label {
+        font-weight: bold; /* Chữ in đậm */
+        font-size: 16px; /* Kích thước chữ */
+    }
+
+    .form-check-input {
+        transform: scale(1.2); /* Tăng kích thước checkbox */
+    }
+
 </style>

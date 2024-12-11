@@ -116,7 +116,6 @@
         })
         ));
 
-
         // Xử lý sự kiện click vào ngày
         document.querySelectorAll(".day-cell").forEach(cell => {
             cell.addEventListener("click", function () {
@@ -133,37 +132,46 @@
                 if (missions.length > 0) {
                     missionDetailsDiv.innerHTML = missions.map(mission => {
                         let borderColorClass = "";
+                        let leverText = "";
+
                         switch (mission.Lever.toLowerCase()) {
                             case "binhthuong":
                                 borderColorClass = "border-success"; // Xanh lá cây
+                                leverText = "Bình Thường";
                                 break;
                             case "uutien":
                                 borderColorClass = "border-warning"; // Cam
+                                leverText = "Ưu Tiên";
                                 break;
                             case "nguycap":
                                 borderColorClass = "border-danger"; // Đỏ
+                                leverText = "Nguy Cấp";
                                 break;
                         }
 
+                        // Thêm màu sắc cho trạng thái
+                        const statusClass = mission.IsCompleted ? "text-success" : "text-danger";
+                        const statusText = mission.IsCompleted ? "Hoàn thành" : "Chưa hoàn thành";
+
                         return `
-            <div class="card ${borderColorClass}">
-                <div class="card-header">
-                    <p class="card-text"><strong>Mức độ:</strong> ${mission.Lever}</p>
-                </div>
-                <div class="card-body">
-                    <p class="card-text"><strong>Thời gian kết thúc:</strong> ${mission.EndTime}</p>
-                    <p class="card-text"><strong>Nội dung:</strong> ${mission.Content}</p>
-                    <p class="card-text"><strong>Phòng:</strong> ${mission.Room}</p>
-                    <a href="/Mission/DetailMission?missionId=${mission.Id}" class="btn btn-primary">Xem chi tiết</a>
-
-                </div>
-            </div>`;
-
+                <div class="card ${borderColorClass}">
+                    <div class="card-header">
+                        <p class="card-text"><strong>Mức độ:</strong> ${leverText}</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Thời gian kết thúc:</strong> ${mission.EndTime}</p>
+                        <p class="card-text"><strong>Nội dung:</strong> ${mission.Content}</p>
+                        <p class="card-text"><strong>Phòng:</strong> ${mission.Room}</p>
+                        <p class="card-text"><strong>Trạng thái:</strong> <span class="${statusClass}">${statusText}</span></p>
+                        <a href="/Mission/DetailMission?missionId=${mission.Id}" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
+                </div>`;
                     }).join('');
+
                 } else {
                     missionDetailsDiv.innerHTML =
                         `<p><strong>Ngày:</strong> ${new Date(date).toLocaleDateString("vi-VN")}</p>
-                                 <p>Không có nhiệm vụ nào.</p>`;
+                             <p>Không có nhiệm vụ nào.</p>`;
                 }
             });
         });
@@ -177,8 +185,8 @@
         function redirectToDetail(missionId) {
             window.location.href = `/Mission/DetailMission?missionId=${missionId}`;
         }
-
     </script>
+
 
 
 
@@ -187,6 +195,9 @@
 }
 
 <style>
+
+
+
     .calendar {
         margin: 20px auto;
         max-width: 600px;
