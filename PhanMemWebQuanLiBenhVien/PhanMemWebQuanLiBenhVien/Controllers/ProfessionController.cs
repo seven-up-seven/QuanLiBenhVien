@@ -25,9 +25,20 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			}
 			return View(listProfession);
 		}
+        [HttpPost("Index")]
+        public IActionResult Index(string SearchName)
+        {
+            var listProfession = _unitOfWork.ProfessionRepository.GetAll();
+			if (!string.IsNullOrEmpty(SearchName)) listProfession = listProfession.Where(u => u.ProfessionName.ToLower().Contains(SearchName.ToLower()));
+            foreach (var profession in listProfession)
+            {
+                var truongkhoa = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId);
+                if (truongkhoa != null) profession.TruongKhoaName = truongkhoa.DoctorName;
+            }
+            return View(listProfession);
+        }
 
-
-		[HttpGet("Create")]
+        [HttpGet("Create")]
 		public IActionResult Create()
 		{
 			return View();

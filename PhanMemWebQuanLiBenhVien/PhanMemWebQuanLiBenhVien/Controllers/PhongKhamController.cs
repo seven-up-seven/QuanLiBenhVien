@@ -44,7 +44,48 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                 }
             }
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View(listPhongKham);
+        }
+        [HttpPost("Index")]
+        public IActionResult Index(string SearchName, string SearchProfession)
+        {
+            var listPhongKham = _unitOfWork.PhongKhamRepository.GetAll();
+            var listBenhNhan = _unitOfWork.PatientRepository.GetAll();
+            var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchName)) listPhongKham = listPhongKham.Where(u => u.Name.ToLower().Contains(SearchName.ToLower()));
+            if (SearchProfession != "NoFilter") listPhongKham = listPhongKham.Where(u => u.ProfessionId.ToString() == SearchProfession);
+            foreach (var phong in listPhongKham)
+            {
+                phong.Patients = new List<Patient>();
+            }
 
+            foreach (var patient in listBenhNhan)
+            {
+                patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
+                var lastMedicalRecord = patient.MedicalRecords?.LastOrDefault();
+
+                if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    lastMedicalRecord != null &&
+                    lastMedicalRecord.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                    lastMedicalRecord.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru)
+                {
+                    var phongKham = listPhongKham.FirstOrDefault(pk => pk.RoomId == lastMedicalRecord.PhongKhamId);
+                    if (phongKham != null && !phongKham.Patients.Any(p => p.PatientId == patient.PatientId))
+                    {
+                        phongKham.Patients.Add(patient);
+                    }
+                }
+            }
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
             return View(listPhongKham);
         }
 

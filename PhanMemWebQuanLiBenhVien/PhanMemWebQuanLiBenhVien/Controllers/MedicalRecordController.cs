@@ -20,9 +20,66 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Index()
         {
             var listMedicalRecord = _unitOfWork.MedicalRecordRepository.GetAll();
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            ViewBag.TrangThaiBenhAn = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Kết thúc chữa trị",
+                        Value = ETrangThaiBenhAn.ketthucchuatri.ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đang chữa trị",
+                        Value = ETrangThaiBenhAn.dangchuatri.ToString()
+                    }
+                },
+                "Value",
+                "Text"
+            );
             return View(listMedicalRecord);
         }
-
+        [HttpPost("Index")]
+        public IActionResult Index(string SearchPatientName, string SearchPatientCCCD, int ProfessionId, string SearchTrangThaiBenhAn)
+        {
+            var listMedicalRecord = _unitOfWork.MedicalRecordRepository.GetAll();
+            foreach(var medicalrecord in listMedicalRecord)
+            {
+                medicalrecord.Patient=_unitOfWork.PatientRepository.Get(u=>u.PatientId==medicalrecord.PatientId);
+            }
+            if (!string.IsNullOrEmpty(SearchPatientName)) listMedicalRecord = listMedicalRecord.Where(u => u.PatientName.ToLower().Contains(SearchPatientName.ToLower()));
+            if (!string.IsNullOrEmpty(SearchPatientCCCD)) listMedicalRecord = listMedicalRecord.Where(u => u.Patient.CCCD.Contains(SearchPatientCCCD));
+            if (ProfessionId != 0) listMedicalRecord = listMedicalRecord.Where(u=>u.ProfesisonId==ProfessionId);
+            if (SearchTrangThaiBenhAn != "NoFilter") listMedicalRecord = listMedicalRecord.Where(u => u.TrangThaiBenhAn.ToString() == SearchTrangThaiBenhAn);
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            ViewBag.TrangThaiBenhAn = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Kết thúc chữa trị",
+                        Value = ETrangThaiBenhAn.ketthucchuatri.ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đang chữa trị",
+                        Value = ETrangThaiBenhAn.dangchuatri.ToString()
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(listMedicalRecord);
+        }
 
         [HttpGet("AdminCreate")]
         public IActionResult AdminCreate()

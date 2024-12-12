@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -19,6 +20,52 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Index()
         {
             var listPhongCapCuu = _unitOfWork.PhongCapCuuRepository.GetAll();
+            ViewBag.Status = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Trống",
+                        Value = "Free"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đang trưng dụng",
+                        Value = "Used"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(listPhongCapCuu);
+        }
+        [HttpPost("Index")]
+        public IActionResult Index(string SearchName, string SearchStatus)
+        {
+            var listPhongCapCuu = _unitOfWork.PhongCapCuuRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchName)) listPhongCapCuu = listPhongCapCuu.Where(u => u.Name.ToLower().Contains(SearchName.ToLower()));
+            if (SearchStatus!="NoFilter")
+            {
+                if (SearchStatus == "Used") listPhongCapCuu = listPhongCapCuu.Where(u => u.isAvailable == false);
+                else if (SearchStatus =="Free") listPhongCapCuu=listPhongCapCuu.Where(u=>u.isAvailable == true);
+            }
+            ViewBag.Status = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Trống",
+                        Value = "Free"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đang trưng dụng",
+                        Value = "Used"
+                    }
+                },
+                "Value",
+                "Text"
+            );
             return View(listPhongCapCuu);
         }
 

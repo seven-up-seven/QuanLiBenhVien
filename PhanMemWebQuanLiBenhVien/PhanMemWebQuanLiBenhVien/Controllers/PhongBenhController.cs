@@ -36,11 +36,46 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                 }
             }
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View(listPhongBenh);
+        }
+        [HttpPost("Index")]
+        public IActionResult Index(string SearchName, string SearchProfession)
+        {
+            var listPhongBenh = _unitOfWork.PhongBenhRepository.GetAll();
+            var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll();
+            var listBenhNhan = _unitOfWork.PatientRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchName)) listPhongBenh = listPhongBenh.Where(u => u.Name.ToLower().Contains(SearchName.ToLower()));
+            if (SearchProfession != "NoFilter") listPhongBenh = listPhongBenh.Where(u => u.ProfessionId.ToString() == SearchProfession);
+            foreach (var phong in listPhongBenh)
+            {
+                phong.Patients = new List<Patient>();
+                foreach (var patient in listBenhNhan)
+                {
+                    patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId && mr.PhongBenhId == phong.RoomId);
+                    if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                        patient.MedicalRecords != null &&
+                        patient.MedicalRecords.LastOrDefault() != null &&
+                        patient.MedicalRecords.LastOrDefault().TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+                        patient.MedicalRecords.LastOrDefault().TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+                    {
+                        phong.Patients.Add(patient);
+                    }
+                }
+            }
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
             return View(listPhongBenh);
         }
 
-
-		[HttpGet("Create")]
+        [HttpGet("Create")]
 		public IActionResult Create()
 		{
 			ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
