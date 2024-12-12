@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -26,8 +28,54 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult DoctorIndex()
 		{
 			var doctorlist = _unitofwork.DoctorRepository.GetAll();
-			return View(doctorlist);
+            ViewBag.TrangThaiTaiKhoan = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Chưa có tài khoản",
+                        Value = "NoAccount"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đã có tài khoản",
+                        Value = "HasAccount"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(doctorlist);
 		}
+        [HttpPost]
+        public IActionResult DoctorIndex(string SearchName, string TrangThaiTaiKhoan)
+        {
+            var doctorlist = _unitofwork.DoctorRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchName)) doctorlist = doctorlist.Where(u => u.DoctorName.ToLower().Contains(SearchName.ToLower()));
+            if (TrangThaiTaiKhoan!="NoFilter")
+            {
+                if (TrangThaiTaiKhoan == "NoAccount") doctorlist = doctorlist.Where(u => u.HasAccount == false);
+                else if (TrangThaiTaiKhoan == "HasAccount") doctorlist = doctorlist.Where(u => u.HasAccount == true);
+            }
+            ViewBag.TrangThaiTaiKhoan = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Chưa có tài khoản",
+                        Value = "NoAccount"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đã có tài khoản",
+                        Value = "HasAccount"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(doctorlist);
+        }
 		public IActionResult AssignDoctorAccount(int DoctorId)
 		{
             ViewBag.Doctor = _unitofwork.DoctorRepository.Get(u => u.DoctorId == DoctorId);
@@ -68,8 +116,54 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public IActionResult NurseIndex()
 		{
 			var nurselist=_unitofwork.NurseRepository.GetAll();
-			return View(nurselist);
+            ViewBag.TrangThaiTaiKhoan = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Chưa có tài khoản",
+                        Value = "NoAccount"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đã có tài khoản",
+                        Value = "HasAccount"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(nurselist);
 		}
+        [HttpPost]
+        public IActionResult NurseIndex(string SearchName, string TrangThaiTaiKhoan)
+        {
+            var nurselist = _unitofwork.NurseRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchName)) nurselist = nurselist.Where(u => u.NurseName.ToLower().Contains(SearchName.ToLower()));
+            if (TrangThaiTaiKhoan != "NoFilter")
+            {
+                if (TrangThaiTaiKhoan == "NoAccount") nurselist = nurselist.Where(u => u.HasAccount == false);
+                else if (TrangThaiTaiKhoan == "HasAccount") nurselist = nurselist.Where(u => u.HasAccount == true);
+            }
+            ViewBag.TrangThaiTaiKhoan = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Chưa có tài khoản",
+                        Value = "NoAccount"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đã có tài khoản",
+                        Value = "HasAccount"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(nurselist);
+        }
 		
         public IActionResult AssignNurseAccount(int NurseId)
         {
