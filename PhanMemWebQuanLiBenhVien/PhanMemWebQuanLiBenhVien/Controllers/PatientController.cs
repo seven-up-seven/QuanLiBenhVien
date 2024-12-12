@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
@@ -17,14 +18,26 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Index()
         {
             var PatientList = _unitOfWork.PatientRepository.GetAll();
-   //         foreach (var patient in PatientList)
-   //         {
-			//	if (patient.DoctorId != null) patient.Doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == patient.DoctorId);
-			//	if (patient.NurseId != null) patient.Nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == patient.NurseId);
-			//	if (patient.PhongBenhId != null) patient.PhongBenh = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == patient.PhongBenhId);
-			//	if (patient.PhongKhamId != null) patient.PhongKham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == patient.PhongKhamId);
-			//}
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value=u.ProfessionId.ToString()
+            });
             return View(PatientList);
+        }
+        [HttpPost]
+        public IActionResult Index(string SearchPatientName, string SearchPatientCCCD, int ProfessionId)
+        {
+            var patientlist = _unitOfWork.PatientRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchPatientName)) patientlist=patientlist.Where(u => u.Name.ToLower().Contains(SearchPatientName.ToLower()));
+            if (!string.IsNullOrEmpty(SearchPatientCCCD)) patientlist=patientlist.Where(u => u.CCCD.ToLower().Contains(SearchPatientCCCD.ToLower()));
+            if (ProfessionId!=0) patientlist = patientlist.Where(u => u.ProfesisonId == ProfessionId);
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View(patientlist);
         }
 
         public IActionResult Create()

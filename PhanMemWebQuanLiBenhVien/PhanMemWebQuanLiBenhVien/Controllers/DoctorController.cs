@@ -35,9 +35,27 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == doctor.ProfessionId);
 				doctor.Profession = profession;
 			}
-			return View(DoctorList);
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View(DoctorList);
 		}
-
+        [HttpPost]
+        public IActionResult Index(string SearchDoctorName, string SearchDoctorCCCD, int ProfessionId)
+        {
+            var doctorlist = _unitOfWork.DoctorRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchDoctorName)) doctorlist = doctorlist.Where(u => u.DoctorName.ToLower().Contains(SearchDoctorName.ToLower()));
+            if (!string.IsNullOrEmpty(SearchDoctorCCCD)) doctorlist = doctorlist.Where(u => u.DoctorCCCD.ToLower().Contains(SearchDoctorCCCD.ToLower()));
+            if (ProfessionId != 0) doctorlist = doctorlist.Where(u => u.ProfessionId == ProfessionId);
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View(doctorlist);
+        }
         public IActionResult DanhSachBacSiThuocKhoa(int KhoaId)
         {
             var DoctorList = _unitOfWork.DoctorRepository.GetAll(dr => dr.ProfessionId == KhoaId);
