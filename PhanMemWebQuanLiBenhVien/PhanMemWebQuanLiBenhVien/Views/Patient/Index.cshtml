@@ -12,6 +12,9 @@
         <select name="ProfessionId" asp-items="@ViewBag.Professions" class="rounded-3">
             <option value="0">Lọc bệnh nhân theo khoa</option>
         </select>
+        <select name="SearchTrangThaiBenhAn" asp-items="@ViewBag.TrangThaiBenhAn" class="rounded-3">
+            <option value="NoFilter">Lọc theo trạng thái bệnh án</option>
+        </select>
         <input name="SearchPatientName" class="rounded-3" placeholder="Tìm bệnh nhân theo tên"/>
         <input name="SearchPatientCCCD" class="rounded-3" placeholder="Tìm bệnh nhân theo CCCD" />
         <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>

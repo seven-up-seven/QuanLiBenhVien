@@ -28,6 +28,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var NurseList = _unitOfWork.NurseRepository.GetAll();
             return View(NurseList);
         }
+        [HttpPost]
+        public IActionResult Index(string SearchNurseName, string SearchNurseCCCD, int ProfessionId)
+        {
+            var nurselist = _unitOfWork.NurseRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchNurseName)) nurselist = nurselist.Where(u => u.NurseName.ToLower().Contains(SearchNurseName.ToLower()));
+            if (!string.IsNullOrEmpty(SearchNurseCCCD)) nurselist = nurselist.Where(u => u.NurseCCCD.ToLower().Contains(SearchNurseCCCD.ToLower()));
+            return View(nurselist);
+        }
 
         public IActionResult Create()
         {

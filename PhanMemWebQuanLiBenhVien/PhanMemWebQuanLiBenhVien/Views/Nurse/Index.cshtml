@@ -7,6 +7,11 @@
         <div class="col text-primary"><h2>Danh sách y tá</h2></div>
         <div class="col col-auto text-end text-center"><h5> <a asp-action="Create" asp-controller="Nurse" class="text-decoration-none text-white btn btn-primary "><i class="bi bi-person-plus-fill"></i> Thêm y tá</a></h5></div>
     </div>
+    <form method="post" class="d-flex justify-content-end gap-2 mb-3">
+        <input name="SearchNurseName" class="rounded-3" placeholder="Tìm y tá theo tên" />
+        <input name="SearchNurseCCCD" class="rounded-3" placeholder="Tìm y tá theo CCCD" />
+        <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
+    </form>
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
@@ -30,7 +35,14 @@
                     <td>@nurse.NurseGender.ToString()</td>
                     <td>@nurse.NurseAge</td>
                     <td style="text-align: center; vertical-align: middle;">
-                        <img src="@nurse.NurseImgURL" width="100" />
+                        @if (string.IsNullOrEmpty(nurse.NurseImgURL))
+                        {
+                            <img src="~/images/nurse.png" width="100" />
+                        }
+                        else
+                        {
+                            <img src="@nurse.NurseImgURL" width="100" />
+                        }
                     </td>
 
                     <td>

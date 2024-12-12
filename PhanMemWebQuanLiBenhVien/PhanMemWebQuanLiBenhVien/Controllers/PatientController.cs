@@ -23,20 +23,55 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 Text = u.ProfessionName,
                 Value=u.ProfessionId.ToString()
             });
+            ViewBag.TrangThaiBenhAn = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Kết thúc chữa trị",
+                        Value = ETrangThaiBenhAn.ketthucchuatri.ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đang chữa trị",
+                        Value = ETrangThaiBenhAn.dangchuatri.ToString()
+                    }
+                },
+                "Value",
+                "Text"
+            );
             return View(PatientList);
         }
         [HttpPost]
-        public IActionResult Index(string SearchPatientName, string SearchPatientCCCD, int ProfessionId)
+        public IActionResult Index(string SearchPatientName, string SearchPatientCCCD, int ProfessionId, string SearchTrangThaiBenhAn)
         {
             var patientlist = _unitOfWork.PatientRepository.GetAll();
             if (!string.IsNullOrEmpty(SearchPatientName)) patientlist=patientlist.Where(u => u.Name.ToLower().Contains(SearchPatientName.ToLower()));
             if (!string.IsNullOrEmpty(SearchPatientCCCD)) patientlist=patientlist.Where(u => u.CCCD.ToLower().Contains(SearchPatientCCCD.ToLower()));
             if (ProfessionId!=0) patientlist = patientlist.Where(u => u.ProfesisonId == ProfessionId);
+            if (SearchTrangThaiBenhAn!="NoFilter") patientlist = patientlist.Where(u => u.TrangThaiBenhAn.ToString() == SearchTrangThaiBenhAn);
             ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
             {
                 Text = u.ProfessionName,
                 Value = u.ProfessionId.ToString()
             });
+            ViewBag.TrangThaiBenhAn = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Kết thúc chữa trị",
+                        Value = ETrangThaiBenhAn.ketthucchuatri.ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đang chữa trị",
+                        Value = ETrangThaiBenhAn.dangchuatri.ToString()
+                    }
+                },
+                "Value",
+                "Text"
+            );
             return View(patientlist);
         }
 
