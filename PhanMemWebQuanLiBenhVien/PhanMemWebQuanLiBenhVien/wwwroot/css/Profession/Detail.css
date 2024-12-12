@@ -20,6 +20,7 @@
         transform: translateY(-5px);
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
     }
+
 h2 {
     font-size: 2rem;
     font-weight: bold;
@@ -40,35 +41,21 @@ h2 {
         font-weight: bold;
     }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+div h4 {
+    font-size: 1.5rem;
+    color: #004a99;
     margin-top: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
-    table th {
-        background-color: #004a99;
-        color: #fff;
-        text-align: left;
-        padding: 15px;
-        font-size: 1.1rem;
-        text-transform: uppercase;
-    }
+div p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
 
-    table td {
-        padding: 12px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        vertical-align: middle;
-    }
-
-    table tr:hover {
-        background-color: #e2ebf6;
-        transition: background-color 0.3s ease;
+    div p:first-child {
+        margin-top: 10px;
     }
 
 .btn {
@@ -93,20 +80,6 @@ table {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-.text-primary {
-    color: #004a99 !important;
-}
-
-.text-decoration-none {
-    text-decoration: none;
-    color: inherit;
-}
-
-    .text-decoration-none:hover {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-
 @media (max-width: 768px) {
     .container {
         padding: 20px;
@@ -121,8 +94,15 @@ table {
         padding: 8px 15px;
     }
 
-    table th, table td {
+    .mt-5 p {
+        font-size: 1rem;
+    }
+
+    div h4 {
+        font-size: 1.3rem;
+    }
+
+    div p {
         font-size: 0.9rem;
-        padding: 10px;
     }
 }
