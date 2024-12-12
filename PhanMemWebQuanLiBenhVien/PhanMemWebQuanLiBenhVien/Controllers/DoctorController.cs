@@ -309,11 +309,95 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 					}
                 }
             }
-
+			ViewBag.TinhTrangBenhNhan = new SelectList(
+				new List<SelectListItem>
+				{
+					new SelectListItem
+					{
+						Text = "Không triệu chứng",
+						Value = ETinhTrangBenhNhan.khongtrieuchung.ToString()
+					},
+					new SelectListItem
+					{
+						Text = "Có triệu chứng",
+						Value = ETinhTrangBenhNhan.cotrieuchung.ToString()
+					},
+					new SelectListItem
+					{
+						Text = "Trở nặng",
+						Value = ETinhTrangBenhNhan.tronang.ToString()
+					}
+				},
+				"Value",
+				"Text"
+			);
+			ViewBag.doctor = doctor;
             return View(doctor.PatientList);
         }
+        [HttpPost]
+		public IActionResult DoctorPatients(int DoctorId, string SearchPatientName, string SearchPatientCCCD, string TinhTrangBenhNhan)
+        {
+			var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
+			doctor.PatientList = new List<Patient>();
+			var medicalRecords = _unitOfWork.MedicalRecordRepository.GetAll();
+			var patients = _unitOfWork.PatientRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchPatientName)) patients = patients.Where(u => u.Name.ToLower().Contains(SearchPatientName.ToLower()));
+            if (!string.IsNullOrEmpty(SearchPatientCCCD)) patients = patients.Where(u => u.CCCD.Contains(SearchPatientCCCD));
+			foreach (var patient in patients)
+			{
+				patient.MedicalRecords = (ICollection<MedicalRecord>?)_unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
+				var lastMedicalRecord = patient.MedicalRecords?.LastOrDefault();
+				if (patient.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+					lastMedicalRecord != null &&
+					lastMedicalRecord.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
+					lastMedicalRecord.TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+				{
+                    if (TinhTrangBenhNhan!="NoFilter")
+                    {
+						if (lastMedicalRecord.DoctorId == doctor.DoctorId && lastMedicalRecord.TinhTrangBenhNhan.ToString()==TinhTrangBenhNhan)
+						{
+							lastMedicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == lastMedicalRecord.PhongBenhId);
+							doctor.PatientList.Add(patient);
+						}
+					}
+                    else
+                    {
+						if (lastMedicalRecord.DoctorId == doctor.DoctorId)
+						{
+							lastMedicalRecord.PhongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == lastMedicalRecord.PhongBenhId);
+							doctor.PatientList.Add(patient);
+						}
+					}
+				}
+			}
+			ViewBag.doctor = doctor;
+			ViewBag.TinhTrangBenhNhan = new SelectList(
+				new List<SelectListItem>
+				{
+					new SelectListItem
+					{
+						Text = "Không triệu chứng",
+						Value = ETinhTrangBenhNhan.khongtrieuchung.ToString()
+					},
+					new SelectListItem
+					{
+						Text = "Có triệu chứng",
+						Value = ETinhTrangBenhNhan.cotrieuchung.ToString()
+					},
+					new SelectListItem
+					{
+						Text = "Trở nặng",
+						Value = ETinhTrangBenhNhan.tronang.ToString()
+					}
+				},
+				"Value",
+				"Text"
+			);
+			return View(doctor.PatientList);
+		}
 
-        public IActionResult DoctorPatientDetail(int PatientId)
+
+		public IActionResult DoctorPatientDetail(int PatientId)
         {
             var medicalRecord = _unitOfWork.MedicalRecordRepository.GetAll(u => u.PatientId == PatientId);
             foreach(var mr in medicalRecord)
