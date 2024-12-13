@@ -104,7 +104,7 @@
         </div>
 
     <div class="row mt-4">
-        <a href="@ViewBag.ReferUrl" class="btn text-white col col-auto">Quay lại</a>
+        <div class="w-100 col col-auto"><a href="@ViewBag.ReferUrl" class="btn btn-primary text-white col col-auto">Quay lại</a></div>
         <div class="col-auto text-primary">
             <form asp-action="CloseMedicalRecord" asp-controller="MedicalRecord" asp-route-MedicalRecordId="@Model.MedicalRecordId" method="post">
                 @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
