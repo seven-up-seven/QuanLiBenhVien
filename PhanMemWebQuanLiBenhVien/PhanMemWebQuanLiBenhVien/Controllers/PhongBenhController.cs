@@ -165,14 +165,25 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost("Delete/{PhongBenhId}")]
 		public IActionResult Delete(int PhongBenhId)
 		{
-			var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
-			if (phongBenh != null)
-			{
-				_unitOfWork.PhongBenhRepository.Remove(phongBenh);
-				_unitOfWork.Save();
-				return RedirectToAction("Index");
-			}
-			return View();
-		}
+            try
+            {
+                var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
+                if (phongBenh != null)
+                {
+                    _unitOfWork.PhongBenhRepository.Remove(phongBenh);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Xóa phòng bệnh thành công!";
+                }
+                else
+                {
+                    TempData["error"] = "Không tồn tại phòng bệnh!";
+                }
+            }
+            catch
+            {
+                TempData["error"] = "Không được xóa phòng bệnh này!";
+            }
+             return RedirectToAction("Index");
+        }
 	}
 }
