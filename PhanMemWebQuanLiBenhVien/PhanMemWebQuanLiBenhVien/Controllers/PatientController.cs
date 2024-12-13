@@ -16,6 +16,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        public IActionResult Avail()
+        {
+            var patients = _unitOfWork.PatientRepository.GetAll(pt => pt.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri);
+            return View("Index", patients); 
+        }
         public IActionResult Index()
         {
             var PatientList = _unitOfWork.PatientRepository.GetAll();

@@ -20,7 +20,7 @@
 
 <div class="container mt-4">
 
-    <div class="row gap-5">
+    <div class="row gap-5" style="margin-left:45px">
         <!-- Card for Total Staff -->
         <a asp-controller="Doctor" asp-action="Index" class="card col-md-2 text-decoration-none">
             <div class="card-body d-flex align-items-center">
@@ -57,9 +57,9 @@
         </a>
 
         <!-- Card for Total Clinics -->
-        <form asp-action="Index" method="post" asp-controller="Patient" class="col-md-2 test">
-            <input name="SearchTrangThaiBenhAn" value="dangchuatri" hidden />
-            <button type="submit" class="card text-decoration-none">
+        <a asp-action="Avail" asp-controller="Patient" class="col-md-2 text-decoration-none">
+            
+            
                 <div class="card-body d-flex align-items-center">
                     <!-- Icon or Image Placeholder -->
                     <div class="me-3">
@@ -71,15 +71,9 @@
                         <h6 class="mb-0 fs-5">@totalPatients</h6>
                     </div>
                 </div>
-            </button>
-            <style>
-                .test {
-                    width: 240px;
-                    margin-right: 16px;
-                    margin-left: -14px;
-                }
-            </style>
-        </form>
+           
+            
+        </a>
 
 
         <!-- Card for Total Patient Rooms -->
