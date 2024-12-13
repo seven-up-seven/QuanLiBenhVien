@@ -167,6 +167,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var phongkham = _unitOfWork.PhongKhamRepository.Get(u => u.RoomId == workschedule.PhongKhamId);
             if (ModelState.IsValid)
             {
+                if (workschedule.DoctorId1 == 0) workschedule.DoctorId1 = null;
+                if (workschedule.DoctorId2 == 0) workschedule.DoctorId2 = null;
+                if (workschedule.DoctorId3 == 0) workschedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Add(workschedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
@@ -235,6 +238,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var phongcapcuu = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == workschedule.PhongCapCuuId);
             if (ModelState.IsValid)
             {
+                if (workschedule.DoctorId1 == 0) workschedule.DoctorId1 = null;
+                if (workschedule.DoctorId2 == 0) workschedule.DoctorId2 = null;
+                if (workschedule.DoctorId3 == 0) workschedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Add(workschedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
@@ -318,7 +324,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (workSchedule.DoctorId1 == 0) workSchedule.DoctorId1 = null;
+                if (workSchedule.DoctorId2 == 0) workSchedule.DoctorId2 = null;
+                if (workSchedule.DoctorId3 == 0) workSchedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Update(workSchedule);
+                if (workSchedule.DoctorId1 == null && workSchedule.DoctorId2 == null && workSchedule.DoctorId3 == null) _unitOfWork.WorkScheduleRepository.Remove(workSchedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
@@ -414,6 +424,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 if (workSchedule.DoctorId2 == 0) workSchedule.DoctorId2 = null;
                 if (workSchedule.DoctorId3 == 0) workSchedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Update(workSchedule);
+                if (workSchedule.DoctorId1 == null && workSchedule.DoctorId2 == null && workSchedule.DoctorId3 == null) _unitOfWork.WorkScheduleRepository.Remove(workSchedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
