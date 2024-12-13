@@ -120,21 +120,44 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
-                wwwroot = _webHostEnvironment.WebRootPath;
-                if (NurseImg != null)
+                Doctor doctor = null;
+                Patient patient = null;
+                GlobalFunctions globalfunction = new GlobalFunctions(_unitOfWork, doctor, nurse, patient);
+                if (globalfunction.ExistDuplicateCCCD())
                 {
-                    string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
-                    string filepath = Path.Combine(wwwroot, @"images\");
-                    using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                    TempData["error"] = "CCCD đã tồn tại!";
+                    var genderList = Enum.GetValues(typeof(EGender))
+                    .Cast<EGender>()
+                    .Select(gender => new SelectListItem
                     {
-                        NurseImg.CopyTo(filestream);
+                        Value = gender.ToString(),
+                        Text = gender.ToString()
+                    }).ToList();
+                    ViewBag.Genders = genderList;
+                    if (User.IsInRole("Nurse"))
+                    {
+                        return RedirectToAction("NurseHomePage", "Nurse", new { NurseId = nurse.NurseId });
                     }
-                    nurse.NurseImgURL = @"\images\" + filename;
+                    return View(nurse);
                 }
-                _unitOfWork.NurseRepository.Update(nurse);
-                _unitOfWork.Save();
-                if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
-                return RedirectToAction("Index");
+                else
+                {
+                    wwwroot = _webHostEnvironment.WebRootPath;
+                    if (NurseImg != null)
+                    {
+                        string filename = Path.GetFileNameWithoutExtension(NurseImg.FileName) + Path.GetExtension(NurseImg.FileName);
+                        string filepath = Path.Combine(wwwroot, @"images\");
+                        using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                        {
+                            NurseImg.CopyTo(filestream);
+                        }
+                        nurse.NurseImgURL = @"\images\" + filename;
+                    }
+                    _unitOfWork.NurseRepository.Update(nurse);
+                    _unitOfWork.Save();
+                    if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
