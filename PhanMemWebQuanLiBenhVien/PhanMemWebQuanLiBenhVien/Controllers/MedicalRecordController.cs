@@ -370,7 +370,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(medicalRecord.DoctorId == null || medicalRecord.NurseId == null || (medicalRecord.PhongBenhId == null && medicalRecord.PhongKhamId == null))
+                if((medicalRecord.DoctorId == null || medicalRecord.NurseId == null || medicalRecord.PhongBenhId == null) && (medicalRecord.PhongKhamId == null))
                 {
                     var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId);
                     patient.Profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == patient.ProfesisonId);

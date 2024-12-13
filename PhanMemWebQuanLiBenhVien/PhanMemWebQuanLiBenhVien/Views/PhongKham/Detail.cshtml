@@ -22,6 +22,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Tên bệnh nhân</th>
+                        <th scope="col">Ngày tái khám</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +33,16 @@
                                 <a href="@Url.Action("DoctorPatientDetail", "Doctor", new { PatientId = patient.PatientId })" class="text-decoration-none">
                                     @patient.Name
                                 </a>
+                            </td>
+                            <td>
+                                @if (!(patient.MedicalRecords.LastOrDefault().Visits == null || patient.MedicalRecords.LastOrDefault().Visits.Count()==0))
+                                {
+                                    <p>@patient.MedicalRecords.LastOrDefault().Visits.LastOrDefault().NgayTaiKham.Value.ToString("dd/MM/yyyy")</p>
+                                }
+                                else
+                                {
+                                    <p>Chưa có thông tin khám</p>
+                                }
                             </td>
                         </tr>
                     }

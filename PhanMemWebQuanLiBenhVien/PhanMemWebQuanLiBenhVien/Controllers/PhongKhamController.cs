@@ -136,6 +136,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     patient.MedicalRecords.LastOrDefault().TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri &&
                     patient.MedicalRecords.LastOrDefault().TrangThaiDieuTri == Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru)
                 {
+                    patient.MedicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId).ToList();
+                    if(!(patient.MedicalRecords == null || patient.MedicalRecords.Count() == 0))
+                    {
+                        patient.MedicalRecords.LastOrDefault().Visits = _unitOfWork.MedicalVisitRepository.GetAll(mv => mv.MedicalRecordId == patient.MedicalRecords.LastOrDefault().MedicalRecordId).ToList();
+                    }
                     phongKham.Patients.Add(patient);
                 }
 
