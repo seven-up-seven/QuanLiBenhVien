@@ -45,7 +45,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(listMedicalRecord);
         }
         [HttpPost("Index")]
-        public IActionResult Index(string SearchPatientName, string SearchPatientCCCD, int ProfessionId, string SearchTrangThaiBenhAn)
+        public IActionResult Index(string SearchPatientName, string SearchPatientCCCD, int ProfessionId, string SearchTrangThaiBenhAn, int SearchID)
         {
             var listMedicalRecord = _unitOfWork.MedicalRecordRepository.GetAll();
             foreach(var medicalrecord in listMedicalRecord)
@@ -56,6 +56,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (!string.IsNullOrEmpty(SearchPatientCCCD)) listMedicalRecord = listMedicalRecord.Where(u => u.Patient.CCCD.Contains(SearchPatientCCCD));
             if (ProfessionId != 0) listMedicalRecord = listMedicalRecord.Where(u=>u.ProfesisonId==ProfessionId);
             if (SearchTrangThaiBenhAn != "NoFilter") listMedicalRecord = listMedicalRecord.Where(u => u.TrangThaiBenhAn.ToString() == SearchTrangThaiBenhAn);
+            if(SearchID != null)
+            {
+                listMedicalRecord = listMedicalRecord.Where(u => u.MedicalRecordId == SearchID); 
+            }
             ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
             {
                 Text = u.ProfessionName,
@@ -432,13 +436,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Delete(int MedicalRecordId)
         {
             var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == MedicalRecordId);
-            if (medicalRecord != null)
+            if (medicalRecord != null && medicalRecord.TrangThaiBenhAn == ETrangThaiBenhAn.ketthucchuatri)
             {
                 _unitOfWork.MedicalRecordRepository.Remove(medicalRecord);
                 _unitOfWork.Save();
+                TempData["success"] = "Xoá thành công"; 
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                TempData["error"] = "Bệnh án đang trong quá trình điều trị không thể xoá"; 
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpGet("CreateMedicalVisit/{MedicalRecordId}")]

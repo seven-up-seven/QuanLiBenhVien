@@ -30,7 +30,7 @@ else
             <div class="form-group">
                 <label for="ProfessionId">Trưởng khoa</label>
                 <select asp-for="TruongKhoaId" asp-items="@ViewBag.DoctorsInProfession" class="form-control">
-                    <option value="null">Chọn trưởng khoa</option>
+                    <option value="@null">Chọn trưởng khoa</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary" style="margin-top: 10px">

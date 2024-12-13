@@ -15,6 +15,7 @@
         <select name="SearchTrangThaiBenhAn" asp-items="@ViewBag.TrangThaiBenhAn" class="rounded-3">
             <option value="NoFilter">Lọc theo trạng thái bệnh án</option>
         </select>
+        <input name="SearchID" class="rounded-3" placeholder="Tìm theo ID bệnh án" />
         <input name="SearchPatientName" class="rounded-3" placeholder="Tìm theo tên bệnh nhân" />
         <input name="SearchPatientCCCD" class="rounded-3" placeholder="Tìm theo CCCD bệnh nhân" />
         <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
@@ -44,6 +45,9 @@
                     <td>
                         <a class="btn btn-primary" asp-controller="MedicalRecord" asp-action="Update" asp-route-id="@record.MedicalRecordId"><i class="bi bi-pencil-square"></i> Sửa</a>                  
                         <a asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-MedicalRecordId="@record.MedicalRecordId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                        <form asp-action="Delete" asp-route-id="@record.MedicalRecordId" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá bệnh án? Các dữ liệu bệnh án và lần khám liên quan sẽ mất.')">
+                            <button type="submit">Xoá</button>
+                        </form>
                     </td>
                 </tr>
             }

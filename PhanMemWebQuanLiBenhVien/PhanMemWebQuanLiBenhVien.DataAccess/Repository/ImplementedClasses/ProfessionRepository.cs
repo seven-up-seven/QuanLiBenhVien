@@ -21,10 +21,10 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
             var objFromDb = _db.professions.FirstOrDefault(p => p.ProfessionId == profession.ProfessionId);
             if (objFromDb != null)
             {
-                objFromDb.ProfessionName = profession.ProfessionName;
-                objFromDb.Description = profession.Description;
-                objFromDb.TruongKhoaId = profession.TruongKhoaId;
-                objFromDb.TruongKhoaName = profession.TruongKhoaName;
+                if (profession.ProfessionName != null) objFromDb.ProfessionName = profession.ProfessionName;
+                if (profession.Description != null) objFromDb.Description = profession.Description;
+                 objFromDb.TruongKhoaId = profession.TruongKhoaId;
+                 objFromDb.TruongKhoaName = profession.TruongKhoaName;
                 _db.SaveChanges();
             }
         }

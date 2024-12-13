@@ -96,12 +96,12 @@
                     var doctor = UnitOfWork.DoctorRepository.GetAll(dr=>dr.Username==User.Identity.Name).LastOrDefault();
                     <a asp-controller="Doctor" asp-action="DoctorPatients" asp-route-DoctorId="@doctor.DoctorId" class="btn text-white">Quay lại</a>
                 }
-                else if (User.IsInRole("Nurse"))
+                @if (User.IsInRole("Nurse"))
                 {
                     var nurse = UnitOfWork.NurseRepository.GetAll(dr => dr.Username == User.Identity.Name).LastOrDefault();
                     <a asp-controller="Nurse" asp-action="NursePatients" asp-route-NurseId="@nurse.NurseId" class="btn text-white">Quay lại</a>
                 }
-                else
+                @if (User.IsInRole("Admin"))
                 {   
                     <a asp-controller="Patient" asp-action="Index" class="btn text-white">Quay lại</a>
                 }
@@ -109,7 +109,7 @@
             <div class="col-auto text-primary">
                 @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri)
                 {
-                    <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+                    <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId" onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này không? Các bệnh án liên quan sẽ bị xoá.');">Xóa</a>
                 }
             </div>
         </div>
@@ -117,6 +117,12 @@
     else
     {
         <p>Không có bệnh án nào.</p>
+        <div class="col-auto text-primary">
+            @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri)
+            {
+                <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId" onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này không? Các bệnh án liên quan sẽ bị xoá.');">Xóa</a>
+            }
+        </div>  
     }
-
+    
 </div>

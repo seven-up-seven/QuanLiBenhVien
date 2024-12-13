@@ -2,11 +2,22 @@
 @{
     ViewData["Title"] = "Chi Tiết Bệnh Án";
 }
-<link rel="stylesheet" href="~/css/MedicalRecord/DoctorDetail.css" /> 
+
+<link rel="stylesheet" href="~/css/Patient/Detail.css" />
+<link rel="stylesheet" href="~/css/MedicalRecord/DoctorDetail.css" />
 <div class="container mt-4">
     <div class="row my-2">
         <div class="col text-primary">
-            <h2>Chi Tiết Bệnh Án</h2>
+            <h2>Chi Tiết Bệnh Án 
+                @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                {
+                    <span class="badge bg-danger">Đang chữa trị</span>
+                }
+                else
+                {
+                    <span class="badge bg-success">Kết thúc chữa trị</span>
+                }
+            </h2>
         </div>
         <div class="col col-2 text-end text-center">
             @if (Model.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
@@ -17,8 +28,8 @@
     </div>
 
    
-        <div class="col-md-3 row-1">
-            <h5>ID Bệnh Án: @Model.MedicalRecordId</h5>
+        <div class="col-md-3 row-1 info-section">
+            <p><strong>ID Bệnh Án:</strong> @Model.MedicalRecordId</p>
             <p><strong>Tên bệnh nhân:</strong> @Model.PatientName</p>
             <p><strong>Giới tính:</strong> @Model.PatientGender</p>
             <p><strong>BHYT:</strong> @Model.BHYT</p>

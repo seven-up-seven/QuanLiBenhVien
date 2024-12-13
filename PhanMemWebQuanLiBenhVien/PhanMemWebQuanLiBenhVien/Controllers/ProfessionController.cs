@@ -98,23 +98,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost("Delete/{ProfessionId}")]
         public IActionResult Delete(int ProfessionId)
         {
-            try
-            {
-                var profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == ProfessionId);
-                if (profession != null)
-                {
-                    _unitOfWork.ProfessionRepository.Remove(profession);
-                    _unitOfWork.Save();
-                    TempData["success"] = "Chuyên khoa đã được xóa thành công!";
-                }
-                else
-                {
-                    TempData["error"] = "Chuyên khoa không tồn tại!";
-                }
+            var profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == ProfessionId);
+			profession.DoctorList = _unitOfWork.DoctorRepository.GetAll(dr => dr.ProfessionId == ProfessionId).ToList();
+			if(profession.DoctorList.Count() == 0)
+			{
+				
+                _unitOfWork.ProfessionRepository.Remove(profession);
+                _unitOfWork.Save();
+                TempData["success"] = "Chuyên khoa đã được xóa thành công!";
             }
-            catch 
-            {
-                TempData["error"] = "Không được xóa chuyên khoa này!";
+			else
+			{
+                TempData["error"] = "Không thể xoá chuyên khoa do đang có bác sĩ";
             }
             return RedirectToAction("Index");
         }
