@@ -29,11 +29,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(NurseList);
         }
         [HttpPost]
-        public IActionResult Index(string SearchNurseName, string SearchNurseCCCD, int ProfessionId)
+        public IActionResult Index(int SearchID, string SearchNurseName, string SearchNurseCCCD, int ProfessionId)
         {
             var nurselist = _unitOfWork.NurseRepository.GetAll();
             if (!string.IsNullOrEmpty(SearchNurseName)) nurselist = nurselist.Where(u => u.NurseName.ToLower().Contains(SearchNurseName.ToLower()));
             if (!string.IsNullOrEmpty(SearchNurseCCCD)) nurselist = nurselist.Where(u => u.NurseCCCD.ToLower().Contains(SearchNurseCCCD.ToLower()));
+            if (SearchID != null && SearchID!=0) nurselist = nurselist.Where(u => u.NurseId == SearchID); 
             return View(nurselist);
         }
 

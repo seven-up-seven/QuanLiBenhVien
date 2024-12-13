@@ -21,6 +21,15 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var medicines = _unitOfWork.MedicineRepository.GetAll();
             return View(medicines);
         }
+        [HttpPost]
+        public IActionResult Index(int SearchID, string SearchMedicineName)
+        {
+            var medicinelist = _unitOfWork.MedicineRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchMedicineName)) medicinelist = medicinelist.Where(u => u.Name.ToLower().Contains(SearchMedicineName.ToLower()));
+            if (SearchID != null && SearchID != 0) medicinelist = medicinelist.Where(u => u.MedicineId == SearchID);
+            return View(medicinelist);
+        }
+
 
         //public IActionResult Details(int id)
         //{

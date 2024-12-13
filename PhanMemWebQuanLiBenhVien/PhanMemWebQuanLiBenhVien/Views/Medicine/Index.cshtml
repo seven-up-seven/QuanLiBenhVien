@@ -8,12 +8,13 @@
     <h2>@ViewData["Title"]</h2>
     <a asp-action="Create" asp-controller="Medicine" class="btn btn-primary">Create New</a>
     <div class="row d-flex justify-content-between">
-        <form asp-action="SearchMedicineByName" class="col col-auto">
-            <input name="name" placeholder="Nhập tên thuốc" style="height:40px" class="border-1 rounded-3"/>
+        <form method="post" asp-action="Index" class="col col-auto">
+            <input name="SearchID" class="rounded-3" style="height:45px; width: 220px"  placeholder="Tìm thuốc theo ID" />
+            <input name="SearchMedicineName" style="height:45px; width: 200px"  class="rounded-3" placeholder="Tìm thuốc theo tên" />
             <button type="submit"><i class="bi bi-search"></i></button>
         </form>
         <form asp-action="TrichXuatThuoc" class="col col-auto">
-            <input name="ids" placeholder="Nhập ID các loại thuốc cách nhau bởi dấu phẩy" style="height:40px; width: 350px" class=" border-1 rounded-3"/>
+            <input name="ids" placeholder="Nhập ID các loại thuốc cách nhau bởi dấu phẩy" style="height:45px; width: 350px" class="rounded-3"/>
             <button type="submit">Trích xuất thuốc</button>
         </form>
     </div>
