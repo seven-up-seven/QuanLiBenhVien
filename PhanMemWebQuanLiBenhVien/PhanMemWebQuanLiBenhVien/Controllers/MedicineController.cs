@@ -71,7 +71,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         //    return View(medicine);
         //}
 
-        
+
         public IActionResult Delete(int id)
         {
             var medicine = _unitOfWork.MedicineRepository.Get(mc => mc.MedicineId == id);
@@ -135,6 +135,48 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View();
         }
 
+        public IActionResult SearchMedicineByName(string name)
+        {
+            if (name == null)
+            {
+                TempData["error"] = "Nhập tên thuốc";
+                return RedirectToAction("Index");
+            }
+            var thuocs = _unitOfWork.MedicineRepository.GetAll(u => u.Name.ToLower().StartsWith(name.ToLower()));
+            return View("Index", thuocs);
+        }
+
+        public IActionResult TrichXuatThuoc(string ids)
+        {
+            if (string.IsNullOrEmpty(ids) || ids==",")
+            {
+                TempData["error"] = "Chọn ít nhất một thuốc";
+                return RedirectToAction("Index");
+            }
+
+            var idList = ids.Split(',').Select(int.Parse).ToList();
+            var medicines = idList.Select(id => _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id)).ToList();
+
+            if (medicines == null || !medicines.Any() || medicines[0] == null)
+            {
+                TempData["error"] = "Không tìm thấy";
+                return RedirectToAction("Index");
+            }
+           
+            return View(medicines);
+        }
+        [HttpPost]
+        public IActionResult SubmitQuantities(Dictionary<int, int> quantities)
+        {
+            foreach (var key in quantities.Keys)
+            {
+                var thuoc = _unitOfWork.MedicineRepository.Get(u => u.MedicineId == key);
+                thuoc.Quantity -= quantities[key];
+                _unitOfWork.MedicineRepository.Update(thuoc);
+            }
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
+        }
     }
 
 }
