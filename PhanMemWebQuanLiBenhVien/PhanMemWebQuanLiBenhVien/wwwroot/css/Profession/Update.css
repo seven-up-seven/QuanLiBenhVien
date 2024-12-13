@@ -5,6 +5,16 @@
     padding: 0;
 }
 
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #004a99;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .container {
     background-color: #ffffff;
     border-radius: 15px;
@@ -13,27 +23,6 @@
     margin: 50px auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
-<<<<<<< Updated upstream
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-
-=======
-}
-
->>>>>>> Stashed changes
-h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #004a99;
-    text-align: center;
-<<<<<<< Updated upstream
-    margin-bottom: 20px;
-=======
-    margin-bottom: 30px;
->>>>>>> Stashed changes
-    text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 .form-group {
@@ -66,35 +55,18 @@ h2 {
             outline: none;
         }
 
-<<<<<<< Updated upstream
-        .form-group input::placeholder,
-        .form-group select option {
-=======
         .form-group input::placeholder {
->>>>>>> Stashed changes
             font-size: 0.9rem;
             color: #aaa;
         }
 
-<<<<<<< Updated upstream
-.form-control[disabled] {
-    background-color: #e9ecef;
-    color: #6c757d;
-}
-
-=======
->>>>>>> Stashed changes
 .text-danger {
     font-size: 0.85rem;
     color: #dc3545;
     margin-top: 5px;
 }
 
-<<<<<<< Updated upstream
-.btn-primary {
-=======
 button.btn-primary {
->>>>>>> Stashed changes
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 8px;
@@ -102,32 +74,16 @@ button.btn-primary {
     color: #fff;
     background: linear-gradient(90deg, #0056b3, #007bff);
     border: none;
-<<<<<<< Updated upstream
-    transition: all 0.3s ease-in-out;
-    text-transform: uppercase;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-    .btn-primary:hover {
-        background: linear-gradient(90deg, #004080, #0056b3);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-=======
     text-transform: uppercase;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
 }
 
     button.btn-primary:hover {
         background: linear-gradient(90deg, #004080, #0056b3);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
->>>>>>> Stashed changes
     }
 
 @media (max-width: 768px) {
@@ -139,11 +95,7 @@ button.btn-primary {
         font-size: 1.5rem;
     }
 
-<<<<<<< Updated upstream
-    .btn-primary {
-=======
     button.btn-primary {
->>>>>>> Stashed changes
         font-size: 0.9rem;
         padding: 8px 15px;
     }
