@@ -73,6 +73,9 @@
 
     <div class="actions-section row d-flex justify-content-between">
         <a asp-controller="Patient" asp-action="Index" class="btn btn-outline-dark col-auto">Quay lại</a>
-        <a class="btn btn-danger col-auto" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+        @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri)
+        {
+            <a class="btn btn-danger col-auto" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+        }
     </div>
 </div>

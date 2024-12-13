@@ -165,25 +165,30 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost("Delete/{PhongBenhId}")]
 		public IActionResult Delete(int PhongBenhId)
 		{
-            try
+            var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
+            phongBenh.Patients = new List<Patient>(); 
+            var mrl = _unitOfWork.MedicalRecordRepository.GetAll(m => m.PhongBenhId == PhongBenhId && m.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri); 
+            foreach(var mr in mrl)
             {
-                var phongBenh = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == PhongBenhId);
-                if (phongBenh != null)
-                {
-                    _unitOfWork.PhongBenhRepository.Remove(phongBenh);
-                    _unitOfWork.Save();
-                    TempData["success"] = "Xóa phòng bệnh thành công!";
-                }
-                else
-                {
-                    TempData["error"] = "Không tồn tại phòng bệnh!";
-                }
+                phongBenh.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId)); 
             }
-            catch
+            if(phongBenh.Patients == null || phongBenh.Patients.Count() == 0)
             {
-                TempData["error"] = "Không được xóa phòng bệnh này!";
+                var mr_fk = _unitOfWork.MedicalRecordRepository.GetAll(m => m.PhongBenhId == PhongBenhId); 
+                if (mr_fk != null)
+                {
+                    _unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk);
+                }
+                _unitOfWork.PhongBenhRepository.Remove(phongBenh);
+                _unitOfWork.Save();
+                TempData["success"] = "Xóa phòng bệnh thành công";
+                return RedirectToAction("Index");
             }
-             return RedirectToAction("Index");
+            else
+            {
+                TempData["error"] = "Phòng bệnh đang có người không thể xoá";
+                return RedirectToAction("Index"); 
+            }
         }
 	}
 }

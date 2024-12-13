@@ -107,7 +107,10 @@
                 }
             </div>
             <div class="col-auto text-primary">
-                <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+                @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri)
+                {
+                    <a class="btn btn-primary" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+                }
             </div>
         </div>
     }

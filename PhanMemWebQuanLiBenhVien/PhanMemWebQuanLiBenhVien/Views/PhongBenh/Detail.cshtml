@@ -39,7 +39,7 @@
 	<div class="row" style="margin-left: 1px">
 		<a asp-controller="PhongBenh" asp-action="Index" class="btn text-white col col-auto">Quay lại</a>
 		<div class="col-auto text-primary">
-			<form method="post" asp-controller="PhongBenh" asp-action="Delete" asp-route-PhongBenhId="@Model.RoomId">
+			<form method="post" asp-controller="PhongBenh" asp-action="Delete" asp-route-PhongBenhId="@Model.RoomId" onsubmit="return confirm('Bạn có chắc chắn muốn xoá phòng bệnh không? Xoá phòng bệnh sẽ mất hết dữ liệu bệnh án liên quan.');">
 				<button class="btn text-white" type="submit">Xoá</button>
 			</form>
 		</div>

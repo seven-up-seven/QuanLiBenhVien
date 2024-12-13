@@ -185,16 +185,22 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             if(phongKham.Patients == null || phongKham.Patients.Count() == 0)
             {
+                //log ra thông báo sẽ xoá lịch và bệnh án liên quan? 
                 var ws_fk = _unitOfWork.WorkScheduleRepository.GetAll(u => u.PhongKhamId == PhongKhamId);
+                var mr_fk = _unitOfWork.MedicalRecordRepository.GetAll(u => u.PhongKhamId == PhongKhamId);
                 if (ws_fk != null)
                 {
                     _unitOfWork.WorkScheduleRepository.RemoveRange(ws_fk);
+                }
+                if(mr_fk != null)
+                {
+                    _unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk); 
                 }
                 if (phongKham != null)
                 {
                     _unitOfWork.PhongKhamRepository.Remove(phongKham);
                     _unitOfWork.Save();
-
+                    TempData["success"] = "Xoá phòng thành công";   
                     return RedirectToAction("Index");
                 }
             }

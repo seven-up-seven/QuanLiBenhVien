@@ -47,7 +47,7 @@
     <!-- Hành động -->
     <div class="actions-section row d-flex justify-content-between">
         <a asp-controller="PhongKham" asp-action="Index" class="btn btn-outline-primary col-auto">Quay lại</a>
-        <form method="post" asp-controller="PhongKham" asp-action="Delete" asp-route-PhongKhamId="@Model.RoomId" class="col-auto">
+        <form method="post" asp-controller="PhongKham" asp-action="Delete" asp-route-PhongKhamId="@Model.RoomId" class="col-auto" onsubmit="return confirm('Bạn có chắc chắn muốn xoá phòng khám này không? Việc xoá phòng khám sẽ mất hết dữ liệu bệnh án và lịch làm việc liên quan.');">
             <button class="btn btn-danger" type="submit">Xoá</button>
         </form>
     </div>
