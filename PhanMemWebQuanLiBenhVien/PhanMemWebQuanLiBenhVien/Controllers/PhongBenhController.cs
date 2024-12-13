@@ -155,9 +155,30 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_unitOfWork.PhongBenhRepository.Update(phongBenh);
-				_unitOfWork.Save();
-				return RedirectToAction("Index");
+                var old = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == phongBenh.RoomId);
+                old.Patients = new List<Patient>(); 
+                var mrs = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PhongBenhId == phongBenh.RoomId && mr.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri); 
+                foreach(var mr in mrs)
+                {
+                    old.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId)); 
+                }
+                if(phongBenh.NumberOfBeds < old.Patients.Count() || phongBenh.NumberOfBeds <=0)
+                {
+                    TempData["error"] = "Số giường không thể bé hơn số bệnh nhân hiện tại";
+                    ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                    {
+                        Text = u.ProfessionName,
+                        Value = u.ProfessionId.ToString()
+                    });
+                    return View(phongBenh);
+                }
+                else
+                {
+                    _unitOfWork.PhongBenhRepository.Update(phongBenh);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Cập nhật thông tin phòng bệnh thành công"; 
+                    return RedirectToAction("Index");
+                }
 			}
 			return View();
 		}

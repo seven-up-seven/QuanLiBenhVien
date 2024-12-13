@@ -21,8 +21,9 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
             var objFromDb = _db.phongBenhs.FirstOrDefault(p => p.RoomId == phongBenh.RoomId);
             if (objFromDb != null)
             {
-                objFromDb.Name = phongBenh.Name;
-                objFromDb.ProfessionId = phongBenh.ProfessionId;    
+                if(phongBenh.NumberOfBeds != null) objFromDb.NumberOfBeds = phongBenh.NumberOfBeds;
+                if (phongBenh.Name != null) objFromDb.Name = phongBenh.Name;
+                if (phongBenh.ProfessionId != null) objFromDb.ProfessionId = phongBenh.ProfessionId;    
                 _db.SaveChanges();
             }
         }

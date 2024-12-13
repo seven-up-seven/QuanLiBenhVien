@@ -17,7 +17,6 @@
 			<thead>
 			<tr>
 				<th><h4>Danh sách bệnh nhân: </h4></th>
-
 			</tr>
 			</thead>
 			<tbody>
@@ -25,12 +24,14 @@
 				{
 					foreach (var patient in Model.Patients)
 					{
-					<td>
-						<div class="row d-flex justify-content-between">
-							<p class="fw-bold col col-auto">@patient.Name</p> 
-							<a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="col col-auto text-decoration-none btn">Truy cập thông tin</a>
-						</div>
-					</td>
+					<tr>
+						<td>
+							<div class="row d-flex justify-content-between">
+								<p class="fw-bold col col-auto">@patient.Name</p> 
+								<a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="col col-auto text-decoration-none btn">Truy cập thông tin</a>
+							</div>
+						</td>
+					</tr>
 					}
 				}
 			</tbody>
