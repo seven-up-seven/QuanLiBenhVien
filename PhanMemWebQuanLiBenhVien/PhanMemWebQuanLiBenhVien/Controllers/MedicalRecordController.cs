@@ -182,6 +182,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == PatientId);
                 patient.TrangThaiBenhAn = ETrangThaiBenhAn.dangchuatri;
                 medicalRecord.TrangThaiBenhAn = ETrangThaiBenhAn.dangchuatri;
+                medicalRecord.ProfesisonId = patient.ProfesisonId;
                 _unitOfWork.PatientRepository.Update(patient);
                 _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
                 _unitOfWork.Save();
