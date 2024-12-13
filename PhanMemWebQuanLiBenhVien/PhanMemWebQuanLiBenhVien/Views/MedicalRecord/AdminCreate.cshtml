@@ -15,18 +15,22 @@
             <select asp-for="PatientId" asp-items="@ViewBag.PatientList" class="form-control" id="patientIdSelect">
                 <option value="">--Chọn--</option>
             </select>
+            <span asp-validation-for="PatientId" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="PatientName">Tên bệnh nhân</label>
             <input asp-for="PatientName" class="form-control" id="patientNameInput" readonly />
+            <span asp-validation-for="PatientName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="PatientGender">Giới tính</label>
             <input asp-for="PatientGender" class="form-control" id="patientGenderInput" readonly></input>
+            <span asp-validation-for="PatientGender" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Address">Địa chỉ</label>
             <input asp-for="Address" class="form-control" id="patientAddressInput" readonly/>
+            <span asp-validation-for="Address" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="BHYT">BHYT</label>
@@ -39,6 +43,7 @@
         <div class="form-group">
             <label asp-for="TienSuBenhAn">Tiền sử bệnh án</label>
             <input asp-for="TienSuBenhAn" class="form-control"/>
+            <span asp-validation-for="TienSuBenhAn" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="TinhTrangBenhNhan">Trạng thái bệnh nhân</label>

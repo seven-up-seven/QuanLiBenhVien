@@ -1,52 +1,46 @@
 ﻿
 body {
     background-color: #f8f9fa;
-    font-family: 'Arial', sans-serif; 
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    background-color: #ffffff; 
-    border-radius: 15px; 
+    background-color: #ffffff;
+    border-radius: 15px;
     padding: 30px;
-    max-width: 1200px; 
-    margin: 50px auto; 
+    max-width: 1200px;
+    margin: 50px auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-    .container:hover {
-        transform: translateY(-5px); 
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); 
-    }
-
 
 h2 {
     font-size: 2rem;
     font-weight: bold;
-    color: #004a99; 
+    color: #004a99;
     text-align: center;
     margin-bottom: 20px;
-    text-transform: uppercase; 
-    letter-spacing: 1px; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 
 .table {
     width: 100%;
-    border-collapse: collapse; 
+    border-collapse: collapse;
     margin-top: 20px;
-    background-color: #ffffff; 
-    border-radius: 10px; 
+    background-color: #ffffff;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
     .table th {
-        background-color: #004a99; 
-        color: #fff; 
+        background-color: #004a99;
+        color: #fff;
         text-align: center;
         padding: 15px;
         font-size: 1.1rem;
@@ -55,16 +49,16 @@ h2 {
     .table td {
         padding: 12px;
         border-bottom: 1px solid #ddd;
-        text-align: center; 
+        text-align: center;
         vertical-align: middle;
     }
 
 .table-striped tbody tr:nth-child(odd) {
-    background-color: #f7f9fc; 
+    background-color: #f7f9fc;
 }
 
 .table-striped tbody tr:nth-child(even) {
-    background-color: #eef3f8; 
+    background-color: #eef3f8;
 }
 
 .table-striped tbody tr:hover {
@@ -80,7 +74,7 @@ h2 {
     font-weight: bold;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase; 
+    text-transform: uppercase;
 }
 
 .btn-primary {
@@ -90,14 +84,14 @@ h2 {
 }
 
     .btn-primary:hover {
-        background: linear-gradient(90deg, #004080, #0056b3); 
-        transform: translateY(-3px); 
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+        background: linear-gradient(90deg, #004080, #0056b3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
 
 .text-danger {
-    color: #d9534f; 
+    color: #d9534f;
 }
 
 .text-primary {
