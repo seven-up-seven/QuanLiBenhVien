@@ -26,6 +26,28 @@ h2 {
     letter-spacing: 1px;
 }
 
+form {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+    form input,
+    form select {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+
+        form input:focus,
+        form select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+        }
+
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -50,8 +72,12 @@ h2 {
         border-bottom: 1px solid #ddd;
         text-align: center;
         vertical-align: middle;
-        font-size: 1rem;
-        color: #333;
+        font-size: 0.9rem;
+    }
+
+    .table img {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
 .table-striped tbody tr:nth-child(odd) {
@@ -89,18 +115,6 @@ h2 {
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-.btn-danger {
-    background: linear-gradient(90deg, #c90000, #ff4d4d);
-    color: #fff;
-    border: none;
-}
-
-    .btn-danger:hover {
-        background: linear-gradient(90deg, #8b0000, #c90000);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
 .text-primary {
     color: #004a99 !important;
 }
@@ -122,6 +136,11 @@ h2 {
 
     h2 {
         font-size: 1.5rem;
+    }
+
+    form {
+        flex-direction: column;
+        gap: 15px;
     }
 
     .btn {

@@ -27,19 +27,7 @@
             {
                 <tr>
                     <td>@chuyenKhoa.ProfessionId</td>
-                    <td>@chuyenKhoa.ProfessionName</td>
-                    @* NEN THEM DANH SACH BAC SI THUOC CHUYEN KHOA*@
-                    @* <td>
-                        @{
-                            if(chuyenKhoa.Doctors!=null)
-                            {
-                                foreach (var )
-                                {
-                                    <div><a href="@Url.Action("Detail", "Patient", new {id = patient.PatientId})" class="text-decoration-none">@patient.Name</a></div>
-                                }                                
-                            }
-                        }
-                    </td> *@
+                    <td>@chuyenKhoa.ProfessionName</td>              
                     @if (chuyenKhoa.TruongKhoaId==null)
                     {
                         <td>

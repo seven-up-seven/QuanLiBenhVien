@@ -13,69 +13,102 @@
     margin: 50px auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-
 
 h2 {
     font-size: 2rem;
     font-weight: bold;
     color: #004a99;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.mt-5 p {
-    font-size: 1.2rem;
-    color: #333;
-    margin: 10px 0;
+.profession-info {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f7f9fc;
+    border-radius: 10px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-    .mt-5 p span {
-        font-weight: bold;
+    .profession-info p {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.6;
+        margin: 10px 0;
     }
 
-div h4 {
+        .profession-info p strong {
+            color: #004a99;
+        }
+
+h4 {
     font-size: 1.5rem;
+    font-weight: bold;
     color: #004a99;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
-div p {
-    font-size: 1rem;
-    color: #555;
-    margin: 5px 0;
+.doctor-list {
+    padding: 20px;
+    background-color: #eef3f8;
+    border-radius: 10px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-    div p:first-child {
-        margin-top: 10px;
+    .doctor-list p {
+        font-size: 1rem;
+        color: #333;
+        margin: 5px 0;
     }
 
-.btn {
+.row.d-flex {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+a.btn {
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    background-color: #6c757d;
     text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
-    .btn.text-white {
-        background: linear-gradient(90deg, #0056b3, #007bff);
-        color: #fff;
-        border: none;
+    a.btn:hover {
+        background-color: #5a6268;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-        .btn.text-white:hover {
-            background: linear-gradient(90deg, #004080, #0056b3);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
+button.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    border: none;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+    button.btn:hover {
+        background: linear-gradient(90deg, #004080, #0056b3);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
 
 @media (max-width: 768px) {
     .container {
@@ -86,20 +119,20 @@ div p {
         font-size: 1.5rem;
     }
 
-    .btn {
+    p {
+        font-size: 0.9rem;
+    }
+
+    h4 {
+        font-size: 1.2rem;
+    }
+
+    a.btn, button.btn {
         font-size: 0.9rem;
         padding: 8px 15px;
     }
 
-    .mt-5 p {
-        font-size: 1rem;
-    }
-
-    div h4 {
-        font-size: 1.3rem;
-    }
-
-    div p {
-        font-size: 0.9rem;
+    .profession-info, .doctor-list {
+        padding: 15px;
     }
 }

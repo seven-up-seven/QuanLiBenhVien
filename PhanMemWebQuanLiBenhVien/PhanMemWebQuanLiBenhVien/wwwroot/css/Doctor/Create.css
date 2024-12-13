@@ -13,7 +13,6 @@
     margin: 50px auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 h2 {
@@ -56,16 +55,10 @@ h2 {
             outline: none;
         }
 
-        .form-group input::placeholder,
-        .form-group select option {
+        .form-group input::placeholder {
             font-size: 0.9rem;
             color: #aaa;
         }
-
-.form-control[disabled] {
-    background-color: #e9ecef;
-    color: #6c757d;
-}
 
 .text-danger {
     font-size: 0.85rem;
@@ -73,7 +66,30 @@ h2 {
     margin-top: 5px;
 }
 
-.btn-primary {
+.row.d-flex {
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+a.btn {
+    background-color: #6c757d;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+    a.btn:hover {
+        background-color: #5a6268;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+button.btn {
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 8px;
@@ -81,14 +97,13 @@ h2 {
     color: #fff;
     background: linear-gradient(90deg, #0056b3, #007bff);
     border: none;
-    transition: all 0.3s ease-in-out;
     text-transform: uppercase;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
-    .btn-primary:hover {
+    button.btn:hover {
         background: linear-gradient(90deg, #004080, #0056b3);
-        transform: translateY(-3px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
@@ -101,7 +116,7 @@ h2 {
         font-size: 1.5rem;
     }
 
-    .btn-primary {
+    .btn, button.btn {
         font-size: 0.9rem;
         padding: 8px 15px;
     }
