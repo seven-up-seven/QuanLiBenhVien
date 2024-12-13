@@ -241,12 +241,77 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			return View(doctor);
 		}
 
-		public IActionResult DashBoard(int DoctorId)
-		{
-			var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId); 
+        public IActionResult DashBoard(int DoctorId)
+        {
+            var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == DoctorId);
+            var date = DateTime.Now.DayOfWeek.ToString(); 
+            var wsList = _unitOfWork.WorkScheduleRepository.GetAll(u => (u.DoctorId1 == DoctorId || u.DoctorId2 == DoctorId || u.DoctorId3 == DoctorId) && u.DayOfWeek == date);
+            foreach (var ws in wsList)
+            {
+                if (ws.DoctorId1 == DoctorId)
+                {
+                    if (ws.PhongKhamId != null)
+                    {
+                        var pk = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == ws.PhongKhamId);
+                        pk.Patients = new List<Patient>();
 
-			return View(doctor);
-		}
+                        var mrlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri && mr.PhongKhamId == ws.PhongKhamId);
+                        foreach (var mr in mrlist)
+                        {
+                            mr.Visits = _unitOfWork.MedicalVisitRepository.GetAll(v => v.MedicalRecordId == mr.MedicalRecordId).ToList();
+                            DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham; 
+                            if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                            {
+                                pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                            }
+                        }
+                        ViewBag.CaTruc1 = pk;
+                    }
+                }
+
+                if (ws.DoctorId2 == DoctorId)
+                {
+                    if (ws.PhongKhamId != null)
+                    {
+                        var pk = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == ws.PhongKhamId);
+                        pk.Patients = new List<Patient>();
+
+                        var mrlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri && mr.PhongKhamId == ws.PhongKhamId);
+                        foreach (var mr in mrlist)
+                        {
+                            mr.Visits = _unitOfWork.MedicalVisitRepository.GetAll(v => v.MedicalRecordId == mr.MedicalRecordId).ToList();
+                            DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
+                            if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                            {
+                                pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                            }
+                        }
+                        ViewBag.CaTruc2 = pk;
+                    }
+                }
+                if (ws.DoctorId3 == DoctorId)
+                {
+                    if (ws.PhongKhamId != null)
+                    {
+                        var pk = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == ws.PhongKhamId);
+                        pk.Patients = new List<Patient>();
+
+                        var mrlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri && mr.PhongKhamId == ws.PhongKhamId);
+                        foreach (var mr in mrlist)
+                        {
+                            mr.Visits = _unitOfWork.MedicalVisitRepository.GetAll(v => v.MedicalRecordId == mr.MedicalRecordId).ToList();
+                            DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
+                            if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                            {
+                                pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                            }
+                        }
+                        ViewBag.CaTruc3 = pk;
+                    }
+                }
+            }
+            return View(doctor);
+        }
 
         public IActionResult DoctorWorkSchedule(int DoctorId)
         {
