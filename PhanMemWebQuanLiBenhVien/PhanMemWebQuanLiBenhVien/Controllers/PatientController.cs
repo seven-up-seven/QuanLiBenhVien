@@ -476,11 +476,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
                 _unitOfWork.PatientRepository.Remove(patient);
                 _unitOfWork.Save();
+                TempData["success"] = "Xoá bệnh nhân thành công"; 
                 return RedirectToAction("Index");
             }
             else if (User.IsInRole("Doctor"))
             {
-                TempData["error"] = "Không thể xóa bệnh nhân";
+                TempData["error"] = "Bác sĩ không thể xóa bệnh nhân";
                 var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.Username == User.Identity.Name);
                 return RedirectToAction("DoctorPatients", "Doctor", new { DoctorId = doctor.DoctorId });
             }

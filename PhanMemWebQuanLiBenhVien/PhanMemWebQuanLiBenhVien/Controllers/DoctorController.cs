@@ -285,10 +285,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         foreach (var mr in mrlist)
                         {
                             mr.Visits = _unitOfWork.MedicalVisitRepository.GetAll(v => v.MedicalRecordId == mr.MedicalRecordId).ToList();
-                            DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham; 
-                            if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                            if(mr.Visits.Count() > 0)
                             {
-                                pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                                DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
+                                if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                                {
+                                    pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                                }
                             }
                         }
                         ViewBag.CaTruc1 = pk;
@@ -306,10 +309,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         foreach (var mr in mrlist)
                         {
                             mr.Visits = _unitOfWork.MedicalVisitRepository.GetAll(v => v.MedicalRecordId == mr.MedicalRecordId).ToList();
-                            DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
-                            if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                            if (mr.Visits.Count() > 0)
                             {
-                                pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                                DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
+                                if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                                {
+                                    pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                                }
                             }
                         }
                         ViewBag.CaTruc2 = pk;
@@ -326,10 +332,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         foreach (var mr in mrlist)
                         {
                             mr.Visits = _unitOfWork.MedicalVisitRepository.GetAll(v => v.MedicalRecordId == mr.MedicalRecordId).ToList();
-                            DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
-                            if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                            if (mr.Visits.Count() > 0)
                             {
-                                pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                                DateTime? d = mr.Visits.LastOrDefault().NgayTaiKham;
+                                if (d?.Date.ToString("yyyy-MM-dd") == DateTime.Now.Date.ToString("yyyy-MM-dd"))
+                                {
+                                    pk.Patients.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+                                }
                             }
                         }
                         ViewBag.CaTruc3 = pk;
