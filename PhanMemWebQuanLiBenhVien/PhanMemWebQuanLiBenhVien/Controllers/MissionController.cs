@@ -146,6 +146,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             _unitOfWork.MissionRepository.Add(mission);
             _unitOfWork.Save();
+            TempData["success"] = "Thêm nhiệm vụ thành công!";
             return RedirectToAction("Index");
         }
 
@@ -281,7 +282,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             // Xóa nhiệm vụ
             _unitOfWork.MissionRepository.Remove(mission);
             _unitOfWork.Save();
-
+            TempData["success"] = "Xóa nhiệm vụ thành công!";
             return RedirectToAction("Index");
         }
 

@@ -81,6 +81,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.PhongCapCuuRepository.Add(phongCapCuu);
                 _unitOfWork.Save();
+                TempData["success"] = "Thêm phòng cấp cứu thành công!";
                 return RedirectToAction("Index");
             }
 
@@ -122,6 +123,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.PhongCapCuuRepository.Update(phongCapCuu);
                 _unitOfWork.Save();
+                TempData["success"] = "Cập nhật phòng cấp cứu thành công!";
                 return RedirectToAction("Index");
             }
             return View();
