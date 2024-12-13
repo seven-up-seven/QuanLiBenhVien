@@ -86,6 +86,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     else nurse.NurseImgURL = "";
                     _unitOfWork.NurseRepository.Add(nurse);
                     _unitOfWork.Save();
+                    TempData["success"] = "Thêm y tá mới thành công!";
                     return RedirectToAction("Index");
                 }
             }

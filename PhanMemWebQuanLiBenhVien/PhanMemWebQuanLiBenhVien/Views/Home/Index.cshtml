@@ -1,31 +1,246 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Hospital Management Dashboard";
+    var totalNurses = ((IEnumerable<dynamic>)ViewBag.Nurses).Count();
+    var totalDoctors = ((IEnumerable<dynamic>)ViewBag.Doctors).Count();
+    var totalPatients = ((IEnumerable<dynamic>)ViewBag.Patients).Count();
+    var totalProfessions = ((IEnumerable<dynamic>)ViewBag.Professions).Count();
+    var totalMedicines = ((IEnumerable<dynamic>)ViewBag.Medicines).Count();
+    var khongTrieuChung = (int)ViewBag.KhongTrieuChung;
+    var coTrieuChung = (int)ViewBag.CoTrieuChung;
+    var troNang = (int)ViewBag.TroNang;
+    var status = (string)ViewBag.Status;
 }
 
 <div class="text-center mt-5 border border-5 rounded rounded-5" style="background-color: azure">
-    <h1 class="display-4 fw-bold" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;">HOSPITAL MANAGEMENT PORTAL</h1>
+    <h1 class="display-4 fw-bold" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">HOSPITAL MANAGEMENT PORTAL</h1>
 </div>
-@if (!User.IsInRole("Admin") && !User.IsInRole("Moderator"))
-{
-    <style>
-        body {
-            background-image: url("/images/bg.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
-}
-@if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
-{
-    <h3 class="mt-3 text-center" style="background-color:aliceblue; height:500px; padding-top:75px">Đây là cổng thông tin quản trị dành cho Admin và Moderator.</h3>
-    <style>
-        body {
-            background-image: url("/images/bg.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
 
-}
+
+<div class="container mt-4">
+
+        <div class="row gap-5">
+            <!-- Card for Total Staff -->
+            <a asp-controller="Doctor" asp-action="Index"  class="card col-md-2 text-decoration-none">
+                <div class="card-body d-flex align-items-center">
+                    <!-- Icon or Image Placeholder -->
+                    <div class="me-3">
+                        <img src="~/images/DOCTOR-removebg-preview.png" alt="logo" width="80" height="80" />
+                    </div>
+                    <!-- Nội dung bên phải -->
+                    <div class="text-start">
+                        <h5 class="fw-bold mb-1 fs-5">SỐ BÁC SĨ</h5>
+                        <h6 class="mb-0 fs-5">@totalDoctors</h6>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card for Total Patients -->
+            <a asp-controller="Nurse" asp-action="Index" class="card col-md-2 text-decoration-none">
+                <div class="card-body d-flex align-items-center">
+                    <!-- Icon or Image Placeholder -->
+                    <div class="me-3">
+                        <img src="~/images/NURSE-removebg-preview.png" alt="logo" width="80" height="80" />
+                    </div>
+                    <!-- Nội dung bên phải -->
+                    <div class="text-start">
+                        <h5 class="fw-bold mb-1">SỐ Y TÁ</h5>
+                    <h6 class="mb-0 fs-5">@totalNurses</h6>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card for Total Clinics -->
+        <form asp-action="Index" method="post" asp-controller="Patient" class="card col-md-2 text-decoration-none">
+                <input name="SearchTrangThaiBenhAn" value="dangchuatri" hidden />
+                <button type="submit">
+                    <div class="card-body d-flex align-items-center">
+                        <!-- Icon or Image Placeholder -->
+                        <div class="me-3">
+                            <img src="~/images/PATIENT-removebg-preview.png" alt="logo" width="80" height="80" />
+                        </div>
+                        <!-- Nội dung bên phải -->
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1">SỐ BỆNH NHÂN</h5>
+                        <h6 class="mb-0 fs-5">@totalPatients</h6>
+                        </div>
+                    </div>
+                </button>
+         </form>
+
+
+            <!-- Card for Total Patient Rooms -->
+        <a asp-controller="Profession" asp-action="Index" class="card col-md-2 text-decoration-none">
+                <div class="card-body d-flex align-items-center">
+                    <!-- Icon or Image Placeholder -->
+                    <div class="me-3">
+                        <img src="~/images/PROFESSION-removebg-preview.png" alt="logo" width="80" height="80" />
+                    </div>
+                    <!-- Nội dung bên phải -->
+                    <div class="text-start">
+                        <h5 class="fw-bold mb-1">SỐ CHUYÊN KHOA</h5>
+                    <h6 class="mb-0 fs-5">@totalProfessions</h6>
+                    </div>
+                </div>
+            </a>
+
+            <a asp-controller="Medicine" asp-action="Index" class="card col-md-2 text-decoration-none">
+                <div class="card-body d-flex align-items-center">
+                    <!-- Icon or Image Placeholder -->
+                    <div class="me-3">
+                        <img src="~/images/medicine-removebg-preview.png" alt="logo" width="80" height="80" />
+                    </div>
+                    <!-- Nội dung bên phải -->
+                    <div class="text-start">
+                        <h5 class="fw-bold mb-1 fs-5">SỐ LOẠI THUỐC</h5>
+                        <h6 class="mb-0 fs-5">@totalMedicines</h6>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+</div>
+
+
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Biểu đồ cột -->
+        <div class="col-md-6">
+            <h2 class="text-center">TÌNH TRẠNG BÊNH NHÂN</h2>
+            <canvas id="patientChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Biểu đồ đường -->
+        <div class="col-md-6">
+            <h2 class="text-center">TRUNG BÌNH BỆNH NHÂN</h2>
+            <canvas id="visitLineChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm script cho Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Dữ liệu biểu đồ cột
+    var ctx = document.getElementById('patientChart').getContext('2d');
+    var patientChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Tình trạng bệnh nhân'], // Dùng một cột duy nhất
+            datasets: [
+                {
+                    label: 'Không có triệu chứng',
+                    data: [@khongTrieuChung],
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Có triệu chứng',
+                    data: [@coTrieuChung],
+                    backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Trở nặng',
+                    data: [@troNang],
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Số lượng',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Dữ liệu biểu đồ đường
+    var visitData = JSON.parse('@Html.Raw(ViewBag.VisitData)');
+    var months = visitData.map(v => `${v.Month}/${v.Year}`);
+    var counts = visitData.map(v => v.Count);
+
+    var ctx2 = document.getElementById('visitLineChart').getContext('2d');
+    var visitLineChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Số bênh nhân theo tháng',
+                data: counts,
+                fill: true,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                tension: 0.4, // Đường cong mềm mại
+                pointStyle: 'circle', // Thay đổi hình dạng điểm thành chấm tròn
+                pointRadius: 6, // Kích thước điểm
+                pointBackgroundColor: 'rgba(75, 192, 192, 1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        usePointStyle: true, // Sử dụng chấm tròn trong chú thích
+                        pointStyle: 'circle', // Định dạng chấm tròn
+                        color: '#333',
+                        font: {
+                            size: 13 // Kích thước chữ trong chú thích
+                        },
+                        boxHeight: 7, // Kích thước chiều cao biểu tượng
+                        boxWidth: 7 // Kích thước chiều rộng biểu tượng (để khớp với chấm tròn)
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Thời gian (tháng/năm)',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Số lượng',
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

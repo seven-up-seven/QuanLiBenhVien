@@ -106,6 +106,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.PhongKhamRepository.Add(phongKham);
                 _unitOfWork.Save();
+                TempData["success"] = "Thêm phòng khám thành công!";
                 return RedirectToAction("Index");
             }
             ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
@@ -166,6 +167,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.PhongKhamRepository.Update(phongKham);
                 _unitOfWork.Save();
+                TempData["success"] = "Cập nhật phòng khám thành công!";
                 return RedirectToAction("Index");
             }
             return View();
@@ -179,6 +181,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.PhongKhamRepository.Remove(phongKham);
                 _unitOfWork.Save();
+
                 return RedirectToAction("Index");
             }
             return View();

@@ -11,8 +11,8 @@ namespace PhanMemWebQuanLiBenhVien.Models
 	{
 		[Key]
 		public int MedicalRecordId { get; set; }
-		[Required(ErrorMessage = "Nhập ID bệnh nhân!")]
-		public int PatientId { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập ID bệnh nhân!")]
+        public int PatientId { get; set; }
 		[ForeignKey("PatientId")]
 		public Patient? Patient { get; set; }
 

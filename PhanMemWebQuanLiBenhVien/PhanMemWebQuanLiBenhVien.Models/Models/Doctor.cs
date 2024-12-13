@@ -12,16 +12,16 @@ namespace PhanMemWebQuanLiBenhVien.Models
         public int DoctorId { get; set; }
 		[MaxLength(12, ErrorMessage = "CCCD có 12 số !")]
         [MinLength(12, ErrorMessage ="CCCD có 12 số!")]
-		[Required(ErrorMessage = "Chưa nhập CCCD !")]
-		[RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số !")]
+        [Required(ErrorMessage = "Vui lòng nhập CCCD!")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số !")]
 		public string DoctorCCCD { get; set; }
-		[Required(ErrorMessage = "Chưa nhập họ và tên !")]
-		public string DoctorName { get; set; }
-		[Required(ErrorMessage = "Giới tính là bắt buộc.")]
-		public EGender DoctorGender { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập họ tên!")]
+        public string DoctorName { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn giới tính!")]
+        public EGender DoctorGender { get; set; }
 
-		[Required(ErrorMessage = "Chưa nhập tuổi !")]
-		[Range(24, int.MaxValue, ErrorMessage = "Độ tuổi phải lớn hơn hoặc bằng 24")]
+        [Required(ErrorMessage = "Vui lòng nhập tuổi!")]
+        [Range(24, int.MaxValue, ErrorMessage = "Độ tuổi phải lớn hơn hoặc bằng 24")]
 		public int DoctorAge { get; set; }
 		public string? DoctorImgURL { get; set; }
         public bool HasAccount { get; set; } = false;
