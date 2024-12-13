@@ -45,6 +45,9 @@
                     <td>
                         <a class="btn btn-primary" asp-controller="PhongCapCuu" asp-action="Update" asp-route-id="@phong.RoomId"><i class="bi bi-pencil-square"></i> Sửa</a>
                         <a class="btn text-white" asp-controller="PhongCapCuu" asp-action="ChangeAvailability" asp-route-PhongCapCuuId="@phong.RoomId"><i class="bi bi-arrow-repeat"></i> Chuyển trạng thái</a>
+                        <form method="post" asp-controller="PhongCapCuu" asp-action="Delete" asp-route-id="@phong.RoomId" class="col-auto">
+                            <button class="btn btn-danger" type="submit">Xoá</button>
+                        </form>
                     </td>
                 </tr>
             }
