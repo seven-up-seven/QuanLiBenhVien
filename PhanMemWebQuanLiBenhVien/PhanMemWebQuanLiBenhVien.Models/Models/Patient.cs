@@ -9,23 +9,23 @@ namespace PhanMemWebQuanLiBenhVien.Models
         [Key]
         public int PatientId { get; set; }
         [Required]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số !")]
-        [MaxLength(12, ErrorMessage = "CCCD có 12 số !")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số!")]
+        [MaxLength(12, ErrorMessage = "CCCD có 12 số!")]
         public string CCCD { get; set; }
-        [Required(ErrorMessage = "Chưa nhập họ và tên !")]
+        [Required(ErrorMessage = "Chưa nhập họ và tên!")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Giới tính là bắt buộc !")]
+        [Required(ErrorMessage = "Giới tính là bắt buộc!")]
         public EGender Gender { get; set; }
 
         [Required]
         public DateTime DateOfBirth { get; set; }
-        [Required(ErrorMessage ="Địa chỉ là bắt buộc !")]
+        [Required(ErrorMessage ="Địa chỉ là bắt buộc!")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "SĐT là bắt buộc !")]
-        [MaxLength(10, ErrorMessage = "SĐT có 10 số !")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số !")]
+        [Required(ErrorMessage = "SĐT là bắt buộc!")]
+        [MaxLength(10, ErrorMessage = "SĐT có 10 số!")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số!")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "BHYT là bắt buộc !")]
+        [Required(ErrorMessage = "BHYT là bắt buộc!")]
 
         public ETrangThaiBenhAn? TrangThaiBenhAn { get; set; }
 

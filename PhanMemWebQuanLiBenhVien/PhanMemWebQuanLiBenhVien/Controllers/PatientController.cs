@@ -136,11 +136,55 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            else
+            var genderList = Enum.GetValues(typeof(EGender))
+            .Cast<EGender>()
+            .Select(gender => new SelectListItem
             {
-                TempData["error"] = "Bệnh nhân không hợp lệ";
-                return RedirectToAction("Create");
-            }
+                Value = gender.ToString(),
+                Text = gender.ToString()
+            }).ToList();
+            ViewBag.Genders = genderList;
+
+            var statuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+            .Cast<ETrangThaiBenhAn>()
+            .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
+
+            .Select(e => new SelectListItem
+            {
+                Value = e.ToString(),
+                Text = e.ToString()
+            }).ToList();
+            ViewBag.statuslist = statuslist;
+            var phongkhamlist = _unitOfWork.PhongKhamRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.RoomId.ToString()
+            });
+            ViewBag.phongkhamlist = phongkhamlist;
+            var doctorlist = _unitOfWork.DoctorRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.DoctorName,
+                Value = p.DoctorId.ToString()
+            });
+            ViewBag.doctorlist = doctorlist;
+            var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.RoomId.ToString()
+            });
+            ViewBag.phongbenhlist = phongbenhlist;
+            var nurselist = _unitOfWork.NurseRepository.GetAll().Select(p => new SelectListItem
+            {
+                Text = p.NurseName,
+                Value = p.NurseId.ToString()
+            });
+            ViewBag.nurselist = nurselist;
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.ProfessionName,
+                Value = u.ProfessionId.ToString()
+            });
+            return View();
         }
         public IActionResult Update(int PatientId)
         {
