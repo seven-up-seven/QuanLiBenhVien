@@ -11,19 +11,23 @@ namespace PhanMemWebQuanLiBenhVien.Models
 	{
 		[Key]
 		public int MedicalRecordId { get; set; }
-
+		[Required(ErrorMessage = "Nhập ID bệnh nhân!")]
 		public int PatientId { get; set; }
 		[ForeignKey("PatientId")]
 		public Patient? Patient { get; set; }
 
 		// Thông tin cố định
+		[Required(ErrorMessage ="Vui lòng nhập tên bệnh nhân!")]
 		public string PatientName { get; set; }
-		public string PatientGender { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập giới tính bệnh nhân!")]
+        public string PatientGender { get; set; }
 		public string BHYT { get; set; }
-		public string Address { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập địa chỉ bệnh nhân!")]
+        public string Address { get; set; }
 
-		// Tiền sử (thường bổ sung thông tin, không ghi đè)
-		public string TienSuBenhAn { get; set; }
+        // Tiền sử (thường bổ sung thông tin, không ghi đè)
+        [Required(ErrorMessage = "Vui lòng nhập tiền sử bệnh nhân!")]
+        public string TienSuBenhAn { get; set; }
 
 		public ETrangThaiDieuTri? TrangThaiDieuTri { get; set; }
 		public ETrangThaiBenhAn? TrangThaiBenhAn { get; set; }
