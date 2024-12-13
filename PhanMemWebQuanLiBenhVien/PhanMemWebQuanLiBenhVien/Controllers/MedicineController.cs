@@ -148,7 +148,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
         public IActionResult TrichXuatThuoc(string ids)
         {
-            if (string.IsNullOrEmpty(ids))
+            if (string.IsNullOrEmpty(ids) || ids==",")
             {
                 TempData["error"] = "Chọn ít nhất một thuốc";
                 return RedirectToAction("Index");
@@ -157,12 +157,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var idList = ids.Split(',').Select(int.Parse).ToList();
             var medicines = idList.Select(id => _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id)).ToList();
 
-            if (medicines == null || !medicines.Any())
+            if (medicines == null || !medicines.Any() || medicines[0] == null)
             {
                 TempData["error"] = "Không tìm thấy";
                 return RedirectToAction("Index");
             }
-
+           
             return View(medicines);
         }
         [HttpPost]
