@@ -1,0 +1,125 @@
+﻿body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #004a99;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+input[type="text"],
+input[readonly],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+select {
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+}
+
+button.btn-primary {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+    button.btn-primary:hover {
+        background: linear-gradient(90deg, #004080, #0056b3);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    input,
+    select {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    button.btn-primary {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
+.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    color: #fff;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #004080, #0056b3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+
+.text-danger {
+    color: #d9534f;
+}
+
+.text-primary {
+    color: #004a99 !important;
+}

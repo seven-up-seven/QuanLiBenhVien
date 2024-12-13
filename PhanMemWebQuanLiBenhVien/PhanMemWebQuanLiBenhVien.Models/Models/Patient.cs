@@ -8,24 +8,24 @@ namespace PhanMemWebQuanLiBenhVien.Models
     {
         [Key]
         public int PatientId { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Vui lòng nhập CCCD!")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số!")]
         [MaxLength(12, ErrorMessage = "CCCD có 12 số!")]
         public string CCCD { get; set; }
-        [Required(ErrorMessage = "Chưa nhập họ và tên!")]
+        [Required(ErrorMessage = "Vui lòng nhập họ tên!")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Giới tính là bắt buộc!")]
+        [Required(ErrorMessage = "Vui lòng chọn giới tính!")]
         public EGender Gender { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập ngày tháng năm sinh!")]
         public DateTime DateOfBirth { get; set; }
-        [Required(ErrorMessage ="Địa chỉ là bắt buộc!")]
+        [Required(ErrorMessage = "Vui lòng nhập địa chỉ!")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "SĐT là bắt buộc!")]
+        [Required(ErrorMessage = "Vui lòng nhập SĐT!")]
         [MaxLength(10, ErrorMessage = "SĐT có 10 số!")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Chỉ được nhập số!")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "BHYT là bắt buộc!")]
+        [Required(ErrorMessage = "Vui lòng nhập BHYT!")]
 
         public ETrangThaiBenhAn? TrangThaiBenhAn { get; set; }
 

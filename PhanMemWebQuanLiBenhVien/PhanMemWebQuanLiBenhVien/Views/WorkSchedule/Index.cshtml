@@ -14,14 +14,14 @@
     }
     string dayOfWeek = currentDate.ToString("dddd");
 }
-
+<link rel="stylesheet" href="~/css/WorkSchedule/Index.css"/>
 <h3>Thứ hiện tại: @dayOfWeek</h3>
 
 <div>
-    <a href="@Url.Action("Index", new { date = currentDate.AddDays(-1).ToString("yyyy-MM-dd") })" class="btn btn-primary">
+    <a href="@Url.Action("Index", new { date = currentDate.AddDays(-1).ToString("yyyy-MM-dd") })" class="btn btn-primary decorate">
         Thứ trước đó 
     </a>
-    <a href="@Url.Action("Index", new { date = currentDate.AddDays(1).ToString("yyyy-MM-dd") })" class="btn btn-primary">
+    <a href="@Url.Action("Index", new { date = currentDate.AddDays(1).ToString("yyyy-MM-dd") })" class="btn btn-primary decorate">
         Thứ tiếp theo
     </a>
 </div>

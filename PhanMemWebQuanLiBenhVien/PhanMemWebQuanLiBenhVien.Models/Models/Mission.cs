@@ -9,19 +9,19 @@ namespace PhanMemWebQuanLiBenhVien.Models
     {
         [Key]
         public int MissionId { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập ngày bắt đầu !")]
+        [Required(ErrorMessage = "Vui lòng nhập ngày bắt đầu!")]
         public DateTime Time { get; set; }
-        [Required(ErrorMessage ="Vui long nhập mức độ ! ")]
+        [Required(ErrorMessage ="Vui long nhập mức độ!")]
         public Elever Lever { get; set; }
    
-        [Required(ErrorMessage = "Vui lòng nhập ngày kết thúc !")]
+        [Required(ErrorMessage = "Vui lòng nhập ngày kết thúc!")]
         [EndTimeGreaterThanTime]
         public DateTime EndTime { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng nhập nội dung !")]
+        [Required(ErrorMessage = "Vui lòng nhập nội dung!")]
 
         public string Content { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập loại phòng !")]
+        [Required(ErrorMessage = "Vui lòng nhập loại phòng!")]
         public EPhong RoomType { get; set; }
 
         public bool IsCompleted { get; set; } = false;
@@ -29,7 +29,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
 
 
         //Foreign Keys
-        [Required(ErrorMessage ="Vui Lòng chọn bác sĩ !")]
+        [Required(ErrorMessage ="Vui Lòng chọn bác sĩ!")]
         public int DoctorId { get; set; }
 
         [ForeignKey("DoctorId")]
