@@ -1,0 +1,33 @@
+﻿.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    color: #fff;
+    border: none;
+}
+
+```
+.btn-primary:hover {
+    background: linear-gradient(90deg, #004080, #0056b3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.text-danger {
+    color: #d9534f;
+}
+
+.text-primary {
+    color: #004a99 !important;
+}
+.text-center{
+    margin-top: 10px !important;
+}
