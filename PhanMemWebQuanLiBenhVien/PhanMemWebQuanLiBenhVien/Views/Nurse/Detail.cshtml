@@ -2,35 +2,40 @@
 @{
 	ViewData["Title"] = "Chi Tiết Y Tá";
 }
-<div>
-	<h2 class="my-5">Chi tiết</h2>
-	<div class="mt-5">
-		<p>ID: @Model.NurseId</p>
-		<p>Tên y tá: @Model.NurseName</p>
-		<p>CCCD: @Model.NurseCCCD</p>
-		<p>Tuổi: @Model.NurseAge</p>
-		<p>Giới tính: @Model.NurseGender.ToString()</p>
-	</div>
-	<div class="my-4">
-		<table>
-			<tr>
-				<th><h4>Danh sách bệnh nhân: </h4></th>
-				@{
-					if (Model.PatientList != null)
-					{
-						foreach (var patient in Model.PatientList)
-						{
-							<td><a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
-						}
-					}
-				}
-			</tr>
-		</table>
-	</div>
-	<div class="row d-flex">
-		<div class="col-auto text-primary"><a asp-controller="Nurse" asp-action="Index" class="btn text-white">Quay lại</a></div>
-		<div class="col-auto text-primary">
-			<a class="btn btn-primary" asp-controller="Nurse" asp-action="Delete" asp-route-NurseId="@Model.NurseId">Xóa</a>
-		</div>
-	</div>
+<link rel="stylesheet" href="~/css/Nurse/Detail.css"/>
+<div class="container mt-5">
+    <h2 class="text-center">Chi tiết y tá</h2>
+
+    <div class="nurse-info">
+        <p><strong>ID:</strong> @Model.NurseId</p>
+        <p><strong>Tên y tá:</strong> @Model.NurseName</p>
+        <p><strong>CCCD:</strong> @Model.NurseCCCD</p>
+        <p><strong>Tuổi:</strong> @Model.NurseAge</p>
+        <p><strong>Giới tính:</strong> @Model.NurseGender.ToString()</p>
+    </div>
+
+    <div class="my-4">
+        <h4>Danh sách bệnh nhân</h4>
+        <div class="patient-list">
+            @if (Model.PatientList != null && Model.PatientList.Count() > 0)
+            {
+                @foreach (var patient in Model.PatientList)
+                {
+                    <p><a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none">@patient.Name</a></p>
+                }
+            }
+            else
+            {
+                <p>Không có bệnh nhân nào.</p>
+            }
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-start mt-4">
+        <a asp-controller="Nurse" asp-action="Index" class="btn text-white col-auto">Quay lại</a>
+        <form method="post" asp-controller="Nurse" asp-action="Delete" asp-route-NurseId="@Model.NurseId" class="col-auto">
+            <button class="btn text-white" type="submit">Xoá</button>
+        </form>
+    </div>
 </div>
+

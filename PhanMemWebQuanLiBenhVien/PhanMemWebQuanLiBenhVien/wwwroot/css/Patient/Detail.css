@@ -1,8 +1,15 @@
-﻿.container {
+﻿body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
     background-color: #ffffff;
     border-radius: 15px;
     padding: 30px;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 50px auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
@@ -13,8 +20,9 @@ h2, h3 {
     font-weight: bold;
     color: #004a99;
     text-align: center;
+    margin-bottom: 30px;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    letter-spacing: 1px;
 }
 
 h3 {
@@ -22,15 +30,27 @@ h3 {
     text-align: left;
 }
 
-.info-section p {
-    font-size: 1rem;
-    color: #495057;
-    margin-bottom: 10px;
+.info-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-    .info-section p strong {
-        color: #004a99;
+    .info-section p {
+        flex: 1 1 calc(50% - 10px); 
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.6;
+        background-color: #f7f9fc;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
+        .info-section p strong {
+            color: #004a99;
+        }
 
 .table {
     width: 100%;
@@ -44,9 +64,10 @@ h3 {
 
     .table th {
         background-color: #004a99;
-        color: white;
+        color: #fff;
         text-align: center;
         padding: 15px;
+        font-size: 1.1rem;
         text-transform: uppercase;
     }
 
@@ -54,57 +75,82 @@ h3 {
         padding: 12px;
         border-bottom: 1px solid #ddd;
         text-align: center;
+        vertical-align: middle;
+        font-size: 1rem;
+        color: #333;
     }
 
-.btn {
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #f7f9fc;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #eef3f8;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #e2ebf6;
+    transition: background-color 0.3s ease;
+}
+
+.actions-section a, .actions-section button {
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 8px;
+    font-weight: bold;
     text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 }
 
-.btn-primary {
+.actions-section a {
+    color: #fff;
+}
+
+    .actions-section a.btn-outline-dark {
+        color: #333;
+        background-color: #fff;
+        border: 2px solid #333;
+    }
+
+        .actions-section a.btn-outline-dark:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+    .actions-section a.btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+        .actions-section a.btn-danger:hover {
+            background-color: #b02a37;
+        }
+
+a.btn-primary {
     background: linear-gradient(90deg, #0056b3, #007bff);
-    color: white;
-    border: none;
+    color: #fff;
 }
 
-    .btn-primary:hover {
+    a.btn-primary:hover {
         background: linear-gradient(90deg, #004080, #0056b3);
-    }
-
-.btn-outline-dark {
-    border: 1px solid #6c757d;
-    color: #6c757d;
-    background-color: transparent;
-}
-
-    .btn-outline-dark:hover {
-        background-color: #6c757d;
-        color: white;
-    }
-
-.btn-danger {
-    background-color: #dc3545;
-    color: white;
-}
-
-    .btn-danger:hover {
-        background-color: #b02a37;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    h2, h3 {
-        font-size: 1.5rem;
+    .info-section p {
+        flex: 1 1 100%; 
     }
 
     .table th, .table td {
         font-size: 0.9rem;
         padding: 10px;
+    }
+
+    .actions-section a, .actions-section button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
     }
 }
