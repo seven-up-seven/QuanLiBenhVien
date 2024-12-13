@@ -174,17 +174,32 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
 
         [HttpPost("Delete/{PhongKhamId}")]
-        public IActionResult Delete(int PhongKhamId)
+        public IActionResult Delete(int PhongKhamId)    
         {
             var phongKham = _unitOfWork.PhongKhamRepository.Get(pk => pk.RoomId == PhongKhamId);
-			if (phongKham != null)
+            phongKham.Patients = new List<Patient>();
+            var mrl = _unitOfWork.MedicalRecordRepository.GetAll(m => m.PhongKhamId == PhongKhamId && m.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri);
+            foreach(var mr in mrl)
             {
-                _unitOfWork.PhongKhamRepository.Remove(phongKham);
-                _unitOfWork.Save();
-
-                return RedirectToAction("Index");
+                phongKham.Patients.Add(_unitOfWork.PatientRepository.Get(c => c.PatientId == mr.PatientId)); 
             }
-            return View();
+            if(phongKham.Patients == null || phongKham.Patients.Count() == 0)
+            {
+                var ws_fk = _unitOfWork.WorkScheduleRepository.GetAll(u => u.PhongKhamId == PhongKhamId);
+                if (ws_fk != null)
+                {
+                    _unitOfWork.WorkScheduleRepository.RemoveRange(ws_fk);
+                }
+                if (phongKham != null)
+                {
+                    _unitOfWork.PhongKhamRepository.Remove(phongKham);
+                    _unitOfWork.Save();
+
+                    return RedirectToAction("Index");
+                }
+            }
+            TempData["error"] = "Không thể xoá do phòng có bệnh nhân"; 
+            return RedirectToAction("Index");
         }
     }
 }
