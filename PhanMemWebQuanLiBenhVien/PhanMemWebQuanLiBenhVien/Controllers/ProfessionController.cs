@@ -130,19 +130,29 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == ProfessionId);
 			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == TruongKhoaId);
-			if (profession.TruongKhoaId!=null)
+			if(TruongKhoaId != 0) 
+			{ 
+                profession.TruongKhoaId = TruongKhoaId;
+                profession.TruongKhoaName = doctor.DoctorName;
+                doctor.IsTruongKhoa = true;
+                _unitOfWork.ProfessionRepository.Update(profession);
+                _unitOfWork.DoctorRepository.Update(doctor);
+				TempData["success"] = "Cập nhật trưởng khoa thành công"; 
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+			else
 			{
-				var olddoctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId);
-				olddoctor.IsTruongKhoa = false;
-				_unitOfWork.DoctorRepository.Update(olddoctor);
-			}
-			profession.TruongKhoaId= TruongKhoaId;
-			profession.TruongKhoaName = doctor.DoctorName;
-			doctor.IsTruongKhoa= true;
-			_unitOfWork.ProfessionRepository.Update(profession);
-			_unitOfWork.DoctorRepository.Update(doctor);
-			_unitOfWork.Save();
-			return RedirectToAction("Index");
+				TempData["error"] = "Hãy chọn trưởng khoa hợp lệ";
+                var doctorlist = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == ProfessionId);
+                ViewBag.doctorlist = doctorlist.Select(u => new SelectListItem
+                {
+                    Text = u.DoctorName,
+                    Value = u.DoctorId.ToString()
+                }).ToList();
+                var pr = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == ProfessionId);
+				return View(pr);
+            }
 		}
 	}
 }
