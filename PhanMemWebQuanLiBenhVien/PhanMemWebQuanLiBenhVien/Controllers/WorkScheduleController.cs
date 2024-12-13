@@ -410,6 +410,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (workSchedule.DoctorId1 == 0) workSchedule.DoctorId1 = null;
+                if (workSchedule.DoctorId2 == 0) workSchedule.DoctorId2 = null;
+                if (workSchedule.DoctorId3 == 0) workSchedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Update(workSchedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
