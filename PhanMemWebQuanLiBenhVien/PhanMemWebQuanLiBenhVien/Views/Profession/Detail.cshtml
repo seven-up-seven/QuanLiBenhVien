@@ -1,33 +1,7 @@
-<<<<<<< Updated upstream
-﻿@model PhanMemWebQuanLiBenhVien.Models.Profession
+@model PhanMemWebQuanLiBenhVien.Models.Profession
 @{
-	ViewData["Title"] = "Chi Tiết Chuyên Khoa";
+   ViewData["Title"] = "Chi Tiết Chuyên Khoa";
 }
-<link rel="stylesheet" href="~/css/Profession/Detail.css" />
-<div>
-	<h2 class="my-5">Chi tiết</h2>
-	<div class="mt-5">
-		<p>ID: @Model.ProfessionId</p>
-		<p>Tên chuyên khoa: @Model.ProfessionName</p>
-		@if (Model.TruongKhoaId!=null)
-		{
-			<p>Trưởng khoa: @Model.TruongKhoaName</p>
-		}
-		else
-		{
-			<p>Trưởng khoa: Không có</p>
-		}
-		<p>Mô tả: @Model.Description</p>
-	</div>
-	<div>
-        @{
-			<h4> Danh sách bác sĩ</h4>
-            if(Model.DoctorList != null && Model.DoctorList.Count() > 0)
-=======
-﻿ @model PhanMemWebQuanLiBenhVien.Models.Profession 
- @{ 
-	ViewData["Title"] = "Chi Tiết Chuyên Khoa"; 
- } 
 @* <link rel="stylesheet" href="~/css/Profession/Detail.css" /> *@
 @* <div> *@
 @* 	<h2 class="my-5">Chi tiết</h2> *@
@@ -87,7 +61,6 @@
         <h4>Danh sách bác sĩ</h4>
         <div class="doctor-list">
             @if (Model.DoctorList != null && Model.DoctorList.Count() > 0)
->>>>>>> Stashed changes
             {
                 @foreach (var doctor in Model.DoctorList)
                 {
