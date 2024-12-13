@@ -317,18 +317,156 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult Update(Patient patient)
         {
-            _unitOfWork.PatientRepository.Update(patient);
-            var medicalrecordlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
-            foreach (var medicalrecord in medicalrecordlist)
+            if (ModelState.IsValid)
             {
-                medicalrecord.PatientName = patient.Name;
-                medicalrecord.PatientGender = patient.Gender.ToString();
-                medicalrecord.Address = patient.Address;
-                _unitOfWork.MedicalRecordRepository.Update(medicalrecord);
+                Doctor doctor = null;
+                Nurse nurse = null;
+                GlobalFunctions globalfunction = new GlobalFunctions(_unitOfWork, doctor, nurse, patient);
+                if (globalfunction.ExistDuplicateCCCD())
+                {
+                    TempData["error"] = "CCCD đã tồn tại!";
+                    var genderList = Enum.GetValues(typeof(EGender))
+                    .Cast<EGender>()
+                    .Select(gender => new SelectListItem
+                    {
+                        Value = gender.ToString(),
+                        Text = gender.ToString()
+                    }).ToList();
+                        ViewBag.Genders = genderList;
+                        ViewBag.BHYT = new SelectList(new List<SelectListItem>
+                    {
+                        new SelectListItem {Text="Có", Value="true"},
+                        new SelectListItem {Text="Không", Value="false"}
+                    }, "Value", "Text");
+                    var statuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+                    .Cast<ETrangThaiBenhAn>()
+                    .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
+                    .Select(e => new SelectListItem
+                    {
+                        Value = e.ToString(),
+                        Text = e.ToString()
+                    }).ToList();
+                    ViewBag.statuslist = statuslist;
+                    var phongkhamlist = _unitOfWork.PhongKhamRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.Name,
+                        Value = p.RoomId.ToString()
+                    });
+                    ViewBag.phongkhamlist = phongkhamlist;
+                    var doctorlist = _unitOfWork.DoctorRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.DoctorName,
+                        Value = p.DoctorId.ToString()
+                    });
+                    ViewBag.doctorlist = doctorlist;
+                    var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.Name,
+                        Value = p.RoomId.ToString()
+                    });
+                    ViewBag.phongbenhlist = phongbenhlist;
+                    var nurselist = _unitOfWork.NurseRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.NurseName,
+                        Value = p.NurseId.ToString()
+                    });
+                    ViewBag.nurselist = nurselist;
+                    var specialstatuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+                    .Cast<ETrangThaiBenhAn>()
+                    .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
+                    .Select(e => new SelectListItem
+                    {
+                        Value = e.ToString(),
+                        Text = e.ToString()
+                    }).ToList();
+                    ViewBag.specialstatuslist = specialstatuslist;
+                    ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                    {
+                        Text = u.ProfessionName,
+                        Value = u.ProfessionId.ToString()
+                    });
+                    return View(patient);
+                }
+                else
+                {
+                    _unitOfWork.PatientRepository.Update(patient);
+                    var medicalrecordlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
+                    foreach (var medicalrecord in medicalrecordlist)
+                    {
+                        medicalrecord.PatientName = patient.Name;
+                        medicalrecord.PatientGender = patient.Gender.ToString();
+                        medicalrecord.Address = patient.Address;
+                        _unitOfWork.MedicalRecordRepository.Update(medicalrecord);
+                    }
+                    _unitOfWork.Save();
+                    TempData["success"] = "Cập nhật bệnh nhân thành công!";
+                    return RedirectToAction("Index");
+                }
             }
-            _unitOfWork.Save();
-            TempData["success"] = "Cập nhật bệnh nhân thành công!";
-            return RedirectToAction("Index");
+            else
+            {
+                var genderList = Enum.GetValues(typeof(EGender))
+                .Cast<EGender>()
+                .Select(gender => new SelectListItem
+                {
+                    Value = gender.ToString(),
+                    Text = gender.ToString()
+                }).ToList();
+                    ViewBag.Genders = genderList;
+                    ViewBag.BHYT = new SelectList(new List<SelectListItem>
+                {
+                    new SelectListItem {Text="Có", Value="true"},
+                    new SelectListItem {Text="Không", Value="false"}
+                }, "Value", "Text");
+                var statuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+                .Cast<ETrangThaiBenhAn>()
+                .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                }).ToList();
+                ViewBag.statuslist = statuslist;
+                var phongkhamlist = _unitOfWork.PhongKhamRepository.GetAll().Select(p => new SelectListItem
+                {
+                    Text = p.Name,
+                    Value = p.RoomId.ToString()
+                });
+                ViewBag.phongkhamlist = phongkhamlist;
+                var doctorlist = _unitOfWork.DoctorRepository.GetAll().Select(p => new SelectListItem
+                {
+                    Text = p.DoctorName,
+                    Value = p.DoctorId.ToString()
+                });
+                ViewBag.doctorlist = doctorlist;
+                var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+                {
+                    Text = p.Name,
+                    Value = p.RoomId.ToString()
+                });
+                ViewBag.phongbenhlist = phongbenhlist;
+                var nurselist = _unitOfWork.NurseRepository.GetAll().Select(p => new SelectListItem
+                {
+                    Text = p.NurseName,
+                    Value = p.NurseId.ToString()
+                });
+                ViewBag.nurselist = nurselist;
+                var specialstatuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+                .Cast<ETrangThaiBenhAn>()
+                .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
+                .Select(e => new SelectListItem
+                {
+                    Value = e.ToString(),
+                    Text = e.ToString()
+                }).ToList();
+                ViewBag.specialstatuslist = specialstatuslist;
+                ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.ProfessionName,
+                    Value = u.ProfessionId.ToString()
+                });
+                return View(patient);
+            }
         }
 
         public IActionResult Delete(int PatientId)

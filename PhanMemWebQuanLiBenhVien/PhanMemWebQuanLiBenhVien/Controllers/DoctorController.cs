@@ -172,22 +172,48 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
             if (ModelState.IsValid)
             {
-                wwwroot = _webHostEnvironment.WebRootPath;
-                if (DoctorImg != null)
+                GlobalFunctions globalfunction = new GlobalFunctions(_unitOfWork, doctor);
+                if (globalfunction.ExistDuplicateCCCD())
                 {
-                    string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
-                    string filepath = Path.Combine(wwwroot, @"images\");
-                    using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                    TempData["error"] = "CCCD đã tồn tại!";
+                    ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
                     {
-                        DoctorImg.CopyTo(filestream);
+                        Text = u.ProfessionName,
+                        Value = u.ProfessionId.ToString()
+                    });
+                    var genderList = Enum.GetValues(typeof(EGender))
+                    .Cast<EGender>()
+                    .Select(gender => new SelectListItem
+                    { 
+                        Value = gender.ToString(),
+                        Text = gender.ToString()
+                    }).ToList();
+                    ViewBag.Genders = genderList;
+                    if (User.IsInRole("Doctor"))
+                    {
+                        return RedirectToAction("DoctorHomePage", "Doctor", new { DoctorId = doctor.DoctorId });
                     }
-                    doctor.DoctorImgURL = @"\images\" + filename;
+                    return View(doctor);
                 }
-                _unitOfWork.DoctorRepository.Update(doctor);
-                _unitOfWork.Save();
-                TempData["success"] = "Cập nhật bác sĩ thành công!";
-                if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new { DoctorId = doctor.DoctorId });
-                return RedirectToAction("Index");
+                else
+                {
+                    wwwroot = _webHostEnvironment.WebRootPath;
+                    if (DoctorImg != null)
+                    {
+                        string filename = Path.GetFileNameWithoutExtension(DoctorImg.FileName) + Path.GetExtension(DoctorImg.FileName);
+                        string filepath = Path.Combine(wwwroot, @"images\");
+                        using (var filestream = new FileStream(Path.Combine(filepath, filename), FileMode.Create))
+                        {
+                            DoctorImg.CopyTo(filestream);
+                        }
+                        doctor.DoctorImgURL = @"\images\" + filename;
+                    }
+                    _unitOfWork.DoctorRepository.Update(doctor);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Cập nhật bác sĩ thành công!";
+                    if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new { DoctorId = doctor.DoctorId });
+                    return RedirectToAction("Index");
+                }
             }
             else
             {

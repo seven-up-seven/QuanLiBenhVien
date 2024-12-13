@@ -11,6 +11,9 @@
     </div>
     <form method="post">
         <input asp-for="PatientId" hidden />
+        <input asp-for="TrangThaiBenhAn" hidden />
+        <input asp-for="Profession" hidden />
+        <input asp-for="MedicalRecords" hidden />
         <div class="form-group">
             <label asp-for="Name">Tên bệnh nhân</label>
             <span asp-validation-for="Name" class="text-danger"></span>
