@@ -135,21 +135,26 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             try
             {
                 var phongCapCuu = _unitOfWork.PhongCapCuuRepository.Get(pk => pk.RoomId == PhongCapCuuId);
-                if (phongCapCuu != null)
+                if (phongCapCuu != null && phongCapCuu.isAvailable == true)
                 {
-                        _unitOfWork.PhongCapCuuRepository.Remove(phongCapCuu);
-                        _unitOfWork.Save();
+                    var ws_fk = _unitOfWork.WorkScheduleRepository.GetAll(r => r.PhongCapCuuId == PhongCapCuuId);
+                    if(ws_fk != null || ws_fk.Count() > 0)
+                    {
+                        _unitOfWork.WorkScheduleRepository.RemoveRange(ws_fk); 
+                    }
+                    _unitOfWork.PhongCapCuuRepository.Remove(phongCapCuu);
+                    _unitOfWork.Save();
                     TempData["success"] = "Xóa phòng cấp cứu thành công!";
                 }
            
                 else
                 {
-                   TempData["error"] = "Không tìm thấy phòng cấp cứu!";
+                   TempData["error"] = "Phòng đang sử dụng không thể xoá";
                 }
             }
             catch
             {
-                TempData["error"] = "Không được xóa phòng cấp cứu này!";
+                TempData["error"] = "Phòng đang sử dụng không thể xoá";
             }
             return RedirectToAction("Index");
         }
