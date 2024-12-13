@@ -52,6 +52,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View();
         }
 
+   
+
+
 
 
         public IActionResult Privacy()
