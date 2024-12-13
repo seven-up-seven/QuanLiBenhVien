@@ -10,7 +10,7 @@
     var troNang = (int)ViewBag.TroNang;
     var status = (string)ViewBag.Status;
 }
-
+<link rel="stylesheet" href="~/css/home/Index.css"/>
 <div class="text-center mt-5 border border-5 rounded rounded-5" style="background-color: azure">
     <h1 class="display-4 fw-bold" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">HOSPITAL MANAGEMENT PORTAL</h1>
 </div>
@@ -32,10 +32,15 @@
                         <h6 class="mb-0 fs-5">@totalDoctors</h6>
                     </div>
                 </div>
+                <style>
+                    .gap-5{
+                        gap: 2rem !important;
+                    }
+                </style>
             </a>
 
             <!-- Card for Total Patients -->
-            <a asp-controller="Nurse" asp-action="Index" class="card col-md-2 text-decoration-none">
+            <a asp-controller="Nurse" asp-action="Index" class="card col-md-2 text-decoration-none ">
                 <div class="card-body d-flex align-items-center">
                     <!-- Icon or Image Placeholder -->
                     <div class="me-3">
@@ -50,22 +55,27 @@
             </a>
 
             <!-- Card for Total Clinics -->
-        <form asp-action="Index" method="post" asp-controller="Patient" class="card col-md-2 text-decoration-none">
-                <input name="SearchTrangThaiBenhAn" value="dangchuatri" hidden />
-                <button type="submit">
-                    <div class="card-body d-flex align-items-center">
-                        <!-- Icon or Image Placeholder -->
-                        <div class="me-3">
-                            <img src="~/images/PATIENT-removebg-preview.png" alt="logo" width="80" height="80" />
+             <form asp-action="Index" method="post" asp-controller="Patient" class="col-md-2 test">
+                    <input name="SearchTrangThaiBenhAn" value="dangchuatri" hidden />
+                     <button type="submit" class="card text-decoration-none">
+                        <div class="card-body d-flex align-items-center">
+                            <!-- Icon or Image Placeholder -->
+                            <div class="me-3">
+                                <img src="~/images/PATIENT-removebg-preview.png" alt="logo" width="80" height="80" />
+                            </div>
+                            <!-- Nội dung bên phải -->
+                            <div class="text-start">
+                                <h5 class="fw-bold mb-1">SỐ BỆNH NHÂN</h5>
+                            <h6 class="mb-0 fs-5">@totalPatients</h6>
+                            </div>
                         </div>
-                        <!-- Nội dung bên phải -->
-                        <div class="text-start">
-                            <h5 class="fw-bold mb-1">SỐ BỆNH NHÂN</h5>
-                        <h6 class="mb-0 fs-5">@totalPatients</h6>
-                        </div>
-                    </div>
-                </button>
-         </form>
+                    </button>
+                    <style>
+                        .test{
+                            width:240px;
+                        }
+                    </style>
+             </form>
 
 
             <!-- Card for Total Patient Rooms -->
@@ -110,7 +120,12 @@
             <h2 class="text-center">TÌNH TRẠNG BÊNH NHÂN</h2>
             <canvas id="patientChart" width="400" height="200"></canvas>
         </div>
-
+        <style>
+            .text-center{
+                position: relative;
+                margin-top: 80px;
+            }
+        </style>
         <!-- Biểu đồ đường -->
         <div class="col-md-6">
             <h2 class="text-center">TRUNG BÌNH BỆNH NHÂN</h2>

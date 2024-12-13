@@ -20,12 +20,12 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
             var objFromDb = _db.medicines.FirstOrDefault(m => m.MedicineId == medicine.MedicineId);
             if (objFromDb != null)
             {
-                objFromDb.Name = medicine.Name;
-                objFromDb.Usage = medicine.Usage;
-                objFromDb.Unit = medicine.Unit;
-                objFromDb.Price = medicine.Price;
-                objFromDb.Quantity = medicine.Quantity;
-                objFromDb.ExpiryDate = medicine.ExpiryDate;
+                if (medicine.Name != null) objFromDb.Name = medicine.Name;
+                if (medicine.Usage != null) objFromDb.Usage = medicine.Usage;
+                if (medicine.Unit != null) objFromDb.Unit = medicine.Unit;
+                if (medicine.Price != 0) objFromDb.Price = medicine.Price;
+                if (medicine.Quantity != 0) objFromDb.Quantity = medicine.Quantity;
+                if (medicine.ExpiryDate != default(DateTime)) objFromDb.ExpiryDate = medicine.ExpiryDate;
                 _db.SaveChanges();
             }
         }
