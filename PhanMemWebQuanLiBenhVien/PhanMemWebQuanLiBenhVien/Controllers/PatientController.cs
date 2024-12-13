@@ -399,6 +399,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         _unitOfWork.MedicalRecordRepository.Update(medicalrecord);
                     }
                     _unitOfWork.Save();
+                    TempData["success"] = "Cập nhật bệnh nhân thành công!";
                     return RedirectToAction("Index");
                 }
             }

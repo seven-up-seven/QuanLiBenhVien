@@ -157,6 +157,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     _unitOfWork.NurseRepository.Update(nurse);
                     _unitOfWork.Save();
                     if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
+                    TempData["success"] = "Cập nhật bệnh nhân thành công!";
                     return RedirectToAction("Index");
                 }
             }
