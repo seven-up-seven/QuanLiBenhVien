@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
+using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
@@ -7,10 +9,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class MedicineController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public MedicineController(IUnitOfWork unitOfWork)
+        private readonly UserManager<IdentityUser> _userManager;
+        public MedicineController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -81,24 +84,55 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult KeDonThuoc(int MedicalVisitId)
+        public async Task<IActionResult> KeDonThuoc(int MedicalVisitId)
         {
             var medicalVisit = _unitOfWork.MedicalVisitRepository.Get(mv => mv.VisitId == MedicalVisitId);
+            if (medicalVisit == null)
+            {
+                return NotFound();
+            }
+
             var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == medicalVisit.MedicalRecordId);
-            var doctor = _unitOfWork.DoctorRepository.Get(dr => dr.DoctorId == medicalRecord.DoctorId);
+            if (medicalRecord == null)
+            {
+                return NotFound();
+            }
+
+            var true_user = (CustomedUser?)await _userManager.GetUserAsync(User);
+            if (true_user == null)
+            {
+                return NotFound();
+            }
+
+            var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == true_user.UserId);
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+
             doctor.Profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == doctor.ProfessionId);
             var patient = _unitOfWork.PatientRepository.Get(pt => pt.PatientId == medicalRecord.PatientId);
-            ViewBag.doctor = doctor;
-            ViewBag.patient = patient;
+            if (patient == null)
+            {
+                return NotFound();
+            }
 
-            var idThuocs = medicalVisit.IdThuocs.Split(',').Select(int.Parse).ToList();
-            var soLuongs = medicalVisit.SoLuongThuocs.Split(',').Select(int.Parse).ToList();
-            var medicineList = idThuocs.Select(id => _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id ))
+            var idThuocs = medicalVisit.IdThuocs?.Split(',').Select(int.Parse).ToList();
+            var soLuongs = medicalVisit.SoLuongThuocs?.Split(',').Select(int.Parse).ToList();
+            if (idThuocs == null || soLuongs == null)
+            {
+                return NotFound();
+            }
+
+            var medicineList = idThuocs.Select(id => _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id))
                                        .Zip(soLuongs, (medicine, qty) => new { Medicine = medicine, Quantity = qty })
                                        .ToList();
+
+            ViewBag.doctor = doctor;
+            ViewBag.patient = patient;
             ViewBag.medicine = medicineList;
 
-            return View(medicalVisit);
+            return View();
         }
 
     }

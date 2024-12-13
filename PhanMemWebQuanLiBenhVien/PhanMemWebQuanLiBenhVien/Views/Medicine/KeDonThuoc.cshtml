@@ -1,5 +1,4 @@
-﻿@model MedicalVisit
-<div class="p-1">
+﻿<div class="p-1">
     <div class="p-5">
         <div class="prescription-header">
             <h5><strong>Đơn Thuốc</strong></h5>
@@ -7,49 +6,74 @@
 
         <div class="doctor-info">
             <h5>Thông tin bác sĩ:</h5>
-            <p><strong>Tên bác sĩ:</strong> @ViewBag.Doctor.DoctorName</p>
-            <p><strong>Chuyên khoa:</strong> @ViewBag.Doctor.Profession.ProfessionName</p>
+            @if (ViewBag.Doctor != null && ViewBag.Doctor.Profession != null)
+            {
+                <p><strong>Tên bác sĩ:</strong> @ViewBag.Doctor.DoctorName</p>
+                <p><strong>Chuyên khoa:</strong> @ViewBag.Doctor.Profession.ProfessionName</p>
+            }
+            else
+            {
+                <p>Thông tin bác sĩ không đầy đủ.</p>
+            }
         </div>
 
         <div class="patient-info">
             <h5>Thông tin bệnh nhân:</h5>
-            <p><strong>Tên bệnh nhân:</strong> @ViewBag.Patient.Name</p>
-            <p><strong>Ngày sinh: @ViewBag.Patient.DateOfBirth</strong></p>
-            <p><strong>Giới tính:</strong> @ViewBag.Patient.Gender.ToString()</p>
+            @if (ViewBag.Patient != null)
+            {
+                <p><strong>Tên bệnh nhân:</strong> @ViewBag.Patient.Name</p>
+                <p><strong>Ngày sinh:</strong> @ViewBag.Patient.DateOfBirth</p>
+                <p><strong>Giới tính:</strong> @ViewBag.Patient.Gender.ToString()</p>
+            }
+            else
+            {
+                <p>Thông tin bệnh nhân không đầy đủ.</p>
+            }
             <p><strong>Ngày kê đơn:</strong> @DateTime.Now</p>
         </div>
 
         <h5>Chi tiết đơn thuốc:</h5>
-        <table class="prescription-details">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Tên thuốc</th>
-                    <th>Đơn vị</th>
-                    <th>Số lượng</th>
-                    <th>Cách dùng</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int i = 1;
-                }
-                @foreach (var medicine in ViewBag.medicine)
-                {
+        @if (ViewBag.medicine != null && ViewBag.medicine.Count > 0)
+        {
+            <table class="prescription-details">
+                <thead>
                     <tr>
-                        <td>@i</td>
-                        <td>@medicine.Medicine.Name</td>
-                        <td>@medicine.Medicine.Unit</td>
-                        <td>@medicine.Quantity</td>
-                        <td>@medicine.Medicine.Usage</td>
+                        <th>#</th>
+                        <th>Tên thuốc</th>
+                        <th>Đơn vị</th>
+                        <th>Số lượng</th>
+                        <th>Cách dùng</th>
                     </tr>
-                    i++;
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                    }
+                    @foreach (var medicine in ViewBag.medicine)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@medicine.Medicine.Name</td>
+                            <td>@medicine.Medicine.Unit</td>
+                            <td>@medicine.Quantity</td>
+                            <td>@medicine.Medicine.Usage</td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Chi tiết đơn thuốc không có sẵn.</p>
+        }
+
 
         <div class="footer">
-            <p><strong>Bác sĩ kê đơn:</strong> @ViewBag.Doctor.DoctorName</p>
+            @if (ViewBag.Doctor != null)
+            {
+                <p><strong>Bác sĩ kê đơn:</strong> @ViewBag.Doctor.DoctorName</p>
+            }
             <p><i>Chữ ký:</i> ________________________</p>
         </div>
     </div>
