@@ -75,7 +75,7 @@
         <a asp-controller="Patient" asp-action="Index" class="btn btn-outline-dark col-auto">Quay lại</a>
         @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri)
         {
-            <a class="btn btn-danger col-auto" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId">Xóa</a>
+            <a class="btn btn-danger col-auto" asp-controller="Patient" asp-action="Delete" asp-route-PatientId="@Model.PatientId" onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này không? Các dữ liệu liên quan sẽ bị xoá.');">Xóa</a>
         }
     </div>
 </div>

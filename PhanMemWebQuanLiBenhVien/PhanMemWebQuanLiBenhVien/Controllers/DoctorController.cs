@@ -237,16 +237,33 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		public async Task<IActionResult> Delete(int DoctorId)
 		{
 			var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == DoctorId);
-			wwwroot = _webHostEnvironment.WebRootPath;
-			if (!string.IsNullOrEmpty(doctor.DoctorImgURL))
-			{
-				var oldpath = Path.Combine(wwwroot, doctor.DoctorImgURL.TrimStart('\\'));
-				if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
-			}
-			var user=_db.customedUsers.FirstOrDefault(u=>(u.UserId == DoctorId && u.UserRole==ERole.doctor));
-			_userManager.DeleteAsync(user).GetAwaiter().GetResult();
-			_unitOfWork.DoctorRepository.Remove(doctor);
-			_unitOfWork.Save();
+            doctor.PatientList = new List<Patient>(); 
+            var mrl = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.DoctorId == DoctorId && mr.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri); 
+            foreach(var mr in mrl)
+            {
+                doctor.PatientList.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
+            }
+            if(doctor.PatientList.Count() > 0)
+            {
+			    wwwroot = _webHostEnvironment.WebRootPath;
+			    if (!string.IsNullOrEmpty(doctor.DoctorImgURL))
+			    {
+				    var oldpath = Path.Combine(wwwroot, doctor.DoctorImgURL.TrimStart('\\'));
+				    if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
+			    }
+			    var user=_db.customedUsers.FirstOrDefault(u=>(u.UserId == DoctorId && u.UserRole==ERole.doctor));
+                if(user!=null)
+                {
+                    _userManager.DeleteAsync(user).GetAwaiter().GetResult();
+                }
+			    _unitOfWork.DoctorRepository.Remove(doctor);
+			    _unitOfWork.Save();
+                    TempData["success"] = "Xoá bác sĩ thành công";
+            }
+            else
+            {
+                TempData["error"] = "Bác sĩ đang phụ trách cho một số bệnh nhân, không thể xoá"; 
+            }
 			return RedirectToAction("Index");
 		}
 		public IActionResult Detail(int DoctorId)

@@ -1,11 +1,11 @@
-﻿@model Doctor  
-@{  
+﻿@{  
    Layout = "~/Views/Shared/_CustomedLayout.cshtml";  
    var dayOfWeek = DateTime.Now.DayOfWeek.ToString();  
+   var currentDate = DateTime.Now.ToString("dd/MM/yyyy");
 }  
 <link rel="stylesheet" href="~/css/Doctor/Dash.css"/>
 <div class="row d-flex">  
-   <h2 class="text-primary col ">Bảng điều khiển - @dayOfWeek - @DateTime.Now.Date.ToString()</h2>  
+   <h2 class="text-primary col ">Bảng điều khiển - @dayOfWeek - @currentDate</h2>  
 </div>
 <div class="p-4">
     <h3 class="text-primary">Lịch làm việc hôm nay</h3>
@@ -28,9 +28,12 @@
                 </td>
                 <td>
                     <ul class="list-unstyled">
-                        @foreach(var pt in ViewBag.CaTruc1.Patients)
+                        @if (ViewBag.CaTruc1 != null)
                         {
-                            <li>@pt.Name</li>
+                            foreach(var pt in ViewBag.CaTruc1.Patients)
+                            {
+                                <li>@pt.Name</li>
+                            }
                         }
                     </ul>
                 </td>
@@ -40,14 +43,17 @@
                 <td>
                     @if (ViewBag.CaTruc2 != null)
                     {
-                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc1.RoomId">@ViewBag.CaTruc2.Name </a>
+                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc2.RoomId">@ViewBag.CaTruc2.Name </a>
                     }
                 </td>
                 <td>
                     <ul class="list-unstyled">
-                        @foreach (var pt in ViewBag.CaTruc2.Patients)
+                        @if (ViewBag.CaTruc2 != null)
                         {
-                            <li>@pt.Name</li>
+                            foreach (var pt in ViewBag.CaTruc2.Patients)
+                            {
+                                <li>@pt.Name</li>
+                            }
                         }
                     </ul>
                 </td>
@@ -57,14 +63,17 @@
                 <td>
                     @if (ViewBag.CaTruc3 != null)
                     {
-                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc1.RoomId">@ViewBag.CaTruc3.Name </a>
+                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc3.RoomId">@ViewBag.CaTruc3.Name </a>
                     }
                 </td>
                 <td>
                     <ul class="list-unstyled">
-                        @foreach (var pt in ViewBag.CaTruc3.Patients)
+                        @if (ViewBag.CaTruc3 != null)
                         {
-                            <li>@pt.Name</li>
+                            foreach (var pt in ViewBag.CaTruc3.Patients)
+                            {
+                                <li>@pt.Name</li>
+                            }
                         }
                     </ul>
                 </td>

@@ -38,7 +38,7 @@
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="Doctor" asp-action="Index" class="btn text-white">Quay lại</a></div>
 		<div class="col-auto text-primary">
-			<a class="btn btn-primary" asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@Model.DoctorId">Xóa</a>
+			<a class="btn btn-primary" asp-controller="Doctor" asp-action="Delete" asp-route-DoctorId="@Model.DoctorId" onclick="return confirm('Bạn có chắc chắn muốn xoá bác sĩ này không? Các thông tin liên quan và tài khoản sẽ bị xoá.');">Xóa</a>
 		</div>
 	</div>
 </div>
