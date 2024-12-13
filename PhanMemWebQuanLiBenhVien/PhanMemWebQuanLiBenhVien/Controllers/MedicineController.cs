@@ -155,7 +155,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
 
             var idList = ids.Split(',').Select(int.Parse).ToList();
-            var medicines = idList.Select(id => _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id)).ToList();
+            var medicines = new List<Medicine>(); 
+            foreach(var id in idList)
+            {
+                var temp = _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id); 
+                if(temp == null)
+                {
+                    TempData["error"] = "ID thuốc đã nhập không hợp lệ";
+                    return RedirectToAction("Index");
+                }
+                medicines.Add(temp); 
+            }
+            
 
             if (medicines == null || !medicines.Any() || medicines[0] == null)
             {
