@@ -17,10 +17,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-    .container:hover {
-        transform: translateY(-5px); 
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); 
-    }
+
 
 
 h2 {
