@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Medicine>  
+
+<h2>Medicine List</h2>  
+<form method="post" action="SubmitQuantities">
+    <table class="table table-striped">  
+       <thead class="thead-dark">  
+           <tr>  
+               <th>Name</th>  
+               <th>Quantity</th>  
+               <th>Price</th>  
+               <th>Total Price</th>  
+               <th>Enter Quantity</th>
+           </tr>  
+       </thead>  
+       <tbody>  
+           @foreach (var medicine in Model)  
+           {  
+               <tr>  
+                   <td>@medicine.Name</td>  
+                   <td>@medicine.Quantity</td>  
+                   <td>@medicine.Price</td>  
+                   <td>@(medicine.Quantity * medicine.Price)</td>  
+                   <td><input type="number" class="form-control" name="quantities[@medicine.MedicineId]" min="0" /></td>
+               </tr>  
+           }  
+       </tbody>  
+    </table>  
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
