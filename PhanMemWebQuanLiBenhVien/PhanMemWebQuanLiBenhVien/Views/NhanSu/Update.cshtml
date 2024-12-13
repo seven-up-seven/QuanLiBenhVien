@@ -11,9 +11,16 @@
     <select asp-for="NhanSuGender" asp-items="ViewBag.Genders">
         <option value="">--Chọn giới tính nhân sự</option>
     </select>
-    <select asp-for="Role" asp-items="@ViewBag.Roles">
-        <option value="">Chọn vai trò cho nhân sự</option>
-    </select>
+    @if (Model.HasAccount==false)
+    {
+        <select asp-for="Role" asp-items="@ViewBag.Roles">
+            <option value="">Chọn vai trò cho nhân sự</option>
+        </select>
+    }
+    else
+    {
+        <input asp-for="Role" hidden />
+    }
     <input type="file" name="ImgUrl" />
     <button type="submit" class="btn btn-primary">Sửa</button>
 </form>

@@ -275,5 +275,21 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 return View(nhansu);
             }
         }
+        public IActionResult Delete(int NhanSuId)
+        {
+            var nhansu = _uniUnitOfWork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+            if (nhansu.HasAccount==true)
+            {
+                TempData["error"] = "Nhân sự đang có tài khoản, không thể xóa";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                _uniUnitOfWork.NhanSuRepository.Remove(nhansu);
+                _uniUnitOfWork.Save();
+                TempData["success"] = "Xóa nhân sự thành công!";
+                return RedirectToAction("Index");
+            }
+        }
     }
 }
