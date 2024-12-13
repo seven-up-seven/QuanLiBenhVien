@@ -1,0 +1,105 @@
+﻿body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h2.text-primary {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #004a99;
+    text-align: left;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h4.p-5.fw-bold {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+    background-color: #f8d7da;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .table th {
+        background-color: #004a99;
+        color: #fff;
+        text-align: center;
+        padding: 15px;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+    }
+
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 1rem;
+        color: #333;
+    }
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #f7f9fc;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #eef3f8;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #e2ebf6;
+    transition: background-color 0.3s ease;
+}
+
+a.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+    a.btn.btn-primary {
+        background: linear-gradient(90deg, #0056b3, #007bff);
+    }
+
+        a.btn.btn-primary:hover {
+            background: linear-gradient(90deg, #004080, #0056b3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+@media (max-width: 768px) {
+    h2.text-primary {
+        font-size: 1.5rem;
+    }
+
+    .table th, .table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    a.btn {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}

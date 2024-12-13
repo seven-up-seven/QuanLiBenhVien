@@ -146,17 +146,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             ViewBag.doctorlistca1 = ca1doctorlist.Select(u => new SelectListItem
             {
-                Text = u.DoctorName + " " + u.DoctorId,
+                Text = u.DoctorName + " Id: " + u.DoctorId,
                 Value = u.DoctorId.ToString()
             });
             ViewBag.doctorlistca2 = ca2doctorlist.Select(u => new SelectListItem
             {
-                Text = u.DoctorName + " " + u.DoctorId,
+                Text = u.DoctorName + " Id: " + u.DoctorId,
                 Value = u.DoctorId.ToString()
             });
             ViewBag.doctorlistca3 = ca3doctorlist.Select(u => new SelectListItem
             {
-                Text = u.DoctorName + " " + u.DoctorId,
+                Text = u.DoctorName + " Id: " + u.DoctorId,
                 Value = u.DoctorId.ToString()
             });
             return View();
@@ -214,17 +214,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			}
 			ViewBag.doctorlistca1 = ca1doctorlist.Select(u => new SelectListItem
             {
-                Text = u.DoctorName + " " + u.DoctorId,
+                Text = u.DoctorName + " Id: " + u.DoctorId,
                 Value = u.DoctorId.ToString()
             });
             ViewBag.doctorlistca2 = ca2doctorlist.Select(u => new SelectListItem
             {
-                Text = u.DoctorName + " " + u.DoctorId,
+                Text = u.DoctorName + " Id: " + u.DoctorId,
                 Value = u.DoctorId.ToString()
             });
             ViewBag.doctorlistca3 = ca3doctorlist.Select(u => new SelectListItem
             {
-                Text = u.DoctorName + " " + u.DoctorId,
+                Text = u.DoctorName + " Id: " + u.DoctorId,
                 Value = u.DoctorId.ToString()
             });
             return View();
@@ -298,17 +298,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			}
 			ViewBag.doctorlistca1 = ca1doctorlist.Select(u => new SelectListItem
 			{
-				Text = u.DoctorName + " " + u.DoctorId,
+				Text = u.DoctorName + " Id: " + u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
 			ViewBag.doctorlistca2 = ca2doctorlist.Select(u => new SelectListItem
 			{
-				Text = u.DoctorName + " " + u.DoctorId,
+				Text = u.DoctorName + " Id: " + u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
 			ViewBag.doctorlistca3 = ca3doctorlist.Select(u => new SelectListItem
 			{
-				Text = u.DoctorName + " " + u.DoctorId,
+				Text = u.DoctorName + " Id: " + u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
 			return View(updateworkschedule);
@@ -389,17 +389,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			}
 			ViewBag.doctorlistca1 = ca1doctorlist.Select(u => new SelectListItem
 			{
-				Text = u.DoctorName + " " + u.DoctorId,
+				Text = u.DoctorName + " Id: " + u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
 			ViewBag.doctorlistca2 = ca2doctorlist.Select(u => new SelectListItem
 			{
-				Text = u.DoctorName + " " + u.DoctorId,
+				Text = u.DoctorName + " Id: " + u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
 			ViewBag.doctorlistca3 = ca3doctorlist.Select(u => new SelectListItem
 			{
-				Text = u.DoctorName + " " + u.DoctorId,
+				Text = u.DoctorName + " Id: " + u.DoctorId,
 				Value = u.DoctorId.ToString()
 			});
 
@@ -410,6 +410,9 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (workSchedule.DoctorId1 == 0) workSchedule.DoctorId1 = null;
+                if (workSchedule.DoctorId2 == 0) workSchedule.DoctorId2 = null;
+                if (workSchedule.DoctorId3 == 0) workSchedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Update(workSchedule);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
