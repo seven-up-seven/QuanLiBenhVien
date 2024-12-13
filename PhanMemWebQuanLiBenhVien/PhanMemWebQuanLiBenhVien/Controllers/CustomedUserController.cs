@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
@@ -233,6 +234,122 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 await _usermanager.DeleteAsync(user);
             }
             return RedirectToAction("AssignNurseAccount", new { NurseId = NurseId });
+        }
+        public IActionResult NhanSuIndex()
+        {
+            var nhansulist = _unitofwork.NhanSuRepository.GetAll();
+            ViewBag.TrangThaiTaiKhoan = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Chưa có tài khoản",
+                        Value = "NoAccount"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đã có tài khoản",
+                        Value = "HasAccount"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(nhansulist);
+        }
+        [HttpPost]
+        public IActionResult NhanSuIndex(string SearchName, string TrangThaiTaiKhoan)
+        {
+            var nhansulist = _unitofwork.NhanSuRepository.GetAll();
+            if (!string.IsNullOrEmpty(SearchName)) nhansulist = nhansulist.Where(u => u.NhanSuName.ToLower().Contains(SearchName.ToLower()));
+            if (TrangThaiTaiKhoan != "NoFilter")
+            {
+                if (TrangThaiTaiKhoan == "NoAccount") nhansulist = nhansulist.Where(u => u.HasAccount == false);
+                else if (TrangThaiTaiKhoan == "HasAccount") nhansulist = nhansulist.Where(u => u.HasAccount == true);
+            }
+            ViewBag.TrangThaiTaiKhoan = new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Chưa có tài khoản",
+                        Value = "NoAccount"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Đã có tài khoản",
+                        Value = "HasAccount"
+                    }
+                },
+                "Value",
+                "Text"
+            );
+            return View(nhansulist);
+        }
+        public async Task<IActionResult> AssignNhanSuAccount(int NhanSuId)
+        {
+            var nhansu = _unitofwork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+            if (string.IsNullOrEmpty(nhansu.Role))
+            {
+                TempData["error"] = "Nhân sự phải có vai trò mới được cấp tài khoản!";
+                return RedirectToAction("NhanSuIndex");
+            }
+            ViewBag.nhansu = _unitofwork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignNhanSuAccount(int NhanSuId, AccountModel account, string Role)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.nhansu = _unitofwork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+                return View();
+            }
+            else
+            {
+                var true_user = new CustomedUser();
+                true_user.UserId = NhanSuId;
+                true_user.UserName = account.UserName;
+                if (Role == "QuanLiVatTu") true_user.UserRole = ERole.quanlivattu;
+                else if (Role == "QuanLiBenhNhan") true_user.UserRole = ERole.quanlibenhnhan;
+                else if (Role == "QuanLiNhanSu") true_user.UserRole = ERole.quanlinhansu;
+                var result = _usermanager.CreateAsync(true_user, account.Password).GetAwaiter().GetResult();
+                if (!result.Succeeded)
+                {
+                    TempData["error"] = "Tên đăng nhập đã tồn tại!";
+                    ViewBag.nhansu = _unitofwork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+                    return View();
+                }
+                if (true_user.UserRole == ERole.quanlinhansu) _usermanager.AddToRoleAsync(true_user, "QuanLiNhanSu").GetAwaiter().GetResult();
+                if (true_user.UserRole == ERole.quanlibenhnhan) _usermanager.AddToRoleAsync(true_user, "QuanLiBenhNhan").GetAwaiter().GetResult();
+                if (true_user.UserRole == ERole.quanlivattu) _usermanager.AddToRoleAsync(true_user, "QuanLiVatTu").GetAwaiter().GetResult();
+                var nhansu = _unitofwork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+                nhansu.HasAccount = true;
+                nhansu.UserName = account.UserName;
+                _unitofwork.NhanSuRepository.Update(nhansu);
+                _unitofwork.Save();
+                return RedirectToAction("NhanSuIndex");
+            }
+        }
+        public async Task<IActionResult> DeleteNhanSuAccount(int NhanSuId)
+        {
+            var nhansu = _unitofwork.NhanSuRepository.Get(u => u.NhanSuId == NhanSuId);
+            if (nhansu != null)
+            {
+                nhansu.HasAccount = false;
+                _unitofwork.NhanSuRepository.Update(nhansu);
+                _unitofwork.Save();
+            }
+            ERole tmp=new ERole();
+            if (nhansu.Role == "QuanLiNhanSu") tmp = ERole.quanlinhansu;
+            else if (nhansu.Role == "QuanLiVatTu") tmp = ERole.quanlivattu;
+            else if (nhansu.Role == "QuanLiBenhNhan") tmp = ERole.quanlibenhnhan;
+            var user = _db.customedUsers.FirstOrDefault(u => u.UserId == NhanSuId && u.UserRole == tmp);
+            if (user != null)
+            {
+                await _usermanager.DeleteAsync(user);
+            }
+            return RedirectToAction("AssignNhanSuAccount", new { NhanSuId = NhanSuId });
         }
     }
 }

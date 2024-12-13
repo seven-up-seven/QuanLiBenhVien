@@ -89,6 +89,11 @@
                                         <span class="bi bi-capsule"></span> Thuốc
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-controller="NhanSu" asp-action="Index">
+                                    <i class="bi bi-person-fill-gear"></i> Nhân Sự Khác
+                                    </a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-white" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="bi bi-people"></span> Danh sách Account
@@ -96,8 +101,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                                         <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
                                         <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
-                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="ModeratorIndex">Moderator</a></li>
-                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="AdminIndex">Admin</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="NhanSuIndex">Nhân sự khác</a></li>
                                     </ul>
                                 </li>
                             }

@@ -98,6 +98,12 @@ namespace PhanMemWebQuanLiBenhVien.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole("Nurse")).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole("Moderator")).GetAwaiter().GetResult();
             }
+            if (!_roleManager.RoleExistsAsync("QuanLiNhanSu").GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole("QuanLiNhanSu")).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole("QuanLiVatTu")).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole("QuanLiBenhNhan")).GetAwaiter().GetResult();
+            }
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);

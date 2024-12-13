@@ -18,7 +18,9 @@ namespace PhanMemWebQuanLiBenhVien.Ultilities
             admin,
             doctor,
             nurse,
-            moderator
+            quanlibenhnhan,
+            quanlinhansu,
+            quanlivattu
         }
         public enum EViTriLamViec
         {
