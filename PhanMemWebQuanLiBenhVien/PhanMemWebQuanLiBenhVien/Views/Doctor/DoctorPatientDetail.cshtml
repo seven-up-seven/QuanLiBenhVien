@@ -4,13 +4,13 @@
 @{
     ViewData["Title"] = "Chi Tiết Bệnh Nhân";
 }
-<link rel="stylesheet" href="~/css/Doctor/Doctorpatientdetail.css"/>
-<div>
-    <div class="row mt-5">
+<link rel="stylesheet" href="~/css/Patient/Detail.css" />
+<div class="container mt-5">
+    <div class="row mt-5 d-flex justify-content-between">
         <h2 class="col col-auto">Chi tiết bệnh nhân</h2>
-        <a class="btn btn-primary col col-auto" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@Model.PatientId"><i class="bi bi-pencil-square"></i> Sửa thông tin</a>
+        <a class="btn btn-primary col col-auto h-75" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@Model.PatientId"><i class="bi bi-pencil-square"></i> Sửa thông tin</a>
     </div>
-    <div class="mt-5">
+    <div class="info-section mt-5">
         <p><strong>ID:</strong> @Model.PatientId</p>
         <p><strong>Tên bệnh nhân:</strong> @Model.Name</p>
         <p><strong>CCCD:</strong> @Model.CCCD</p>

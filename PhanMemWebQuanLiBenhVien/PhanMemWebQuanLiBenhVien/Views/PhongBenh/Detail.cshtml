@@ -3,9 +3,10 @@
 	ViewData["Title"] = "Chi Tiết Phòng Bệnh";
 }
 <link rel="stylesheet" href="~/css/PhongBenh/Detail.css"/>
+<link rel="stylesheet" href="~/css/Patient/Detail.css" />
 <div>
 	<h2 class="my-5">Chi Tiết Phòng Bệnh</h2>
-	<div class="mt-5">
+	<div class="mt-5 info-section">
 		<p>ID: @Model.RoomId</p>
 		<p>Tên phòng: @Model.Name</p>
 		<p>Số giường: @Model.NumberOfBeds</p>
@@ -20,13 +21,16 @@
 			</tr>
 			</thead>
 			<tbody>
-				@{
-					if (Model.Patients != null)
+				@if (Model.Patients != null)
+				{
+					foreach (var patient in Model.Patients)
 					{
-						foreach (var patient in Model.Patients)
-						{
-						<td><a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="text-decoration-none">@patient.Name</a></td>
-						}
+					<td>
+						<div class="row d-flex justify-content-between">
+							<p class="fw-bold col col-auto">@patient.Name</p> 
+							<a href="@Url.Action("Detail", "Patient", new {PatientId = patient.PatientId})" class="col col-auto text-decoration-none btn">Truy cập thông tin</a>
+						</div>
+					</td>
 					}
 				}
 			</tbody>

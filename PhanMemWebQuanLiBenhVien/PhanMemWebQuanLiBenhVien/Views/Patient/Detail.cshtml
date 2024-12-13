@@ -32,6 +32,7 @@
                         <th>Tên Bệnh Nhân</th>
                         <th>Giới Tính</th>
                         <th>Địa Chỉ</th>
+                        <th>Trạng thái bệnh án</th>
                         <th>Tiền Sử Bệnh Án</th>
                         <th>Hành Động</th>
                     </tr>
@@ -44,6 +45,14 @@
                             <td>@record.PatientName</td>
                             <td>@record.PatientGender</td>
                             <td>@record.Address</td>
+                            @if (record.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                            {
+                                <td><span class="badge bg-danger">Đang chữa trị</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge bg-success">Kết thúc chữa trị</span></td>
+                            }
                             <td>@record.TienSuBenhAn</td>
                             <td>
                                 <a class="btn btn-sm btn-primary"
