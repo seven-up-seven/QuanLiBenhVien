@@ -50,7 +50,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			{
 				_unitOfWork.ProfessionRepository.Add(profession);
 				_unitOfWork.Save();
-				return RedirectToAction("Index");
+                TempData["success"] = "Thêm chuyên khoa thành công!";
+                return RedirectToAction("Index");
 			}
 
 			return View();
@@ -88,24 +89,37 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			{
 				_unitOfWork.ProfessionRepository.Update(profession);
 				_unitOfWork.Save();
-				return RedirectToAction("Index");
+                TempData["success"] = "Cập nhật chuyên khoa thành công!";
+                return RedirectToAction("Index");
 			}
 			return View();
 		}
 
 		[HttpPost("Delete/{ProfessionId}")]
-		public IActionResult Delete(int ProfessionId)
-		{
-			var profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == ProfessionId);
-			if (profession != null)
-			{
-				_unitOfWork.ProfessionRepository.Remove(profession);
-				_unitOfWork.Save();
-				return RedirectToAction("Index");
-			}
-			return View();
-		}
-		[HttpGet("ThemTruongKhoa")]
+        public IActionResult Delete(int ProfessionId)
+        {
+            try
+            {
+                var profession = _unitOfWork.ProfessionRepository.Get(pf => pf.ProfessionId == ProfessionId);
+                if (profession != null)
+                {
+                    _unitOfWork.ProfessionRepository.Remove(profession);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Chuyên khoa đã được xóa thành công!";
+                }
+                else
+                {
+                    TempData["error"] = "Chuyên khoa không tồn tại!";
+                }
+            }
+            catch 
+            {
+                TempData["error"] = "Không được xóa chuyên khoa này!";
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("ThemTruongKhoa")]
 		public IActionResult ThemTruongKhoa(int ProfessionId)
 		{
 			var doctorlist = _unitOfWork.DoctorRepository.GetAll(u => u.ProfessionId == ProfessionId);

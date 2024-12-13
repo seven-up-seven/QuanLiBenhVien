@@ -132,14 +132,26 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost("Delete/{PhongCapCuuId}")]
         public IActionResult Delete(int PhongCapCuuId)
         {
-            var phongCapCuu = _unitOfWork.PhongCapCuuRepository.Get(pk => pk.RoomId == PhongCapCuuId);
-            if (phongCapCuu != null)
+            try
             {
-                _unitOfWork.PhongCapCuuRepository.Remove(phongCapCuu);
-                _unitOfWork.Save();
-                return RedirectToAction("Index");
+                var phongCapCuu = _unitOfWork.PhongCapCuuRepository.Get(pk => pk.RoomId == PhongCapCuuId);
+                if (phongCapCuu != null)
+                {
+                        _unitOfWork.PhongCapCuuRepository.Remove(phongCapCuu);
+                        _unitOfWork.Save();
+                    TempData["success"] = "Xóa phòng cấp cứu thành công!";
+                }
+           
+                else
+                {
+                   TempData["error"] = "Không tìm thấy phòng cấp cứu!";
+                }
             }
-            return View();
+            catch
+            {
+                TempData["error"] = "Không được xóa phòng cấp cứu này!";
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult ChangeAvailability(int PhongCapCuuId)
