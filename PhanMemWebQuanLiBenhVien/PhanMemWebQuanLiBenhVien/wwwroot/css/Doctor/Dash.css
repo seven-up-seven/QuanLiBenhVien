@@ -48,7 +48,7 @@ h6 {
     }
 
     .table th {
-        background-color: #004a99;
+        background-color: #004a99 !important;
         color: white;
         font-weight: bold;
         text-transform: uppercase;

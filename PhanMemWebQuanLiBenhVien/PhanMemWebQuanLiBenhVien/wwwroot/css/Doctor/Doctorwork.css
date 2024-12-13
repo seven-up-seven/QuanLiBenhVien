@@ -80,11 +80,6 @@ h4 {
         transform: scale(1.05);
     }
 
-thead.thead-dark th {
-    background-color: #343a40;
-    color: white;
-}
-
 .text-muted {
     font-size: 1rem;
     color: #6c757d;
