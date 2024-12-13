@@ -45,7 +45,7 @@
                     <td>
                         <a class="btn btn-primary" asp-controller="PhongCapCuu" asp-action="Update" asp-route-id="@phong.RoomId"><i class="bi bi-pencil-square"></i> Sửa</a>
                         <a class="btn text-white" asp-controller="PhongCapCuu" asp-action="ChangeAvailability" asp-route-PhongCapCuuId="@phong.RoomId"><i class="bi bi-arrow-repeat"></i> Chuyển trạng thái</a>
-                        <form method="post" asp-controller="PhongCapCuu" asp-action="Delete" asp-route-id="@phong.RoomId" class="col-auto">
+                        <form method="post" asp-controller="PhongCapCuu" asp-action="Delete" asp-route-id="@phong.RoomId" class="col-auto" onsubmit="return confirm('Bạn có chắc chắn muốn xoá phòng cấp cứu? Xoá phòng cấp cứu sẽ dẫn đến mất các lịch phòng liên quan.');">
                             <button class="btn btn-danger" type="submit">Xoá</button>
                         </form>
                     </td>
