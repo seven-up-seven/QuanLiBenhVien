@@ -20,7 +20,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
         {
             if (_patient != null)
             {
-                var listpatient = _unitofwork.PatientRepository.GetAll();
+                var listpatient = _unitofwork.PatientRepository.GetAll(u=>u.PatientId!=_patient.PatientId);
                 var listdoctor = _unitofwork.DoctorRepository.GetAll();
                 var listnurse = _unitofwork.NurseRepository.GetAll();
                 foreach (var obj in listdoctor)
@@ -50,7 +50,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
             {
                 var listpatient = _unitofwork.PatientRepository.GetAll();
                 var listnurse = _unitofwork.NurseRepository.GetAll();
-                var listdoctor = _unitofwork.DoctorRepository.GetAll();
+                var listdoctor = _unitofwork.DoctorRepository.GetAll(u=>u.DoctorId!=_doctor.DoctorId);
                 foreach (var obj in listpatient)
                 {
                     if (obj != null)
@@ -78,7 +78,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
             {
                 var listpatient = _unitofwork.PatientRepository.GetAll();
                 var listdoctor = _unitofwork.DoctorRepository.GetAll();
-                var listnurse = _unitofwork.NurseRepository.GetAll();
+                var listnurse = _unitofwork.NurseRepository.GetAll(u=>u.NurseId!=_nurse.NurseId);
                 foreach (var obj in listpatient)
                 {
                     if (obj != null)
