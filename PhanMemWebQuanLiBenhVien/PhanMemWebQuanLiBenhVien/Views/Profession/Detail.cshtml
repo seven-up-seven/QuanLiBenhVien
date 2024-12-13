@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ﻿@model PhanMemWebQuanLiBenhVien.Models.Profession
 @{
 	ViewData["Title"] = "Chi Tiết Chuyên Khoa";
@@ -22,24 +23,88 @@
         @{
 			<h4> Danh sách bác sĩ</h4>
             if(Model.DoctorList != null && Model.DoctorList.Count() > 0)
+=======
+﻿ @model PhanMemWebQuanLiBenhVien.Models.Profession 
+ @{ 
+	ViewData["Title"] = "Chi Tiết Chuyên Khoa"; 
+ } 
+@* <link rel="stylesheet" href="~/css/Profession/Detail.css" /> *@
+@* <div> *@
+@* 	<h2 class="my-5">Chi tiết</h2> *@
+@* 	<div class="mt-5"> *@
+@* 		<p>ID: @Model.ProfessionId</p> *@
+@* 		<p>Tên chuyên khoa: @Model.ProfessionName</p> *@
+@* 		@if (Model.TruongKhoaId!=null) *@
+@* 		{ *@
+@* 			<p>Trưởng khoa: @Model.TruongKhoaName</p> *@
+@* 		} *@
+@* 		else *@
+@* 		{ *@
+@* 			<p>Trưởng khoa: Không có</p> *@
+@* 		} *@
+@* 		<p>Mô tả: @Model.Description</p> *@
+@* 	</div> *@
+@* 	<div> *@
+@*         @{ *@
+@* 			<h4> Danh sách bác sĩ</h4> *@
+@*             if(Model.DoctorList != null && Model.DoctorList.Count() > 0) *@
+@*             { *@
+@*                 foreach(var doctor in Model.DoctorList) *@
+@*                 { *@
+@* 					<p>@doctor.DoctorName</p> *@
+@* 				} *@
+@* 			} *@
+@* 			else *@
+@* 			{ *@
+@* 				<p>Trống.</p> *@
+@* 			} *@
+@*         } *@
+@* 	</div> *@
+@* 	<div class="row d-flex"> *@
+@* 		<a asp-controller="Profession" asp-action="Index" class="btn text-white col col-auto">Quay lại</a> *@
+@* 		<div class="col-auto text-primary"> *@
+@* 			<form method="post" asp-controller="Profession" asp-action="Delete" asp-route-ProfessionId="@Model.ProfessionId"> *@
+@* 				<button class="btn text-white" type="submit">Xoá</button> *@
+@* 			</form> *@
+@* 		</div> *@
+@* 	</div> *@
+@* </div> *@
+<link rel="stylesheet" href="~/css/Profession/Detail.css"/>
+<div class="container mt-5">
+    <h2 class="text-center">Chi tiết chuyên khoa</h2>
+
+    <div class="profession-info">
+        <p><strong>ID:</strong> @Model.ProfessionId</p>
+        <p><strong>Tên chuyên khoa:</strong> @Model.ProfessionName</p>
+        <p>
+            <strong>Trưởng khoa:</strong>
+            @(Model.TruongKhoaId != null ? Model.TruongKhoaName : "Không có")
+        </p>
+        <p><strong>Mô tả:</strong> @Model.Description</p>
+    </div>
+
+    <div class="my-4">
+        <h4>Danh sách bác sĩ</h4>
+        <div class="doctor-list">
+            @if (Model.DoctorList != null && Model.DoctorList.Count() > 0)
+>>>>>>> Stashed changes
             {
-                foreach(var doctor in Model.DoctorList)
+                @foreach (var doctor in Model.DoctorList)
                 {
-					<p>@doctor.DoctorName</p>
-				}
-			}
-			else
-			{
-				<p>Trống.</p>
-			}
-        }
-	</div>
-	<div class="row d-flex">
-		<a asp-controller="Profession" asp-action="Index" class="btn text-white col col-auto">Quay lại</a>
-		<div class="col-auto text-primary">
-			<form method="post" asp-controller="Profession" asp-action="Delete" asp-route-ProfessionId="@Model.ProfessionId">
-				<button class="btn text-white" type="submit">Xoá</button>
-			</form>
-		</div>
-	</div>
+                    <p>@doctor.DoctorName</p>
+                }
+            }
+            else
+            {
+                <p>Trống.</p>
+            }
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-start mt-4">
+        <a asp-controller="Profession" asp-action="Index" class="btn text-white col-auto">Quay lại</a>
+        <form method="post" asp-controller="Profession" asp-action="Delete" asp-route-ProfessionId="@Model.ProfessionId" class="col-auto">
+            <button class="btn text-white" type="submit">Xoá</button>
+        </form>
+    </div>
 </div>
