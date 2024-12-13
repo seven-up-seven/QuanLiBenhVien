@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 
@@ -11,9 +12,11 @@ using PhanMemWebQuanLiBenhVien.DataAccess;
 namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241213133908_P")]
+    partial class P
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -484,29 +487,18 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NhanSuId"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("HasAccount")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ImgUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NhanSuAge")
+                    b.Property<int?>("NhanSuAge")
                         .HasColumnType("int");
 
-                    b.Property<int>("NhanSuGender")
+                    b.Property<int?>("NhanSuGender")
                         .HasColumnType("int");
 
                     b.Property<string>("NhanSuName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("NhanSuId");

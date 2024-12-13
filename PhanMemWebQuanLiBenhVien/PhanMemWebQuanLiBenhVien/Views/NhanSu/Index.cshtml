@@ -1,0 +1,68 @@
+﻿@model IEnumerable<NhanSu>
+
+<a asp-action="Create" class="btn btn-primary">Tạo nhân sự mới</a>
+<form method="post" class="mb-3 d-flex justify-content-end">
+    <input name="SearchName" placeholder="Tìm kiếm theo tên" class="rounded-1" />
+    <input name="SearchID" placeholder="Tìm kiếm theo ID" class="rounded-1" />
+    <select name="SearchVaiTro" asp-items="@ViewBag.VaiTro" class="rounded-1">
+        <option value="@null">Lọc theo vai trò</option>
+    </select>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+</form>
+@if (Model.Count()==0)
+{
+    <p>Không có</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên nhân sự</th>
+                <th>Tuổi</th>
+                <th>Giới tính</th>
+                <th>Địa chỉ</th>
+                <th>Ảnh</th>
+                <th>Vai trò</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var nhansu in Model)
+            {
+                <tr>
+                    <td>@nhansu.NhanSuId</td>
+                    <td>@nhansu.NhanSuName</td>
+                    <td>@nhansu.NhanSuAge</td>
+                    <td>@nhansu.NhanSuGender.ToString()</td>
+                    <td>@nhansu.Address</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(nhansu.ImgUrl))
+                        {
+                            <img src="@nhansu.ImgUrl" style="width: 75px; height: 75px"/>
+                        }
+                        else
+                        {
+                           
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(nhansu.Role))
+                        {
+                            <p>@nhansu.Role</p>
+                        }
+                        else
+                        {
+                            <p>Không có</p>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Update" asp-route-NhanSuId="@nhansu.NhanSuId" class="btn btn-primary">Sửa</a>
+                        <a asp-action="Delete" asp-route-NhanSuId="@nhansu.NhanSuId" class="btn btn-primary">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

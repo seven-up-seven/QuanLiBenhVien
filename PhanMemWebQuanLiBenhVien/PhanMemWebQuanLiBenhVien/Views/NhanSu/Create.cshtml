@@ -1,0 +1,19 @@
+﻿@model NhanSu
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="UserName" value="" hidden />
+    <input asp-for="HasAccount" hidden />
+    <span asp-validation-for="NhanSuName"></span>
+    <input asp-for="NhanSuName" placeholder="Nhập tên nhân sự"/>
+    <span asp-validation-for="NhanSuAge"></span>
+    <input asp-for="NhanSuAge" placeholder="Nhập tuổi nhân sự"/>
+    <span asp-validation-for="Address"></span>
+    <input asp-for="Address" placeholder="Nhập địa chỉ nhân sự" />
+    <select asp-for="NhanSuGender" asp-items="ViewBag.Genders">
+        <option value="">--Chọn giới tính nhân sự</option>
+    </select>
+    <select asp-for="Role" asp-items="@ViewBag.Roles">
+        <option value="">Chọn vai trò cho nhân sự</option>
+    </select>
+    <input type="file" name="ImgUrl"/>
+    <button type="submit" class="btn btn-primary">Tạo</button>
+</form>
