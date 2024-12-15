@@ -36,21 +36,50 @@
                         }
                     </td>
                     <td>
-                        @if (nhansu.HasAccount)
+                        @if (User.IsInRole("QuanLiNhanSu"))
                         {
-                            <a asp-controller="CustomedUser" asp-action="DeleteNhanSuAccount"
-                               class="btn btn-danger btn-sm"
-                               asp-route-NhanSuId="@nhansu.NhanSuId">
-                                Xóa tài khoản
-                            </a>
+                            if (nhansu.UserName==User.Identity.Name)
+                            {
+                                <p>Tài khoản của bạn</p>
+                            }
+                            else
+                            {
+                                @if (nhansu.HasAccount)
+                                {
+                                    <a asp-controller="CustomedUser" asp-action="DeleteNhanSuAccount"
+                                       class="btn btn-danger btn-sm"
+                                       asp-route-NhanSuId="@nhansu.NhanSuId">
+                                        Xóa tài khoản
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="CustomedUser" asp-action="AssignNhanSuAccount"
+                                       class="btn btn-primary btn-sm"
+                                       asp-route-NhanSuId="@nhansu.NhanSuId">
+                                        Cấp tài khoản
+                                    </a>
+                                }
+                            }
                         }
                         else
                         {
-                            <a asp-controller="CustomedUser" asp-action="AssignNhanSuAccount"
-                               class="btn btn-primary btn-sm"
-                               asp-route-NhanSuId="@nhansu.NhanSuId">
-                                Cấp tài khoản
-                            </a>
+                            @if (nhansu.HasAccount)
+                            {
+                                <a asp-controller="CustomedUser" asp-action="DeleteNhanSuAccount"
+                                   class="btn btn-danger btn-sm"
+                                   asp-route-NhanSuId="@nhansu.NhanSuId">
+                                    Xóa tài khoản
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="CustomedUser" asp-action="AssignNhanSuAccount"
+                                   class="btn btn-primary btn-sm"
+                                   asp-route-NhanSuId="@nhansu.NhanSuId">
+                                    Cấp tài khoản
+                                </a>
+                            }
                         }
                     </td>
                 </tr>

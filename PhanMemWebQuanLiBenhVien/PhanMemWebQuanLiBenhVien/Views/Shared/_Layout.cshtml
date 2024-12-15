@@ -75,6 +75,16 @@
                                 <li class="nav-item"><a class="nav-link fw-bold text-white" asp-controller="WorkSchedule" asp-action="Index">Lịch</a></li>
                                 <li class="nav-item"><a class="nav-link fw-bold text-white" asp-controller="Mission" asp-action="Index">Nhiệm vụ</a></li>
                                 <li class="nav-item"><a class="nav-link fw-bold text-white" asp-controller="Profession" asp-action="Index">Chuyên khoa</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="bi bi-people"></span> Danh sách Account
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="DoctorIndex">Bác sĩ</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="NurseIndex">Y tá</a></li>
+                                        <li><a class="dropdown-item text-white" asp-controller="CustomedUser" asp-action="NhanSuIndex">Nhân sự khác</a></li>
+                                    </ul>
+                                </li>
                             }
                             @if (User.IsInRole("Admin"))
                             {
