@@ -48,7 +48,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr style="@((item.Quantity == -1 || item.ExpiryDate < DateTime.Now) ? "background-color: lightcoral" : "background-color: aquamarine")">
                     <td>
                         @Html.DisplayFor(modelItem => item.MedicineId)
                     </td>
@@ -71,9 +71,9 @@
                         @Html.DisplayFor(modelItem => item.ExpiryDate)
                     </td>
                     <td>
-                        <div class="row gap-1">
-                            <a class="col col-auto" asp-action="Edit" asp-route-id="@item.MedicineId">Edit</a>
-                            <a class="col col-auto" asp-action="Delete" asp-controller="Medicine" asp-route-id="@item.MedicineId">Delete</a>
+                        <div class="row gap-1 d-flex justify-content-center">
+                            <a class="col col-auto btn" asp-action="Edit" asp-route-id="@item.MedicineId">Edit</a>
+                            <a class="col col-auto btn" asp-action="Delete" asp-controller="Medicine" asp-route-id="@item.MedicineId">Delete</a>
                         </div>
                     </td>
                 </tr>

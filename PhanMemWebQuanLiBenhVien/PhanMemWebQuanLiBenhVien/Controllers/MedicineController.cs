@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Packaging.Signing;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
@@ -19,7 +20,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult Index()
         {
             var medicines = _unitOfWork.MedicineRepository.GetAll();
-            return View(medicines);
+            var validMedicines = medicines.Where(m => m.Quantity > -1 && m.ExpiryDate >= DateTime.Now).ToList();
+            var invalidMedicines = medicines.Where(m => m.Quantity <= -1 || m.ExpiryDate < DateTime.Now).ToList();
+            var sortedMedicines = validMedicines.Concat(invalidMedicines).ToList();
+            return View(sortedMedicines);
         }
         [HttpPost]
         public IActionResult Index(int SearchID, string SearchMedicineName)
@@ -163,6 +167,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 return RedirectToAction("Index");
             }
 
+            if (!System.Text.RegularExpressions.Regex.IsMatch(ids, @"^[0-9,]+$"))
+            {
+                TempData["error"] = "ID thuốc đã nhập không hợp lệ";
+                return RedirectToAction("Index");
+            }
+
             var idList = ids.Split(',').Select(int.Parse).ToList();
             var medicines = new List<Medicine>(); 
             foreach(var id in idList)
@@ -171,6 +181,16 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 if(temp == null)
                 {
                     TempData["error"] = "ID thuốc đã nhập không hợp lệ";
+                    return RedirectToAction("Index");
+                }
+                if(temp.Quantity <= -1)
+                {
+                    TempData["error"] = "Thuốc đã hết số lượng, vui lòng chọn thuốc khác";
+                    return RedirectToAction("Index");
+                }
+                if (temp.ExpiryDate < DateTime.Now)
+                {
+                    TempData["error"] = "Thuốc đã hết hạn, vui lòng chọn thuốc khác";
                     return RedirectToAction("Index");
                 }
                 medicines.Add(temp); 
@@ -185,13 +205,36 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
            
             return View(medicines);
         }
+
         [HttpPost]
         public IActionResult SubmitQuantities(Dictionary<int, int> quantities)
         {
             foreach (var key in quantities.Keys)
             {
                 var thuoc = _unitOfWork.MedicineRepository.Get(u => u.MedicineId == key);
-                thuoc.Quantity -= quantities[key];
+                if (thuoc.Quantity < quantities[key])
+                {
+                    string ids = string.Join(",", quantities.Keys);
+
+                    var idList = ids.Split(',').Select(int.Parse).ToList();
+                    var medicines = new List<Medicine>();
+                    foreach (var id in idList)
+                    {
+                        var temp = _unitOfWork.MedicineRepository.Get(m => m.MedicineId == id);
+                        medicines.Add(temp);
+                    }
+                    TempData["error"] = "Số lượng không hợp lệ";    
+                    return View("TrichXuatThuoc", medicines);
+
+                }
+                if (thuoc.Quantity == quantities[key])
+                {
+                    thuoc.Quantity = -1;
+                }
+                else
+                {
+                    thuoc.Quantity = thuoc.Quantity - quantities[key];
+                }
                 _unitOfWork.MedicineRepository.Update(thuoc);
             }
             _unitOfWork.Save();
