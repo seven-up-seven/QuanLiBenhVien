@@ -101,6 +101,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                 }
             }
+            foreach(var pk in listphongkham)
+            {
+                pk.Profession = _unitOfWork.ProfessionRepository.Get(p => p.ProfessionId == pk.ProfessionId); 
+            }
             ViewBag.listphongcapcuu = listphongcapcuu;
             return View(listphongkham);
         }

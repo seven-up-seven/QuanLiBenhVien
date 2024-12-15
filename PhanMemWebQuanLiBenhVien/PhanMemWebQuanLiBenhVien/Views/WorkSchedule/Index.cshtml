@@ -36,10 +36,11 @@
         <div class="row">
             @foreach (var phongKham in Model)
             {
-                <div class="col-lg-3 col-md-6 col-sm-12 mb-4 card" style="width: 250px; height: 300px; margin-left: 23px">
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4 card" style="width: 250px; height: 400px; margin-left: 23px">
                     <div class="">
                         <div class="card-body">
-                            <h5 class="card-title text-center">@phongKham.Name</h5>
+                            <p class="card-title text-center fw-bold">@phongKham.Name</p>
+                            <p class="text-center">@phongKham.Profession.ProfessionName</p>
                             <hr />
                             <div class="text-center mb-1 row">
                                 <p class="col col-auto"><strong>Sáng:</strong> 6:00 - 12:00</p>
@@ -149,10 +150,10 @@
             <h2>Danh sách phòng cấp cứu</h2>
             @foreach (var phongcapcuu in ViewBag.listphongcapcuu)
             {
-                <div class="col-lg-3 col-md-6 col-sm-12 mb-4" style="width: 250px; height: 300px; margin-left: 23px">
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4" style="width: 250px; height: 400px; margin-left: 23px">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title text-center">@phongcapcuu.Name</h5>
+                            <p class="card-title text-center">@phongcapcuu.Name</p>
                             <hr />
                             <div class="text-center mb-1 row">
                                 <p class="col col-auto"><strong>Sáng:</strong> 6:00 - 12:00</p>
