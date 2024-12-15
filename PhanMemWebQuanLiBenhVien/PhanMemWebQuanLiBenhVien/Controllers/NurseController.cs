@@ -217,6 +217,33 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         public IActionResult NurseHomePage(int NurseId)
         {
             var nurse= _unitOfWork.NurseRepository.Get(u=>u.NurseId == NurseId);
+            ViewBag.Doctors = _unitOfWork.DoctorRepository.GetAll();
+            ViewBag.Nurses = _unitOfWork.NurseRepository.GetAll();
+            var patients = _unitOfWork.PatientRepository.GetAll();
+            var patientdata = patients.Where(x => x.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri).ToList();
+            ViewBag.Patients = patientdata;
+            ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll();
+            ViewBag.Medicines = _unitOfWork.MedicineRepository.GetAll();
+            var records = _unitOfWork.MedicalRecordRepository.GetAll();
+            ViewBag.KhongTrieuChung = records.Count(r => r.TinhTrangBenhNhan == ETinhTrangBenhNhan.khongtrieuchung);
+            ViewBag.CoTrieuChung = records.Count(r => r.TinhTrangBenhNhan == ETinhTrangBenhNhan.cotrieuchung);
+            ViewBag.TroNang = records.Count(r => r.TinhTrangBenhNhan == ETinhTrangBenhNhan.tronang);
+            // Tính toán số lượng MedicalVisit theo tháng và năm
+            var visits = _unitOfWork.MedicalVisitRepository.GetAll();
+            var visitData = visits
+                .GroupBy(v => new { v.VisitDate.Year, v.VisitDate.Month })
+                .Select(g => new
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Count = g.Count()
+                })
+                .OrderBy(v => v.Year)
+                .ThenBy(v => v.Month)
+                .ToList();
+
+            // Chuyển dữ liệu sang dạng JSON để sử dụng trong JavaScript
+            ViewBag.VisitData = System.Text.Json.JsonSerializer.Serialize(visitData);
             return View(nurse);
         }
         public IActionResult NursePatients(int NurseId)
