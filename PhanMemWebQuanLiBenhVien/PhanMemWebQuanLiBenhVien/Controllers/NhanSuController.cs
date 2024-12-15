@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
@@ -223,7 +224,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (ImgUrl!=null)
+                if (ImgUrl != null)
                 {
                     wwwroot = _webHostEnvironment.WebRootPath;
                     string filename = Path.GetFileNameWithoutExtension(ImgUrl.FileName) + Path.GetExtension(ImgUrl.FileName);
@@ -236,8 +237,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 else nhansu.ImgUrl = "";
                 _uniUnitOfWork.NhanSuRepository.Update(nhansu);
-                _uniUnitOfWork.Save();   
-                return RedirectToAction("Index");
+                _uniUnitOfWork.Save();
+                if (User.IsInRole("QuanLiNhanSu") || User.IsInRole("QuanLiBenhNhan") || User.IsInRole("QuanLiVatTu"))
+                {
+                    TempData["success"] = "Cập nhật thông tin thành công!";
+                    return RedirectToPage("/Account/Manage/Index", new { Area = "Identity" });
+                }
+                else
+                {
+                    TempData["success"] = "Cập nhật thông tin thành công!";
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
@@ -272,7 +282,16 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         Value = "QuanLiBenhNhan"
                     }
                 }, "Value", "Text");
-                return View(nhansu);
+                if (User.IsInRole("QuanLiNhanSu") || User.IsInRole("QuanLiBenhNhan") || User.IsInRole("QuanLiVatTu"))
+                {
+                    TempData["error"] = "Cập nhật không thành công!";
+                    return RedirectToPage("/Account/Manage/Index", new { Area = "Identity" });
+                }
+                else
+                {
+                    TempData["error"] = "Cập nhật không thành công!";
+                    return View(nhansu);
+                }
             }
         }
         public IActionResult Delete(int NhanSuId)
