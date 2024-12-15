@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Nurse>
 <link rel="stylesheet" href="~/css/Customer/NurseIndex.css"/>
 <div class="p-3">
-    <h2 class="text-primary">Danh sách tài khoản Y Tá</h2>
+    <h2 class="text-primary">Danh sách tài khoản Y Tá: @Model.Count() tài khoản</h2>
     <form method="post" class="d-flex justify-content-end mb-3 gap-2">
         <select name="TrangThaiTaiKhoan" asp-items="@ViewBag.TrangThaiTaiKhoan" class="rounded-3">
             <option value="NoFilter">Lọc theo trạng thái tài khoản</option>

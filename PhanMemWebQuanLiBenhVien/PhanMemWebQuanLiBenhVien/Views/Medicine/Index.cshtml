@@ -5,7 +5,7 @@
 }
 <link rel="stylesheet" href="~/css/Medicine/Index.css"/>
 <div class="container mt-4">
-    <h2>@ViewData["Title"]</h2>
+    <h2>@ViewData["Title"]: @Model.Count() loại</h2>
     <a asp-action="Create" asp-controller="Medicine" class="btn btn-primary">Create New</a>
     <div class="row d-flex justify-content-between">
         <form method="post" asp-action="Index" class="col col-auto">

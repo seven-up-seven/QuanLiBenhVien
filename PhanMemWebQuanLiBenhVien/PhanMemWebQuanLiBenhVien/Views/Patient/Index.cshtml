@@ -5,9 +5,11 @@
 <link rel="stylesheet" href="~/css/Patient/Index.css" />
 <div class="container mt-4">
     <div class="row my-2">
-        <div class="col text-primary"><h2>Danh sách bệnh nhân</h2></div>
+        <div class="col text-primary"><h2>Danh sách bệnh nhân: @Model.Count() bệnh nhân</h2></div>
         <div class="col col-auto text-end text-center"><h5><a asp-action="Create" asp-controller="Patient" class="text-decoration-none text-white btn btn-primary "><i class="bi bi-person-plus-fill"></i> Thêm bệnh nhân</a></h5></div>
     </div>
+    <h4 class="fw-bold" style="color: red">Số bệnh nhân đang chữa trị: @Model.Where(u=>u.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri).Count()</h4>
+    <h4 class="fw-bold" style="color: green">Số bệnh nhân đã hoàn tất chữa trị: @Model.Where(u => u.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.ketthucchuatri).Count()</h4>
     <form method="post" class="d-flex justify-content-end gap-2">
         <select name="ProfessionId" asp-items="@ViewBag.Professions" class="rounded-3">
             <option value="0">Lọc bệnh nhân theo khoa</option>
@@ -50,11 +52,11 @@
                     <td>@patient.DateOfBirth</td>
                     @if ( @patient.TrangThaiBenhAn.ToString() == "dangchuatri")
                     {
-                        <td>Đang chữa trị</td>
+                        <td><span class="badge bg-danger">Đang chữa trị</span></td>
                     }
                     else
                     {
-                        <td>Kết thúc chữa trị</td>
+                        <td><span class="badge bg-success">Kết thúc chữa trị</span></td>
                     }
                     <td>
                         <a class="btn btn-primary" asp-controller="Patient" asp-action="Update" asp-route-PatientId="@patient.PatientId"><i class="bi bi-pencil-square"></i> Sửa</a>
