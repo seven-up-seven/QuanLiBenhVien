@@ -551,6 +551,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                                         Value = m.MedicineId.ToString(),
                                         Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
                                     }).ToList();
+            
             return View();
         }
         [HttpPost("CreateMedicalVisit/{MedicalRecordId}")]

@@ -62,27 +62,24 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(medicine);
         }
 
-        //public IActionResult Edit(int id)
-        //{
-        //    var medicine = _unitOfWork.MedicineRepository.GetById(id);
-        //    if (medicine == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(medicine);
-        //}
+        public IActionResult Edit(int id)
+        {
+            var medicine = _unitOfWork.MedicineRepository.Get(u => u.MedicineId == id); 
+            return View(medicine);
+        }
 
-        //[HttpPost]
-        //public IActionResult Edit(Medicine medicine)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.MedicineRepository.Update(medicine);
-        //        _unitOfWork.Save();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(medicine);
-        //}
+
+        [HttpPost]
+        public IActionResult Edit(Medicine medicine)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.MedicineRepository.Update(medicine);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+            return View(medicine);
+        }
 
 
         public IActionResult Delete(int id)
