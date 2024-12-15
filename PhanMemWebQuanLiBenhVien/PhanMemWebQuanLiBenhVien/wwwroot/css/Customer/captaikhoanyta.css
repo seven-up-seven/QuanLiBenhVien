@@ -1,86 +1,77 @@
 ﻿body {
-    background: linear-gradient(120deg, #f3f9fd, #e0f1fa);
+    background-color: #eef2f5;
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-.container.p-4 {
+.container {
     background-color: #ffffff;
-    border-radius: 15px;
-    padding: 30px;
+    border-radius: 20px;
+    padding: 40px;
     max-width: 600px;
-    margin: 50px auto;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;
+    margin: 60px auto;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border: none;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-h2.text-center {
-    font-size: 1.8rem;
+    
+
+h2 {
+    font-size: 2.2rem;
     font-weight: bold;
     color: #004a99;
+    text-align: center;
+    margin-bottom: 30px;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    letter-spacing: 2px;
 }
 
 .form-label {
-    font-weight: bold;
     font-size: 1rem;
-    color: #333;
+    font-weight: bold;
+    color: #004a99;
+    margin-bottom: 8px;
+    display: block;
 }
 
-.form-control {
-    padding: 10px 15px;
+p.form-control-plaintext {
+    font-size: 1.1rem;
+    color: #444;
+    padding: 10px 0;
+    margin: 0;
+    border-bottom: 2px dashed #ddd;
+}
+
+input.form-control {
+    border-radius: 10px;
+    padding: 14px;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f7f9fc;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    background-color: #f8f8f8;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-    .form-control:focus {
-        border-color: #004a99;
-        box-shadow: 0 0 8px rgba(0, 74, 153, 0.2);
+    input.form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 12px rgba(0, 86, 179, 0.3);
+        background-color: #ffffff;
         outline: none;
     }
 
-.form-control-plaintext {
-    font-size: 1rem;
-    color: #333;
-    font-weight: bold;
-}
-
 .text-danger {
     font-size: 0.9rem;
-    color: #dc3545;
+    color: #d9534f;
     margin-top: 5px;
+    display: block;
+    font-style: italic;
 }
-
-button.btn-primary {
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(90deg, #0056b3, #007bff);
-    border: none;
-    text-transform: uppercase;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-    button.btn-primary:hover {
-        background: linear-gradient(90deg, #004080, #0056b3);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        transform: translateY(-2px);
-    }
 
 .row.d-flex {
     display: flex;
-    flex-wrap: wrap;
     justify-content: flex-start;
     gap: 15px;
     margin-top: 20px;
@@ -90,20 +81,20 @@ a.btn {
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 8px;
-    font-weight: 500;
+    font-weight: bold;
     color: #fff;
     text-transform: uppercase;
     text-decoration: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     background-color: #6c757d;
-    margin: 0 !important;
 }
 
     a.btn:hover {
         background-color: #5a6268;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
 
 button.btn {
     font-size: 1rem;
@@ -117,8 +108,8 @@ button.btn {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    margin: 0;
 }
+
 
     button.btn:hover {
         background: linear-gradient(90deg, #004080, #0056b3);
@@ -127,22 +118,29 @@ button.btn {
     }
 
 @media (max-width: 768px) {
-    .container.p-4 {
-        padding: 20px;
-        margin: 30px auto;
+    .container {
+        padding: 25px;
     }
 
-    h2.text-center {
-        font-size: 1.5rem;
+    h2 {
+        font-size: 1.8rem;
     }
 
-    .form-control {
-        padding: 8px 12px;
+    .form-label {
         font-size: 0.9rem;
     }
 
-    button.btn-primary {
+    p.form-control-plaintext {
+        font-size: 1rem;
+    }
+
+    input.form-control {
         font-size: 0.9rem;
-        padding: 8px 15px;
+        padding: 12px;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 10px 20px;
     }
 }
