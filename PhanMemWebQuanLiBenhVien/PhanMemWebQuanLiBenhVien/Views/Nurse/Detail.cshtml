@@ -17,12 +17,18 @@
     <div class="my-4">
         <h4>Danh sách bệnh nhân</h4>
         <div class="patient-list">
-            @if (Model.PatientList != null && Model.PatientList.Count() > 0)
+            @if (Model.PatientList != null && Model.PatientList.Any())
             {
-                @foreach (var patient in Model.PatientList)
-                {
-                    <p><a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none">@patient.Name</a></p>
-                }
+                <ul>
+                    @foreach (var patient in Model.PatientList)
+                    {
+                        <li>
+                            <a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none">
+                                @patient.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
             }
             else
             {
@@ -39,3 +45,24 @@
     </div>
 </div>
 
+<style>
+    .patient-list ul {
+        list-style: none; /* Ẩn dấu chấm nếu cần */
+        padding: 0;
+        margin: 0;
+    }
+
+    .patient-list li {
+        margin-bottom: 10px; /* Khoảng cách giữa các dòng */
+        display: block; /* Hiển thị mỗi dòng là block để không chồng lên nhau */
+    }
+
+    .patient-list a {
+        display: inline-block; /* Tránh bị chồng do lỗi về inline */
+        padding: 5px 10px; /* Tạo khoảng cách trong nút */
+        background-color: #f0f0f0; /* Nền nhẹ để nút không dính nhau */
+        border-radius: 5px;
+        text-decoration: none;
+        
+    }
+</style>
