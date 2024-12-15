@@ -154,7 +154,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 if (SearchVaiTro == "QuanLiVatTu") listnhansu = listnhansu.Where(u => u.Role == "QuanLiVatTu");
                 else if (SearchVaiTro == "QuanLiNhanSu") listnhansu = listnhansu.Where(u => u.Role == "QuanLiNhanSu");
-                else if (SearchVaiTro == "QuanliBenhNhan") listnhansu = listnhansu.Where(u => u.Role == "QuanLiBenhNhan");
+                else if (SearchVaiTro == "QuanLiBenhNhan") listnhansu = listnhansu.Where(u => u.Role == "QuanLiBenhNhan");
                 else if (SearchVaiTro =="NoRole") listnhansu=listnhansu.Where(u=>string.IsNullOrEmpty(u.Role));
             }
             ViewBag.VaiTro = new SelectList(new List<SelectListItem>

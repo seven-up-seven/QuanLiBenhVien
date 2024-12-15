@@ -255,10 +255,33 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 "Value",
                 "Text"
             );
+            ViewBag.VaiTro = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Quản lí nhân sự",
+                    Value = "QuanLiNhanSu"
+                },
+                new SelectListItem
+                {
+                    Text = "Quản lí vật tư",
+                    Value = "QuanLiVatTu"
+                },
+                new SelectListItem
+                {
+                    Text="Quản lí bệnh nhân",
+                    Value="QuanLiBenhNhan"
+                },
+                new SelectListItem
+                {
+                    Text="Chưa có",
+                    Value="NoRole"
+                }
+            }, "Value", "Text");
             return View(nhansulist);
         }
         [HttpPost]
-        public IActionResult NhanSuIndex(string SearchName, string TrangThaiTaiKhoan)
+        public IActionResult NhanSuIndex(string SearchName, string TrangThaiTaiKhoan, string SearchVaiTro)
         {
             var nhansulist = _unitofwork.NhanSuRepository.GetAll();
             if (!string.IsNullOrEmpty(SearchName)) nhansulist = nhansulist.Where(u => u.NhanSuName.ToLower().Contains(SearchName.ToLower()));
@@ -266,6 +289,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 if (TrangThaiTaiKhoan == "NoAccount") nhansulist = nhansulist.Where(u => u.HasAccount == false);
                 else if (TrangThaiTaiKhoan == "HasAccount") nhansulist = nhansulist.Where(u => u.HasAccount == true);
+            }
+            if (!string.IsNullOrEmpty(SearchVaiTro))
+            {
+                if (SearchVaiTro == "QuanLiVatTu") nhansulist = nhansulist.Where(u => u.Role == "QuanLiVatTu");
+                else if (SearchVaiTro == "QuanLiNhanSu") nhansulist = nhansulist.Where(u => u.Role == "QuanLiNhanSu");
+                else if (SearchVaiTro == "QuanLiBenhNhan") nhansulist = nhansulist.Where(u => u.Role == "QuanLiBenhNhan");
+                else if (SearchVaiTro == "NoRole") nhansulist = nhansulist.Where(u => string.IsNullOrEmpty(u.Role));
             }
             ViewBag.TrangThaiTaiKhoan = new SelectList(
                 new List<SelectListItem>
@@ -284,6 +314,29 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 "Value",
                 "Text"
             );
+            ViewBag.VaiTro = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Quản lí nhân sự",
+                    Value = "QuanLiNhanSu"
+                },
+                new SelectListItem
+                {
+                    Text = "Quản lí vật tư",
+                    Value = "QuanLiVatTu"
+                },
+                new SelectListItem
+                {
+                    Text="Quản lí bệnh nhân",
+                    Value="QuanLiBenhNhan"
+                },
+                new SelectListItem
+                {
+                    Text="Chưa có",
+                    Value="NoRole"
+                }
+            }, "Value", "Text");
             return View(nhansulist);
         }
         public async Task<IActionResult> AssignNhanSuAccount(int NhanSuId)
