@@ -44,9 +44,21 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(DoctorList);
 		}
         [HttpPost]
-        public IActionResult Index(string SearchDoctorName, string SearchDoctorCCCD, int ProfessionId)
+        public IActionResult Index(string SearchDoctorName, string SearchDoctorCCCD, int ProfessionId, string DoctorId)
         {
             var doctorlist = _unitOfWork.DoctorRepository.GetAll();
+            if (!string.IsNullOrEmpty(DoctorId))
+            {
+                if (int.TryParse(DoctorId, out _))
+                {
+                    doctorlist = doctorlist.Where(u => u.DoctorId == int.Parse(DoctorId));
+                }
+                else
+                {
+                    TempData["error"] = "ID bác sĩ phải là số!";
+                    return View(doctorlist);
+                }
+            }
             if (!string.IsNullOrEmpty(SearchDoctorName)) doctorlist = doctorlist.Where(u => u.DoctorName.ToLower().Contains(SearchDoctorName.ToLower()));
             if (!string.IsNullOrEmpty(SearchDoctorCCCD)) doctorlist = doctorlist.Where(u => u.DoctorCCCD.ToLower().Contains(SearchDoctorCCCD.ToLower()));
             if (ProfessionId != 0) doctorlist = doctorlist.Where(u => u.ProfessionId == ProfessionId);
