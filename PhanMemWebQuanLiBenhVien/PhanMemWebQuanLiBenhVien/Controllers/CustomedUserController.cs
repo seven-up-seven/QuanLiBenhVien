@@ -209,6 +209,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			if (doctor != null)
 			{
                 doctor.HasAccount = false;
+                doctor.Username = null;
                 _unitofwork.DoctorRepository.Update(doctor);
                 _unitofwork.Save();
             }
@@ -225,6 +226,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (nurse != null)
             {
                 nurse.HasAccount = false;
+                nurse.Username = null;
                 _unitofwork.NurseRepository.Update(nurse);
                 _unitofwork.Save();
             }
@@ -390,6 +392,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (nhansu != null)
             {
                 nhansu.HasAccount = false;
+                nhansu.UserName = null;
                 _unitofwork.NhanSuRepository.Update(nhansu);
                 _unitofwork.Save();
             }
