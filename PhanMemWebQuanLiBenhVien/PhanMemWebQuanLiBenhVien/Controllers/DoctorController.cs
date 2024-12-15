@@ -257,7 +257,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 doctor.PatientList.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
             }
-            if(doctor.PatientList.Count() > 0)
+            if(doctor.PatientList.Count() == 0)
             {
 			    wwwroot = _webHostEnvironment.WebRootPath;
 			    if (!string.IsNullOrEmpty(doctor.DoctorImgURL))
