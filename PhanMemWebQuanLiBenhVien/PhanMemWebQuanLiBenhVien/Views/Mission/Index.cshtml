@@ -10,9 +10,14 @@
             </h5>
         </div>
     </div>
+    <form class="d-flex justify-content-end gap-2 mb-3" asp-action="Index">
+        <input name="id" class="rounded-3" placeholder="Tìm nhiệm vụ theo ID" />
+        <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
+    </form>
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
+                <th>ID</th>
                 <th>Thời gian bắt đầu</th>
                 <th>Thời gian kết thúc</th>
                 <th>Mức độ</th>
@@ -27,6 +32,7 @@
             @foreach (var mission in Model)
             {
                 <tr>
+                    <td>@mission.MissionId</td>
                     <td>@mission.Time</td>
                     <td>@mission.EndTime</td>
                     <td>

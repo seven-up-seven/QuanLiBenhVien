@@ -18,9 +18,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
             var missionList = _unitOfWork.MissionRepository.GetAll();
+            if (id != null && id != 0) missionList = missionList.Where(m => m.MissionId == id); 
             foreach (var mission in missionList)
             {
                 var doctor = _unitOfWork.DoctorRepository.Get(u => u.DoctorId == mission.DoctorId);
