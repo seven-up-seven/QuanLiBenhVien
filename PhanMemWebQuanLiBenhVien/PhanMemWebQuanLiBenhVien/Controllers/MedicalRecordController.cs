@@ -56,7 +56,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (!string.IsNullOrEmpty(SearchPatientCCCD)) listMedicalRecord = listMedicalRecord.Where(u => u.Patient.CCCD.Contains(SearchPatientCCCD));
             if (ProfessionId != 0) listMedicalRecord = listMedicalRecord.Where(u=>u.ProfesisonId==ProfessionId);
             if (SearchTrangThaiBenhAn != "NoFilter") listMedicalRecord = listMedicalRecord.Where(u => u.TrangThaiBenhAn.ToString() == SearchTrangThaiBenhAn);
-            if(SearchID != null)
+            if(SearchID != null && SearchID != 0)
             {
                 listMedicalRecord = listMedicalRecord.Where(u => u.MedicalRecordId == SearchID); 
             }
@@ -561,6 +561,75 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             medicalRecord.TinhTrangBenhNhan = medicalVisit.TinhTrangBenhNhan;
             if (ModelState.IsValid)
             {
+                var medicineIds = medicalVisit.IdThuocs.Split(',');
+                var quantities = medicalVisit.SoLuongThuocs.Split(',');
+
+                if (medicineIds.Length != quantities.Length)
+                {
+                    ViewBag.MedicalRecordId = MedicalRecordId;
+                    ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                                  .Cast<ETinhTrangBenhNhan>()
+                                                  .Select(e => new SelectListItem
+                                                  {
+                                                      Value = e.ToString(),
+                                                      Text = e.ToString()
+                                                  }).ToList();
+                    ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
+                                            .Select(m => new SelectListItem
+                                            {
+                                                Value = m.MedicineId.ToString(),
+                                                Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                            }).ToList();
+                    TempData["error"] = "Số lượng thuốc và ID thuốc không khớp.";
+                    return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId });
+                }
+
+                for (int i = 0; i < medicineIds.Length; i++)
+                {
+                    int medicineId = int.Parse(medicineIds[i]);
+                    int quantity = int.Parse(quantities[i]);
+
+                    var medicine = _unitOfWork.MedicineRepository.Get(m => m.MedicineId == medicineId);
+                    if (quantity < 1 || quantity > medicine.Quantity)
+                    {
+                        ViewBag.MedicalRecordId = MedicalRecordId;
+                        ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                                      .Cast<ETinhTrangBenhNhan>()
+                                                      .Select(e => new SelectListItem
+                                                      {
+                                                          Value = e.ToString(),
+                                                          Text = e.ToString()
+                                                      }).ToList();
+                        ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
+                                                .Select(m => new SelectListItem
+                                                {
+                                                    Value = m.MedicineId.ToString(),
+                                                    Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                                }).ToList();
+                        TempData["error"] =  $"Số lượng thuốc cho ID {medicineId} không hợp lệ. Số lượng phải từ 1 đến {medicine.Quantity}.";
+                        return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId });
+                    }
+                }
+
+                if (medicalVisit.VisitDate > medicalVisit.NgayTaiKham)
+                {
+                    ViewBag.MedicalRecordId = MedicalRecordId;
+                    ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                                  .Cast<ETinhTrangBenhNhan>()
+                                                  .Select(e => new SelectListItem
+                                                  {
+                                                      Value = e.ToString(),
+                                                      Text = e.ToString()
+                                                  }).ToList();
+                    ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
+                                            .Select(m => new SelectListItem
+                                            {
+                                                Value = m.MedicineId.ToString(),
+                                                Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                            }).ToList();
+                    TempData["error"] = "Ngày tái khám phải bé hơn ngày khám";
+                    return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId }); 
+                }
                 _unitOfWork.MedicalVisitRepository.Add(medicalVisit);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
@@ -576,7 +645,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                                                   Value = e.ToString(),
                                                   Text = e.ToString()
                                               }).ToList();
-                ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now)
+                ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
                                         .Select(m => new SelectListItem
                                         {
                                             Value = m.MedicineId.ToString(),

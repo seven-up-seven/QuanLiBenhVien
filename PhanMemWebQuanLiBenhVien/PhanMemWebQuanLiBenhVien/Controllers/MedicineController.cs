@@ -28,10 +28,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult Index(int SearchID, string SearchMedicineName)
         {
-            var medicinelist = _unitOfWork.MedicineRepository.GetAll();
-            if (!string.IsNullOrEmpty(SearchMedicineName)) medicinelist = medicinelist.Where(u => u.Name.ToLower().Contains(SearchMedicineName.ToLower()));
-            if (SearchID != null && SearchID != 0) medicinelist = medicinelist.Where(u => u.MedicineId == SearchID);
-            return View(medicinelist);
+            var medicines = _unitOfWork.MedicineRepository.GetAll();
+            var validMedicines = medicines.Where(m => m.Quantity > -1 && m.ExpiryDate >= DateTime.Now).ToList();
+            var invalidMedicines = medicines.Where(m => m.Quantity <= -1 || m.ExpiryDate < DateTime.Now).ToList();
+            var sortedMedicines = validMedicines.Concat(invalidMedicines).ToList();
+            if (!string.IsNullOrEmpty(SearchMedicineName)) sortedMedicines = sortedMedicines.Where(u => u.Name.ToLower().Contains(SearchMedicineName.ToLower())).ToList();
+            if (SearchID != null && SearchID != 0) sortedMedicines = sortedMedicines.Where(u => u.MedicineId == SearchID).ToList();
+            return View(sortedMedicines);
         }
 
 
