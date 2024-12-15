@@ -539,13 +539,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             ViewBag.MedicalRecordId = MedicalRecordId;
             ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
-                                          .Cast<ETinhTrangBenhNhan>()
+                                          .Cast<ETinhTrangBenhNhan>()       
                                           .Select(e => new SelectListItem
                                           {
                                               Value = e.ToString(),
                                               Text = e.ToString()
                                           }).ToList();
-            ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now)
+            ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
                                     .Select(m => new SelectListItem
                                     {
                                         Value = m.MedicineId.ToString(),
@@ -555,7 +555,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View();
         }
         [HttpPost("CreateMedicalVisit/{MedicalRecordId}")]
-        public IActionResult CreateMedicalVisit(MedicalVisit medicalVisit)
+        public IActionResult CreateMedicalVisit(MedicalVisit medicalVisit, int MedicalRecordId)
         {
             var medicalRecord = _unitOfWork.MedicalRecordRepository.Get(mr => mr.MedicalRecordId == medicalVisit.MedicalRecordId);
             medicalRecord.TinhTrangBenhNhan = medicalVisit.TinhTrangBenhNhan;
@@ -565,6 +565,23 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
                 return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
+            }
+            else
+            {
+                ViewBag.MedicalRecordId = MedicalRecordId;
+                ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                              .Cast<ETinhTrangBenhNhan>()
+                                              .Select(e => new SelectListItem
+                                              {
+                                                  Value = e.ToString(),
+                                                  Text = e.ToString()
+                                              }).ToList();
+                ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now)
+                                        .Select(m => new SelectListItem
+                                        {
+                                            Value = m.MedicineId.ToString(),
+                                            Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                        }).ToList();
             }
             return View();
         }

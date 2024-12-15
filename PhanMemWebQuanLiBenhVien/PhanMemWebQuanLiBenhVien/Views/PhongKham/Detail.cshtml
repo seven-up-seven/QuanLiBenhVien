@@ -37,7 +37,7 @@
                             <td>
                                 @if (!(patient.MedicalRecords.LastOrDefault().Visits == null || patient.MedicalRecords.LastOrDefault().Visits.Count()==0))
                                 {
-                                    <p>@patient.MedicalRecords.LastOrDefault().Visits.LastOrDefault().NgayTaiKham.Value.ToString("dd/MM/yyyy")</p>
+                                    <p>@patient.MedicalRecords.LastOrDefault().Visits.LastOrDefault().NgayTaiKham.ToString("dd/MM/yyyy")</p>
                                 }
                                 else
                                 {

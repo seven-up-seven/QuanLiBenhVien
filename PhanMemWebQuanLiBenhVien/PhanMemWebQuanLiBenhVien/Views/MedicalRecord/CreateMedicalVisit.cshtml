@@ -12,23 +12,28 @@
    <form asp-action="CreateMedicalVisit" asp-controller="MedicalRecord" method="post">  
        <div class="form-group">  
            <label asp-for="MedicalRecordId">ID bệnh án</label>  
-           <input asp-for="MedicalRecordId" class="form-control" value="@ViewBag.MedicalRecordId" readonly />  
+           <input asp-for="MedicalRecordId" class="form-control" value="@ViewBag.MedicalRecordId" readonly />
+            <span asp-validation-for="MedicalRecordId" class="text-danger"></span>
        </div>  
        <div class="form-group">  
            <label asp-for="VisitDate">Ngày khám</label>  
            <input asp-for="VisitDate" class="form-control"/>  
+           <span asp-validation-for="VisitDate" class="text-danger"></span>
        </div>  
        <div class="form-group">  
            <label asp-for="Symptom">Triệu chứng</label>  
-           <input asp-for="Symptom" class="form-control"/>  
+           <input asp-for="Symptom" class="form-control"/>
+            <span asp-validation-for="Symptom" class="text-danger"></span>
        </div>  
        <div class="form-group">  
            <label asp-for="KetQuaLamSang">Kết quả lâm sàng</label>  
-           <input asp-for="KetQuaLamSang" class="form-control" />  
+           <input asp-for="KetQuaLamSang" class="form-control" />
+            <span asp-validation-for="KetQuaLamSang" class="text-danger"></span>
        </div>  
        <div class="form-group">  
            <label asp-for="ChanDoan">Chẩn đoán</label>  
-           <input asp-for="ChanDoan" class="form-control" />  
+           <input asp-for="ChanDoan" class="form-control" />
+            <span asp-validation-for="ChanDoan" class="text-danger"></span>
        </div>  
        <div class="form-group">  
            <label for="TinhTrangBenhNhan">Trạng thái bệnh nhân</label>  
@@ -36,18 +41,27 @@
                <option value="">--Chọn--</option>  
            </select>  
        </div>  
-       <label>Chọn ngày tái khám</label>  
-       <input asp-for="NgayTaiKham" class="form-control" />  
-       <label>Chọn các loại thuốc để kê đơn</label>  
-       <select id="mySelect2" class="form-control" multiple="multiple" style="width: 100%;">  
-           @foreach (var item in ViewBag.ThuocList)  
-           {  
-               <option value="@item.Value">@item.Text</option>  
-           }  
-       </select>  
-       <input type="hidden" id="IdThuocs" name="IdThuocs" />  
-       <label>Chọn số lượng thuốc</label>  
-       <input asp-for="SoLuongThuocs" class="form-control" />  
+       <div class="form-group">
+            <label>Chọn ngày tái khám</label>
+            <input asp-for="NgayTaiKham" class="form-control" />
+            <span asp-validation-for="NgayTaiKham" class="text-danger"></span>
+       </div>
+       <div class="form-group">
+
+            <label>Chọn các loại thuốc để kê đơn</label>
+            <select id="mySelect2" class="form-control" multiple="multiple" style="width: 100%; height:100px">
+                @foreach (var item in ViewBag.ThuocList)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+            <input type="hidden" id="IdThuocs" name="IdThuocs" />
+        </div>
+        <div class="form-group">
+            <label>Chọn số lượng thuốc</label>
+            <input asp-for="SoLuongThuocs" class="form-control" />
+            <span asp-validation-for="SoLuongThuocs" class="text-danger"></span>
+        </div>
        <br />  
        <button type="submit" class="btn btn-primary">  
            Thêm lần khám  
@@ -69,7 +83,23 @@
            $('#mySelect2').on('change', function () {  
                var selectedValues = $(this).val();  
                $('#IdThuocs').val(selectedValues.join(','));  
-           });  
+           });
+
+           $('form').on('submit', function (e) {
+               var isValid = true;
+               $(this).find('input, select').each(function () {
+                   if ($(this).val() === '' && $(this).prop('required')) {
+                       isValid = false;
+                       $(this).addClass('is-invalid');
+                   } else {
+                       $(this).removeClass('is-invalid');
+                   }
+               });
+               if (!isValid) {
+                   e.preventDefault();
+                   alert('Vui lòng nhập đủ dữ liệu vào tất cả các trường.');
+               }
+           });
        });  
    </script>  
 }

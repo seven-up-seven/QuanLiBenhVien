@@ -24,9 +24,9 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public string KetQuaLamSang { get; set; } // Kết quả lâm sàng
 		public string ChanDoan { get; set; } // Chẩn đoán
 
-		public ETinhTrangBenhNhan? TinhTrangBenhNhan { get; set; }
-		public string? IdThuocs { get; set; }
-		public string? SoLuongThuocs { get; set; }
-		public DateTime? NgayTaiKham { get; set; }
+		public ETinhTrangBenhNhan TinhTrangBenhNhan { get; set; }
+		public string IdThuocs { get; set; }
+		public string SoLuongThuocs { get; set; }
+		public DateTime NgayTaiKham { get; set; }
     }
 }
