@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using PhanMemWebQuanLiBenhVien.DataAccess.Repository;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
+using System.Data;
 using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -309,6 +312,50 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 TempData["success"] = "Xóa nhân sự thành công!";
                 return RedirectToAction("Index");
             }
+        }
+        public FileResult NhanSuExportExcel(string filename, IEnumerable<NhanSu> list)
+        {
+            DataTable dataTable = new DataTable("NhanSu");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("ID nhân sự"),
+                new DataColumn("Tên nhân sự"),
+                new DataColumn("Địa chỉ"),
+                new DataColumn("Giới tính"),
+                new DataColumn("Tuổi"),
+                new DataColumn("Vai trò")
+            });
+            foreach (var nhansu in list)
+            {
+                var profession = _uniUnitOfWork.NhanSuRepository.Get(u => u.NhanSuId == nhansu.NhanSuId);
+                string gioitinh = "";
+                if (nhansu.NhanSuGender == EGender.male) gioitinh = "nam";
+                else gioitinh = "nữ";
+                string role = "";
+                if (!string.IsNullOrEmpty(nhansu.Role)) role = nhansu.Role;
+                else role = "Chưa có";
+                dataTable.Rows.Add(nhansu.NhanSuId, nhansu.NhanSuName, nhansu.Address, gioitinh, nhansu.NhanSuAge, role);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                }
+            }
+        }
+        public FileResult NhanSuExport(string ids)
+        {
+            var realid = ids.TrimEnd(',');
+            var idList = realid.Split(',').Select(int.Parse).ToList();
+            var list = new List<NhanSu>();
+            foreach (var id in idList)
+            {
+                list.Add(_uniUnitOfWork.NhanSuRepository.Get(u => u.NhanSuId == id));
+            }
+            return NhanSuExportExcel("danhsachnhansu.xlsx", list);
         }
     }
 }

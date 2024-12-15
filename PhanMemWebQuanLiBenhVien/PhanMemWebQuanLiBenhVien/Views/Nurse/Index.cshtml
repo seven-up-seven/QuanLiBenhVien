@@ -8,6 +8,14 @@
         <div class="col text-primary"><h2>Danh sách y tá: @Model.Count() y tá</h2></div>
         <div class="col col-auto text-end text-center"><h5> <a asp-action="Create" asp-controller="Nurse" class="text-decoration-none text-white btn btn-primary "><i class="bi bi-person-plus-fill"></i> Thêm y tá</a></h5></div>
     </div>
+    @{
+        string list = "";
+        foreach (var nurse in Model)
+        {
+            list = list + nurse.NurseId + ",";
+        }
+    }
+    <a asp-controller="Nurse" asp-action="NurseExport" asp-route-ids="@list" class="btn btn-primary">Xuất Excel</a>
     <form method="post" asp-action="Index" class="d-flex justify-content-end gap-2 mb-3">
         <input name="SearchID" class="rounded-3" placeholder="Tìm y tá theo ID" />
         <input name="SearchNurseName" class="rounded-3" placeholder="Tìm y tá theo tên" />
