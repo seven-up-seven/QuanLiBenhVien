@@ -405,7 +405,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                     _unitOfWork.Save();
                     TempData["success"] = "Cập nhật bệnh nhân thành công!";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId = patient.PatientId});
                 }
             }
             else

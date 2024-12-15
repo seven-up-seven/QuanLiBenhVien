@@ -511,7 +511,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 {
                     return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalRecord.MedicalRecordId });
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalRecord.MedicalRecordId });
             }
             return View(medicalRecord.MedicalRecordId);
         }
