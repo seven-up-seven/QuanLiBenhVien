@@ -66,24 +66,49 @@ h2 {
     display: block;
 }
 
-.btn {
-    font-size: 1.2rem;
-    padding: 10px 30px;
+.row.d-flex {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+a.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
     border-radius: 8px;
     font-weight: bold;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-transform: uppercase;
-}
-
-.btn-primary {
-    background: linear-gradient(90deg, #0056b3, #007bff);
     color: #fff;
-    border: none;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    background-color: #6c757d;
 }
 
-    .btn-primary:hover {
-        background: linear-gradient(90deg, #004080, #0056b3);
-        transform: translateY(-3px);
+    a.btn:hover {
+        background-color: #5a6268;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+
+button.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    border: none;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+
+    button.btn:hover {
+        background: linear-gradient(90deg, #004080, #0056b3);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
     }

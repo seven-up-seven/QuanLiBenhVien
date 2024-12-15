@@ -9,13 +9,12 @@
     background-color: #ffffff;
     border-radius: 15px;
     padding: 30px;
-    max-width: 800px;
+    max-width: 600px;
     margin: 50px auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 
 h2 {
     font-size: 2rem;
@@ -57,6 +56,13 @@ input.form-control, select.form-control {
         outline: none;
     }
 
+.text-danger {
+    font-size: 0.9rem;
+    color: #d9534f;
+    margin-top: 5px;
+    display: block;
+}
+
 .btn {
     font-size: 1rem;
     padding: 10px 20px;
@@ -80,20 +86,13 @@ input.form-control, select.form-control {
     }
 
 .btn.text-white {
-    background: #6c757d;
     border: none;
+    background: linear-gradient(90deg, #004080, #0056b3) !important;
 }
 
     .btn.text-white:hover {
         background: #5a6268;
     }
-
-.text-danger {
-    font-size: 0.9rem;
-    color: #d9534f;
-    margin-top: 5px;
-    display: block;
-}
 
 @media (max-width: 768px) {
     .container {

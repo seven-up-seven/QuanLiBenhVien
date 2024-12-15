@@ -1,11 +1,11 @@
 ﻿body {
-    background-color: #f8f9fa;
+    background: linear-gradient(120deg, #f3f9fd, #e0f1fa);
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-h2.text-primary {
+h2 {
     font-size: 2rem;
     font-weight: bold;
     color: #004a99;
@@ -19,118 +19,134 @@ form {
     margin-bottom: 20px;
 }
 
-input.rounded-3,
-select.rounded-3 {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    width: auto;
-    background-color: #fff;
-    color: #333;
-    outline: none;
-}
-
-    input.rounded-3:focus,
-    select.rounded-3:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    form input,
+    form select {
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f7f9fc;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
-button.btn-primary {
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: #fff;
-    text-transform: uppercase;
-    background: linear-gradient(90deg, #0056b3, #007bff);
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-}
-
-    button.btn-primary:hover {
-        background: linear-gradient(90deg, #004080, #0056b3);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
+        form input:focus,
+        form select:focus {
+            border-color: #004a99;
+            box-shadow: 0 0 8px rgba(0, 74, 153, 0.2);
+            outline: none;
+        }
 
 .table-responsive {
-    margin-top: 20px;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #ffffff;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: #ffffff;
+    text-align: left;
+}
+
     .table th {
         background-color: #004a99;
         color: #fff;
-        text-align: center;
         padding: 15px;
-        font-size: 1.1rem;
+        font-size: 1rem;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
     }
 
     .table td {
         padding: 12px;
+        border-bottom: 1px solid #ddd;
         text-align: center;
         vertical-align: middle;
-        font-size: 1rem;
+        font-size: 0.95rem;
         color: #333;
-        border-bottom: 1px solid #ddd;
     }
 
-.table-striped tbody tr:nth-child(odd) {
-    background-color: #f7f9fc;
+    .table tbody tr:nth-child(odd) {
+        background-color: #f7f9fc;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #eef3f8;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e2ebf6;
+        transition: background-color 0.3s ease;
+    }
+
+    .table tbody tr[style="background-color: lightyellow"] {
+        background-color: #fff9e0 !important;
+        font-weight: bold;
+    }
+
+    .table tbody tr[style="background-color: indianred"] {
+        background-color: #f8d7da !important;
+        font-weight: bold;
+        color: #721c24;
+    }
+
+        .table tbody tr[style="background-color: indianred"] td {
+            border-bottom: 2px solid #721c24;
+        }
+
+.btn {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
 }
 
-.table-striped tbody tr:nth-child(even) {
-    background-color: #eef3f8;
+.btn-primary {
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    color: #fff;
+    border: none;
 }
 
-.table-striped tbody tr:hover {
-    background-color: #e2ebf6;
-    transition: background-color 0.3s ease;
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #004080, #0056b3);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.text-primary {
+    color: #004a99 !important;
 }
 
-/* Trạng thái bệnh nhân */
-.table-striped tbody tr.lightyellow {
-    background-color: #fff9db;
-}
-
-.table-striped tbody tr.indianred {
-    background-color: #ffccd2;
-    color: #000;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-    h2.text-primary {
+    h2 {
         font-size: 1.5rem;
     }
 
-    input.rounded-3,
-    select.rounded-3 {
-        width: 100%;
-        font-size: 0.9rem;
+    form {
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
-    .table th, .table td {
+        form input,
+        form select {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+    .table th,
+    .table td {
         font-size: 0.9rem;
-        padding: 8px;
+        padding: 10px;
     }
 
-    button.btn-primary {
-        font-size: 0.9rem;
-        padding: 8px 15px;
+    .btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
     }
 }

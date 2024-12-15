@@ -60,13 +60,25 @@ h2 {
             color: #aaa;
         }
 
-.text-danger {
-    font-size: 0.85rem;
-    color: #dc3545;
-    margin-top: 5px;
+a.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    background-color: #6c757d;
 }
 
-button.btn-primary {
+    a.btn:hover {
+        background-color: #5a6268;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+button.btn {
     font-size: 1rem;
     padding: 10px 20px;
     border-radius: 8px;
@@ -78,17 +90,14 @@ button.btn-primary {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin-top: 20px;
 }
 
-    button.btn-primary:hover {
+    button.btn:hover {
         background: linear-gradient(90deg, #004080, #0056b3);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         transform: translateY(-2px);
     }
+
 
 @media (max-width: 768px) {
     .container {

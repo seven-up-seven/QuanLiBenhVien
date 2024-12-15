@@ -53,5 +53,51 @@ h2 {
             outline: none;
             background-color: #ffffff; 
         }
+.row.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 20px;
+}
 
+a.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    background-color: #6c757d;
+    margin: 0 !important;
+}
+
+    a.btn:hover {
+        background-color: #5a6268;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+button.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(90deg, #0056b3, #007bff);
+    border: none;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin: 0;
+}
+
+    button.btn:hover {
+        background: linear-gradient(90deg, #004080, #0056b3);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
 
