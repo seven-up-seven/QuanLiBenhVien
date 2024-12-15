@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<NhanSu>
 <link rel="stylesheet" href="~/css/NhanSu/Index.css"/>
 <a asp-action="Create" class="btn btn-primary">Tạo nhân sự mới</a>
+@{
+    string list = "";
+    foreach (var nhansu in Model)
+    {
+        list = list + nhansu.NhanSuId + ",";
+    }
+}
+<a asp-controller="NhanSu" asp-action="NhanSuExport" asp-route-ids="@list" class="btn btn-primary">Xuất Excel</a>
 <form method="post" class="mb-3 d-flex justify-content-end">
     <input name="SearchName" placeholder="Tìm kiếm theo tên" class="rounded-1" />
     <input name="SearchID" placeholder="Tìm kiếm theo ID" class="rounded-1" />

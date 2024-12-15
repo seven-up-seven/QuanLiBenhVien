@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,6 +10,7 @@ using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
 using PhanMemWebQuanLiBenhVien.Ultilities;
+using System.Data;
 using System.Security.Principal;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -635,6 +637,49 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
             return View(doctor);
         }
-
+        public FileResult DoctorExportExcel(string filename, IEnumerable<Doctor> list)
+        {
+            DataTable dataTable = new DataTable("Doctor");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("ID bác sĩ"),
+                new DataColumn("Tên bác sĩ"),
+                new DataColumn("CCCD"),
+                new DataColumn("Giới tính"),
+                new DataColumn("Tuổi"),
+                new DataColumn("Chuyên khoa")
+            });
+            foreach (var doctor in list)
+            {
+                var profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
+                string gioitinh = "";
+                string truongkhoa = "";
+                if (doctor.DoctorGender == EGender.male) gioitinh = "nam";
+                else gioitinh = "nữ";
+                if (doctor.IsTruongKhoa == false) truongkhoa = "không";
+                else truongkhoa = "có";
+                dataTable.Rows.Add(doctor.DoctorId, doctor.DoctorName, doctor.DoctorCCCD, gioitinh, doctor.DoctorAge, profession.ProfessionName);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                }
+            }
+        }
+        public FileResult DoctorExport(string ids)
+        {
+            var realid = ids.TrimEnd(',');
+            var idList = realid.Split(',').Select(int.Parse).ToList();
+            var list = new List<Doctor>();
+            foreach (var id in idList)
+            {
+                list.Add(_unitOfWork.DoctorRepository.Get(u=>u.DoctorId == id));    
+            }
+            return DoctorExportExcel("danhsachbacsi.xlsx", list);
+        }
     }
 }

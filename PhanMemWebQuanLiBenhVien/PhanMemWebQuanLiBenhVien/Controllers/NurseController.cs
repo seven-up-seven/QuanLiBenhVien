@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using System.Data;
 using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -355,6 +357,45 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             );
             ViewBag.nurse = nurse;
             return View(nurse.PatientList);
+        }
+        public FileResult NurseExportExcel(string filename, IEnumerable<Nurse> list)
+        {
+            DataTable dataTable = new DataTable("Nurse");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("ID y tá"),
+                new DataColumn("Tên y tá"),
+                new DataColumn("CCCD"),
+                new DataColumn("Giới tính"),
+                new DataColumn("Tuổi"),
+            });
+            foreach (var nurse in list)
+            {
+                string gioitinh = "";
+                if (nurse.NurseGender == EGender.male) gioitinh = "nam";
+                else gioitinh = "nữ";
+                dataTable.Rows.Add(nurse.NurseId, nurse.NurseName, nurse.NurseCCCD, gioitinh, nurse.NurseAge);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                }
+            }
+        }
+        public FileResult NurseExport(string ids)
+        {
+            var realid = ids.TrimEnd(',');
+            var idList = realid.Split(',').Select(int.Parse).ToList();
+            var list = new List<Nurse>();
+            foreach (var id in idList)
+            {
+                list.Add(_unitOfWork.NurseRepository.Get(u => u.NurseId == id));
+            }
+            return NurseExportExcel("danhsachyta.xlsx", list);
         }
     }
 }
