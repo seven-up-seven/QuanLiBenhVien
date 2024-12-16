@@ -627,7 +627,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                                                 Value = m.MedicineId.ToString(),
                                                 Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
                                             }).ToList();
-                    TempData["error"] = "Ngày tái khám phải bé hơn ngày khám";
+                    TempData["error"] = "Ngày tái khám phải lớn hơn ngày khám";
                     return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId }); 
                 }
                 _unitOfWork.MedicalVisitRepository.Add(medicalVisit);
