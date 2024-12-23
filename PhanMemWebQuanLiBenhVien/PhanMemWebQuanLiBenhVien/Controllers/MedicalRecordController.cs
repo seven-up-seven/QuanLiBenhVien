@@ -524,7 +524,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var oldobj=_unitOfWork.MedicalRecordRepository.Get(u=>u.MedicalRecordId==medicalRecord.MedicalRecordId);
                 List<string> details = new List<string>();
                 if (medicalRecord.BHYT != oldobj.BHYT) details.Add($"BHYT: {oldobj.BHYT} -> {medicalRecord.BHYT}");
-                if (medicalRecord.TienSuBenhAn != null) details.Add($"Tiền sử bệnh án: {oldobj.TienSuBenhAn} -> {medicalRecord.TienSuBenhAn}");
+                if (medicalRecord.TienSuBenhAn != oldobj.TienSuBenhAn) details.Add($"Tiền sử bệnh án: {oldobj.TienSuBenhAn} -> {medicalRecord.TienSuBenhAn}");
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
