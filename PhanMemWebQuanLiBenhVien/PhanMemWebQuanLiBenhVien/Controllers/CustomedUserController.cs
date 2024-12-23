@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using PhanMemWebQuanLiBenhVien.DataAccess;
+using PhanMemWebQuanLiBenhVien.DataAccess.Repository;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
@@ -110,6 +113,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 doctor.Username = account.UserName;
                 _unitofwork.DoctorRepository.Update(doctor);
                 _unitofwork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
+                var user = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)user;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, User, null);
                 return RedirectToAction("DoctorIndex");
             }
 		}
@@ -199,6 +206,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 nurse.Username = account.UserName;
                 _unitofwork.NurseRepository.Update(nurse);
                 _unitofwork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
+                var user = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)user;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, User, null);
                 return RedirectToAction("NurseIndex");
             }
         }
@@ -216,8 +227,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			var user=_db.customedUsers.FirstOrDefault(u=>(u.UserId == DoctorId && u.UserRole==Ultilities.Utilities.ERole.doctor));
 			if (user != null)
 			{
-				await _usermanager.DeleteAsync(user);
-			}
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, User, null);
+                await _usermanager.DeleteAsync(user);
+            }
 			return RedirectToAction("AssignDoctorAccount", new {DoctorId=DoctorId});
 		}
         public async Task<IActionResult> DeleteNurseAccount(int NurseId)
@@ -233,6 +248,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var user = _db.customedUsers.FirstOrDefault(u => u.UserId == NurseId && u.UserRole == Ultilities.Utilities.ERole.nurse);
             if (user != null)
             {
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, User, null);
                 await _usermanager.DeleteAsync(user);
             }
             return RedirectToAction("AssignNurseAccount", new { NurseId = NurseId });
@@ -383,6 +402,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 nhansu.UserName = account.UserName;
                 _unitofwork.NhanSuRepository.Update(nhansu);
                 _unitofwork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, User, null);
                 return RedirectToAction("NhanSuIndex");
             }
         }
@@ -403,6 +426,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var user = _db.customedUsers.FirstOrDefault(u => u.UserId == NhanSuId && u.UserRole == tmp);
             if (user != null)
             {
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, User, null);
                 await _usermanager.DeleteAsync(user);
             }
             return RedirectToAction("AssignNhanSuAccount", new { NhanSuId = NhanSuId });

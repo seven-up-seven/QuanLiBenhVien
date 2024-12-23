@@ -58,5 +58,13 @@ namespace PhanMemWebQuanLiBenhVien.Ultilities
             phongkham,
             phongbenh
         }
+        public enum ETypeOfActivity
+        {
+            them, 
+            sua,
+            xoa,
+            dongbenhan,
+            trichxuatthuoc
+        }
     }
 }
