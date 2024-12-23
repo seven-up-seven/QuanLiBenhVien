@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
+using PhanMemWebQuanLiBenhVien.DataAccess.Repository;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
@@ -11,9 +15,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class MedicalRecordController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public MedicalRecordController(IUnitOfWork unitOfWork)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _usermanager;
+        public MedicalRecordController(IUnitOfWork unitOfWork, ApplicationDbContext db, UserManager<IdentityUser> usermanager)
         {
             _unitOfWork = unitOfWork;
+            _db = db;
+            _usermanager = usermanager;
         }
 
         [HttpGet("Index")]
@@ -190,6 +198,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PatientRepository.Update(patient);
                 _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("Index");
             }
             var patientList = _unitOfWork.PatientRepository.GetAll(u => u.MedicalRecords == null || u.TrangThaiBenhAn == ETrangThaiBenhAn.ketthucchuatri);
@@ -460,6 +472,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PatientRepository.Update(pnt);
                 _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId = medicalRecord.PatientId});
             }
             return RedirectToAction("DoctorCreate");
@@ -505,6 +521,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                var oldobj=_unitOfWork.MedicalRecordRepository.Get(u=>u.MedicalRecordId==medicalRecord.MedicalRecordId);
+                List<string> details = new List<string>();
+                if (medicalRecord.BHYT != null) details.Add($"BHYT: {oldobj.BHYT} -> {medicalRecord.BHYT}");
+                if (medicalRecord.TienSuBenhAn != null) details.Add($"Tiền sử bệnh án: {oldobj.TienSuBenhAn} -> {medicalRecord.TienSuBenhAn}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
                 if (User.IsInRole("Doctor"))
@@ -524,7 +548,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.MedicalRecordRepository.Remove(medicalRecord);
                 _unitOfWork.Save();
-                TempData["success"] = "Xoá thành công"; 
+                TempData["success"] = "Xoá thành công";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("Index");
             }
             else
@@ -633,6 +661,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.MedicalVisitRepository.Add(medicalVisit);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalVisit.VisitId, medicalVisit, null);
                 return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
             }
             else
@@ -673,6 +705,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
             _unitOfWork.Save();
+            var objFromDb=_unitOfWork.MedicalVisitRepository.Get(u=>u.VisitId==medicalVisit.VisitId);   
+            List<string> details = new List<string>();
+            if (objFromDb.VisitDate != medicalVisit.VisitDate) details.Add($"Ngày khám: {objFromDb.VisitDate} -> {medicalVisit.VisitDate}");
+            if (objFromDb.Symptom != medicalVisit.Symptom) details.Add($"Triệu chứng: {objFromDb.Symptom} -> {medicalVisit.Symptom}");
+            if (objFromDb.KetQuaLamSang != medicalVisit.KetQuaLamSang) details.Add($"Kết quả lâm sàng: {objFromDb.KetQuaLamSang} -> {medicalVisit.KetQuaLamSang}"); ;
+            if (objFromDb.ChanDoan != medicalVisit.ChanDoan) details.Add($"Chẩn đoán: {objFromDb.ChanDoan} -> {medicalVisit.ChanDoan}");
+            if (objFromDb.TinhTrangBenhNhan != medicalVisit.TinhTrangBenhNhan) details.Add($"Tình trạng bệnh nhân: {objFromDb.TinhTrangBenhNhan} -> {medicalVisit.TinhTrangBenhNhan}");
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalVisit.VisitId, medicalVisit, details);
             return RedirectToAction("DoctorDetail", new { MedicalRecordId = MedicalRecordId });
         }
 
@@ -688,6 +731,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PatientRepository.Update(patient);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId=patient.PatientId});
             }
             return RedirectToAction("Index");

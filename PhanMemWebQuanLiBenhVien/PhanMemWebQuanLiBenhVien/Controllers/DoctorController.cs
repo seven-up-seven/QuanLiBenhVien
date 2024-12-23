@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
@@ -140,7 +141,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     else doctor.DoctorImgURL = "";
                     _unitOfWork.DoctorRepository.Add(doctor);
                     TempData["success"] = "Tạo bác sĩ mới thành công!";
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var user=_userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var true_user=(CustomedUser)user;
                     _unitOfWork.Save();
+                    trackingtool.TrackingActivity(true_user.UserId, true_user.UserName, ETypeOfActivity.them, true_user.UserRole, doctor.DoctorId, doctor, null);
                     return RedirectToAction("Index");
                 }
             }
@@ -211,6 +216,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 else
                 {
+                    var olddoctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==doctor.DoctorId);
+                    List<string> details = new List<string>();
+                    if (olddoctor.DoctorName != doctor.DoctorName) details.Add($"Tên bác sĩ: {olddoctor.DoctorName} -> {doctor.DoctorName}");
+                    if (olddoctor.DoctorGender != doctor.DoctorGender) details.Add($"Giới tính: {olddoctor.DoctorGender.ToString()} -> {doctor.DoctorGender.ToString()}");
+                    if (olddoctor.DoctorAge != doctor.DoctorAge) details.Add($"Tuổi: {olddoctor.DoctorAge} -> {doctor.DoctorAge}");
+                    if (olddoctor.DoctorCCCD != doctor.DoctorCCCD) details.Add($"CCCD: {olddoctor.DoctorCCCD} -> {doctor.DoctorCCCD}");
+                    if (olddoctor.ProfessionId != doctor.ProfessionId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==olddoctor.ProfessionId).ProfessionName} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == doctor.ProfessionId).ProfessionName}");
+                    if (doctor.DoctorImgURL != null) details.Add("Ảnh đại diện");
                     wwwroot = _webHostEnvironment.WebRootPath;
                     if (DoctorImg != null)
                     {
@@ -224,6 +237,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                     _unitOfWork.DoctorRepository.Update(doctor);
                     _unitOfWork.Save();
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var true_user = (CustomedUser)user;
+                    trackingtool.TrackingActivity(true_user.UserId, true_user.UserName, ETypeOfActivity.sua, true_user.UserRole, doctor.DoctorId, doctor, details);
                     TempData["success"] = "Cập nhật bác sĩ thành công!";
                     if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new { DoctorId = doctor.DoctorId });
                     return RedirectToAction("Index");
@@ -272,7 +289,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
 			    _unitOfWork.DoctorRepository.Remove(doctor);
 			    _unitOfWork.Save();
-                    TempData["success"] = "Xoá bác sĩ thành công";
+                TempData["success"] = "Xoá bác sĩ thành công";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var true_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(true_user.UserId, true_user.UserName, ETypeOfActivity.xoa, true_user.UserRole, doctor.DoctorId, doctor, null);
             }
             else
             {

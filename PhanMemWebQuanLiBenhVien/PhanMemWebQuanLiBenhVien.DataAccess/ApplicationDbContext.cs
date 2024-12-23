@@ -26,6 +26,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess
         public DbSet<PhongCapCuu> phongCapCuus { get; set; }
         public DbSet<Medicine> medicines { get; set; }
         public DbSet<NhanSu> nhansus { get; set; }
+        public DbSet<ActivityHistory> activityHistories { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

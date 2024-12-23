@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using PhanMemWebQuanLiBenhVien.Models.Models;
 using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -12,10 +16,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class MissionController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
 
-        public MissionController(IUnitOfWork unitOfWork)
+        public MissionController(IUnitOfWork unitOfWork, ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _db = db;
+            _userManager = userManager;
         }
 
         public IActionResult Index(int id)
@@ -148,6 +156,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _unitOfWork.MissionRepository.Add(mission);
             _unitOfWork.Save();
             TempData["success"] = "Thêm nhiệm vụ thành công!";
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, mission.MissionId, mission, null);
             return RedirectToAction("Index");
         }
 
@@ -267,6 +279,19 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 return View(mission);
             }
             _unitOfWork.MissionRepository.Update(mission);
+            var oldobj = _unitOfWork.MissionRepository.Get(u => u.MissionId == mission.MissionId);
+            List<string> details=new List<string>();
+            if (oldobj.Time != mission.Time) details.Add($"Thời gian bắt đầu: {oldobj.Time} -> {mission.Time}");
+            if (oldobj.EndTime != mission.EndTime) details.Add($"Thời gian kết thúc: {oldobj.EndTime} -> {mission.EndTime}");
+            if (oldobj.Lever != mission.Lever) details.Add($"Mức độ ưu tiên: {oldobj.Lever} -> {mission.Lever}");
+            if (oldobj.Content != mission.Content) details.Add($"Nội dung: {oldobj.Content} -> {mission.Content}");
+            if (oldobj.DoctorId != mission.DoctorId) details.Add($"Bác sĩ: {_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==oldobj.DoctorId)}- ID: {oldobj.DoctorId} -> {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == mission.DoctorId)} - ID:{mission.DoctorId}");
+            if (oldobj.IsCompleted != mission.IsCompleted) details.Add($"Tình trạng: {oldobj.IsCompleted} -> {mission.IsCompleted}");
+            if (oldobj.RoomType != mission.RoomType) details.Add($"Loại phòng: {oldobj.RoomType.ToString()} -> {mission.RoomType.ToString()}");
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, mission.MissionId, mission, null);
             return RedirectToAction("Index");
         }
 
