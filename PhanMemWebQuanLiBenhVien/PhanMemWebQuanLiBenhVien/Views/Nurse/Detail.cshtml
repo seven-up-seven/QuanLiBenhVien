@@ -5,7 +5,15 @@
 @using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
 @inject IUnitOfWork UnitOfWork
 @{
-    var patientlist = UnitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == Model.NurseId); 
+    var patientlist = UnitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == Model.NurseId);
+    List<Patient> purelist = new(); 
+    foreach(var pt in patientlist)
+    {
+        if(!purelist.Any(u=>u.PatientId == pt.PatientId))
+        {
+            purelist.Add(UnitOfWork.PatientRepository.Get(u=>u.PatientId == pt.PatientId)); 
+        }
+    }
     var chamcongs = UnitOfWork.ChamCongRepository.GetAll(u => u.NurseId == Model.NurseId)
           .GroupBy(u => new { u.Time.Year, u.Time.Month })
           .Select(g => new
@@ -53,14 +61,14 @@
         <div class="my-4 col col-6">
             <h4>Danh sách bệnh nhân đã điều trị</h4>
             <div class="patient-list">
-                @if (patientlist != null)
+                @if (purelist != null)
                 {
                     <ul>
-                        @foreach (var patient in patientlist)
+                        @foreach (var patient in purelist)
                         {
                             <li>
                                 <a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none btn btn-primary">
-                                    @patient.PatientName
+                                    @patient.Name
                                 </a>
                             </li>
                         }

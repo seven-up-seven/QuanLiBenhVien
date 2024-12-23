@@ -63,7 +63,7 @@
                         <td>@record.PatientGender</td>
                         @if(record.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.noitru)
                         {
-                            <td>Điều trị nội trú <br /> BS: @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == record.DoctorId).DoctorName <br />BS: @UnitOfWork.NurseRepository.Get(u => u.NurseId == record.NurseId).NurseName <br />Phòng bệnh: @UnitOfWork.PhongBenhRepository.Get(u => u.RoomId == record.PhongBenhId).Name</td>
+                            <td>Điều trị nội trú <br /> BS: @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == record.DoctorId).DoctorName <br />Y tá: @UnitOfWork.NurseRepository.Get(u => u.NurseId == record.NurseId).NurseName <br />Phòng bệnh: @UnitOfWork.PhongBenhRepository.Get(u => u.RoomId == record.PhongBenhId).Name</td>
                         }
                         else
                         {
