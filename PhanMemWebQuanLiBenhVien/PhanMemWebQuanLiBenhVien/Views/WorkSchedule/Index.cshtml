@@ -41,19 +41,35 @@
                         <div class="card-body">
                             <p class="card-title text-center fw-bold">@phongKham.Name</p>
                             <p class="text-center">@phongKham.Profession.ProfessionName</p>
-                            <hr />
-                            <div class="text-center mb-1 row">
-                                <p class="col col-auto"><strong>Sáng:</strong> 6:00 - 12:00</p>
-                            </div>
-                            <div class="text-center mb-1 row">
-                                <p class="col col-auto"><strong>Chiều:</strong> 12:00 - 18:00</p>
-                            </div>
-                            <div class="text-center mb-1 row">
-                                <p class="col col-auto"><strong>Tối:</strong> 18:00 - 24:00</p>                               
-                            </div>
+                            
                             @{
                                 if (dayOfWeek == "Monday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto"><strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[0].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName; 
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto"><strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[0].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto"><strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[0].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[0].DoctorId1 == null && phongKham.WorkSchedules[0].DoctorId2 == null && phongKham.WorkSchedules[0].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -65,6 +81,37 @@
                                 }
                                 if (dayOfWeek == "Tuesday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[1].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[1].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[1].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[1].DoctorId1 == null && phongKham.WorkSchedules[1].DoctorId2 == null && phongKham.WorkSchedules[1].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -76,6 +123,37 @@
                                 }
                                 if (dayOfWeek == "Wednesday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[2].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[2].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[2].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[2].DoctorId1 == null && phongKham.WorkSchedules[2].DoctorId2 == null && phongKham.WorkSchedules[2].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -87,6 +165,37 @@
                                 }
                                 if (dayOfWeek == "Thursday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[3].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[3].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[3].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[3].DoctorId1 == null && phongKham.WorkSchedules[3].DoctorId2 == null && phongKham.WorkSchedules[3].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -98,6 +207,37 @@
                                 }
                                 if (dayOfWeek == "Friday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[4].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[4].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[4].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[4].DoctorId1 == null && phongKham.WorkSchedules[4].DoctorId2 == null && phongKham.WorkSchedules[4].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -109,6 +249,37 @@
                                 }
                                 if (dayOfWeek == "Saturday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[5].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[5].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[5].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[5].DoctorId1 == null && phongKham.WorkSchedules[5].DoctorId2 == null && phongKham.WorkSchedules[5].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -120,6 +291,37 @@
                                 }
                                 if (dayOfWeek == "Sunday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongKham.WorkSchedules[6].DoctorId1 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongKham.WorkSchedules[6].DoctorId2 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongKham.WorkSchedules[6].DoctorId3 != null)
+                                            {
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongKham.WorkSchedules[6].DoctorId1 == null && phongKham.WorkSchedules[6].DoctorId2 == null && phongKham.WorkSchedules[6].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="Create" asp-route-PhongKhamId="@phongKham.RoomId"  asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -154,19 +356,43 @@
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title text-center">@phongcapcuu.Name</p>
-                            <hr />
-                            <div class="text-center mb-1 row">
-                                <p class="col col-auto"><strong>Sáng:</strong> 6:00 - 12:00</p>
-                            </div>
-                            <div class="text-center mb-1 row">
-                                <p class="col col-auto"><strong>Chiều:</strong> 12:00 - 18:00</p>
-                            </div>
-                            <div class="text-center mb-1 row">
-                                <p class="col col-auto"><strong>Tối:</strong> 18:00 - 24:00</p>
-                            </div>
                             @{
                                 if (dayOfWeek == "Monday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[0].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1; 
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[0].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[0].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[0].DoctorId1 == null && phongcapcuu.WorkSchedules[0].DoctorId2 == null && phongcapcuu.WorkSchedules[0].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -178,6 +404,40 @@
                                 }
                                 if (dayOfWeek == "Tuesday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[1].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[1].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[1].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[1].DoctorId1 == null && phongcapcuu.WorkSchedules[1].DoctorId2 == null && phongcapcuu.WorkSchedules[1].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -189,6 +449,40 @@
                                 }
                                 if (dayOfWeek == "Wednesday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[2].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[2].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[2].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[2].DoctorId1 == null && phongcapcuu.WorkSchedules[2].DoctorId2 == null && phongcapcuu.WorkSchedules[2].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -200,6 +494,40 @@
                                 }
                                 if (dayOfWeek == "Thursday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[3].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[3].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[3].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[3].DoctorId1 == null && phongcapcuu.WorkSchedules[3].DoctorId2 == null && phongcapcuu.WorkSchedules[3].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -211,6 +539,40 @@
                                 }
                                 if (dayOfWeek == "Friday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[4].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[4].DoctorId1;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[4].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[4].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[4].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[4].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[4].DoctorId1 == null && phongcapcuu.WorkSchedules[4].DoctorId2 == null && phongcapcuu.WorkSchedules[4].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -222,6 +584,40 @@
                                 }
                                 if (dayOfWeek == "Saturday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[5].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[5].DoctorId1;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[5].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[5].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[5].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[5].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[5].DoctorId1 == null && phongcapcuu.WorkSchedules[5].DoctorId2 == null && phongcapcuu.WorkSchedules[5].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
@@ -233,6 +629,40 @@
                                 }
                                 if (dayOfWeek == "Sunday")
                                 {
+                                    <hr />
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Sáng:</strong>
+                                            @if (phongcapcuu.WorkSchedules[6].DoctorId1 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[6].DoctorId1;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Chiều:</strong>
+                                            @if (phongcapcuu.WorkSchedules[6].DoctorId2 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[6].DoctorId2;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="text-center mb-1 row">
+                                        <p class="col col-auto">
+                                            <strong>Tối:</strong>
+                                            @if (phongcapcuu.WorkSchedules[6].DoctorId3 != null)
+                                            {
+                                                int temp = phongcapcuu.WorkSchedules[6].DoctorId3;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
+                                                ;
+                                            }
+                                        </p>
+                                    </div>
                                     if (phongcapcuu.WorkSchedules[6].DoctorId1 == null && phongcapcuu.WorkSchedules[6].DoctorId2 == null && phongcapcuu.WorkSchedules[6].DoctorId3 == null)
                                     {
                                         <a asp-controller="WorkSchedule" asp-action="CreateWorkScheduleForPhongCapCuu" asp-route-PhongCapCuuId="@phongcapcuu.RoomId" asp-route-Thu="@dayOfWeek" class="btn btn-primary col col-auto">Đặt lịch</a>
