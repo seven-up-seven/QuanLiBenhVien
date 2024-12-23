@@ -32,6 +32,7 @@
                 <th>Tuổi</th>
                 <th>Ảnh</th>
                 <th style="width: 330px">Actions</th>
+                <th>History</th>
             </tr>
         </thead>
 
@@ -58,6 +59,9 @@
                     <td>
                         <a class="btn btn-primary" asp-controller="Nurse" asp-action="Update" asp-route-NurseId="@nurse.NurseId"><i class="bi bi-pencil-square"></i> Sửa</a>
                         <a asp-controller="Nurse" asp-action="Detail" asp-route-NurseId="@nurse.NurseId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                    </td>
+                    <td>
+                        <a asp-controller="ActivityHistory" asp-action="Index" asp-route-ExecutorID="@nurse.NurseId" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                     </td>
                 </tr>
             }
