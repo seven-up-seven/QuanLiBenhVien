@@ -42,6 +42,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
                     }
                     entity.UpdateDetails.TrimEnd(',');
                 }
+                if (UpdateDetails.Count == 0) return;
             }
             else if (type==ETypeOfActivity.them) entity.Activity = VaiTro + MemberName + " đã thêm " + ObjectName + " với ID là " + ObjectId;
             else if (type==ETypeOfActivity.xoa) entity.Activity = VaiTro + MemberName + " đã xóa " + ObjectName + " với ID là " + ObjectId;
