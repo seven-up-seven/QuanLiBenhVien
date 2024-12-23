@@ -14,7 +14,7 @@
 }
 <link rel="stylesheet" href="~/css/Doctor/Detail.css"/>
 <div>
-	<h2 class="my-5">Chi tiết</h2>
+	<h1 class="text-primary text-center fs-1 fw-bolder">Chi tiết</h1>
 	<div class="mt-5 doctor-info">
 		<p class="text-primary fw-bold">ID: @Model.DoctorId</p>
 		<p class ="text-primary fw-bold">Tên bác sĩ: @Model.DoctorName</pc>
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 	<div>
-		<h3 class="text-primary">Lịch sử chấm công</h3>
+		<h2 class="text-primary text-center">Lịch sử chấm công</h2>
 		<table class="table table-bordered mt-3">
 			<thead>
 				<tr>
@@ -111,6 +111,524 @@
 			</tbody>
 		</table>
 	</div>
+    <h2 class="text-primary mt-5">Lịch tuần trực phòng khám</h2>
+    <div class="d-flex justify-content-center mt-2">
+        @if (ViewBag.CaTrucPhongKham.Count == 0)
+        {
+            <h4 class="text-muted">Chưa có lịch</h4>
+        }
+        else
+        {
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Thứ hai</th>
+                        <th>Thứ ba</th>
+                        <th>Thứ tư</th>
+                        <th>Thứ năm</th>
+                        <th>Thứ sáu</th>
+                        <th>Thứ bảy</th>
+                        <th>Chủ nhật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Monday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Monday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Tuesday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Tuesday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Wednesday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Wednesday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Thursday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Thursday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Friday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Friday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Saturday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Saturday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongKham.ContainsKey("Sunday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongKham["Sunday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a asp-controller="PhongKham" asp-action="Detail" asp-route-PhongKhamId="@catruc.Value.RoomId" class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+    <h2 class="text-primary mt-5">Lịch tuần trực phòng cấp cứu</h2>
+    <div class="d-flex justify-content-center mt-2">
+        @if (0 > 1)
+        {
+            <h4 class="text-muted">Chưa có lịch</h4>
+        }
+        else
+        {
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Thứ hai</th>
+                        <th>Thứ ba</th>
+                        <th>Thứ tư</th>
+                        <th>Thứ năm</th>
+                        <th>Thứ sáu</th>
+                        <th>Thứ bảy</th>
+                        <th>Chủ nhật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Monday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Monday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Tuesday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Tuesday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Wednesday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Wednesday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Thursday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Thursday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Friday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Friday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Saturday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Saturday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @if (ViewBag.CaTrucPhongCapCuu.ContainsKey("Sunday"))
+                        {
+                            <td>
+                                @foreach (var catruc in ViewBag.CaTrucPhongCapCuu["Sunday"])
+                                {
+                                    if (catruc.Key == 1)
+                                    {
+                                        <p>
+                                            Ca sáng:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 2)
+                                    {
+                                        <p>
+                                            Ca chiều:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                    if (catruc.Key == 3)
+                                    {
+                                        <p>
+                                            Ca tối:
+                                            <a class="btn btn-primary">@catruc.Value.Name</a>
+                                        </p>
+                                    }
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
 	<div class="row d-flex">
 		<div class="col-auto text-primary"><a asp-controller="Doctor" asp-action="Index" class="btn text-white">Quay lại</a></div>
 		<div class="col-auto text-primary">

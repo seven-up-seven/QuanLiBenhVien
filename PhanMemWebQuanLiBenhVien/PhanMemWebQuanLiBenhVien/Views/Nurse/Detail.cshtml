@@ -6,6 +6,14 @@
 @inject IUnitOfWork UnitOfWork
 @{
     var patientlist = UnitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == Model.NurseId); 
+    var chamcongs = UnitOfWork.ChamCongRepository.GetAll(u => u.NurseId == Model.NurseId)
+          .GroupBy(u => new { u.Time.Year, u.Time.Month })
+          .Select(g => new
+          {
+              Year = g.Key.Year,
+              Month = g.Key.Month,
+              TotalAttendance = g.Count()
+          }).ToList();
 }
 <link rel="stylesheet" href="~/css/Nurse/Detail.css"/>
 <div class="container mt-5">
@@ -64,6 +72,30 @@
                 }
             </div>
         </div>
+        <link rel="stylesheet" href="~/css/Doctor/Dash.css" />
+        <h4 >Lịch sử chấm công</h4>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th width="100px">Năm</th>
+                    <th width="100px">Tháng</th>
+                    <th width="200px">Tổng số lần chấm công</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (chamcongs != null)
+                {
+                    foreach (var record in chamcongs)
+                    {
+                        <tr>
+                            <td>@record.Year</td>
+                            <td>@record.Month</td>
+                            <td>@record.TotalAttendance</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
     </div>
 
     <div class="row d-flex justify-content-start mt-4">

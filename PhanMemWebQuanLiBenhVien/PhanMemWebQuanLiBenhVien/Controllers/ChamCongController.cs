@@ -38,7 +38,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (User.IsInRole("Nurse"))
             {
                 var us = (CustomedUser)_userManager.GetUserAsync(User).GetAwaiter().GetResult();
-                var chamcong = _unitOfWork.ChamCongRepository.Get(u => u.DoctorId == us.UserId && u.Time.Month == DateTime.Now.Month && u.Time.Year == DateTime.Now.Year);
+                var chamcong = _unitOfWork.ChamCongRepository.Get(u => u.NurseId == us.UserId && u.Time.Month == DateTime.Now.Month && u.Time.Year == DateTime.Now.Year);
                 if (chamcong != null) TempData["error"] = "Bạn đã chấm công ngày hôm nay rồi";
                 else
                 {
@@ -51,12 +51,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     _unitOfWork.Save();
                     TempData["success"] = "Chấm công thành công";
                 }
-                return RedirectToAction("NurseHomePage", "Nurse", new { Id = us.UserId });
+                return RedirectToAction("DashBoard", "Nurse", new { NurseId = us.UserId });
             }
             else if (!User.IsInRole("Admin"))
             {
                 var us = (CustomedUser)_userManager.GetUserAsync(User).GetAwaiter().GetResult();
-                var chamcong = _unitOfWork.ChamCongRepository.Get(u => u.DoctorId == us.UserId && u.Time.Month == DateTime.Now.Month && u.Time.Year == DateTime.Now.Year);
+                var chamcong = _unitOfWork.ChamCongRepository.Get(u => u.NhanSuId == us.UserId && u.Time.Month == DateTime.Now.Month && u.Time.Year == DateTime.Now.Year);
                 if (chamcong != null) TempData["error"] = "Bạn đã chấm công ngày hôm nay rồi";
                 else
                 {

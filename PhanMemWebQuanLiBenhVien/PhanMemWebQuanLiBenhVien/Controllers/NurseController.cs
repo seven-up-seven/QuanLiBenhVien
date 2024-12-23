@@ -27,6 +27,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _db = db;
             _userManager = userManager;
         }
+        public IActionResult DashBoard(int NurseId)
+        {
+            return View(_unitOfWork.NurseRepository.Get(u=>u.NurseId == NurseId)); 
+        }
         public IActionResult Index()
         {
             var NurseList = _unitOfWork.NurseRepository.GetAll();
