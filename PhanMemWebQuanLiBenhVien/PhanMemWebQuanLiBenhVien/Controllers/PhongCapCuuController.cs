@@ -132,17 +132,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.PhongCapCuuRepository.Update(phongCapCuu);
-                _unitOfWork.Save();
-                TempData["success"] = "Cập nhật phòng cấp cứu thành công!";
-                var details=new List<string>();
-                var objFromDb=_unitOfWork.PhongCapCuuRepository.Get(u=>u.RoomId == phongCapCuu.RoomId);
+                var details = new List<string>();
+                var objFromDb = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == phongCapCuu.RoomId);
                 if (objFromDb.Name != phongCapCuu.Name) details.Add($"Tên: {objFromDb.Name} -> {phongCapCuu.Name}");
                 if (objFromDb.isAvailable != phongCapCuu.isAvailable) details.Add($"Đang trưng dụng: {objFromDb.isAvailable} -> {phongCapCuu.isAvailable}");
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
                 trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, phongCapCuu.RoomId, phongCapCuu, details);
+                _unitOfWork.PhongCapCuuRepository.Update(phongCapCuu);
+                _unitOfWork.Save();
+                TempData["success"] = "Cập nhật phòng cấp cứu thành công!";
                 return RedirectToAction("Index");
             }
             return View();

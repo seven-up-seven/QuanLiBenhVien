@@ -186,17 +186,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 else
                 {
-                    _unitOfWork.PhongBenhRepository.Update(phongBenh);
-                    _unitOfWork.Save();
                     var details = new List<string>();
-                    var objFromDb=_unitOfWork.PhongBenhRepository.Get(u=>u.RoomId == phongBenh.RoomId);
+                    var objFromDb = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == phongBenh.RoomId);
                     if (phongBenh.NumberOfBeds != objFromDb.NumberOfBeds) details.Add($"Số giường: {objFromDb.NumberOfBeds} -> {phongBenh.NumberOfBeds}");
                     if (phongBenh.Name != objFromDb.Name) details.Add($"Tên: {objFromDb.Name} -> {phongBenh.Name}");
-                    if (phongBenh.ProfessionId != objFromDb.ProfessionId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==objFromDb.ProfessionId).ProfessionName} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == phongBenh.ProfessionId).ProfessionName}");
+                    if (phongBenh.ProfessionId != objFromDb.ProfessionId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == objFromDb.ProfessionId).ProfessionName} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == phongBenh.ProfessionId).ProfessionName}");
                     ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                     var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
                     var truetmp_user = (CustomedUser)tmpuser;
                     trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, phongBenh.RoomId, phongBenh, details);
+                    _unitOfWork.PhongBenhRepository.Update(phongBenh);
+                    _unitOfWork.Save();
                     TempData["success"] = "Cập nhật thông tin phòng bệnh thành công"; 
                     return RedirectToAction("Index");
                 }

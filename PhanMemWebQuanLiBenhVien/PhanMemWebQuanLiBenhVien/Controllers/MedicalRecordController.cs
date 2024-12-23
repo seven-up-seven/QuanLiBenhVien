@@ -528,7 +528,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
                 if (User.IsInRole("Doctor"))
@@ -703,9 +703,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult MedicalVisitUpdate(MedicalVisit medicalVisit, int MedicalRecordId)
         {
-            _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
-            _unitOfWork.Save();
-            var objFromDb=_unitOfWork.MedicalVisitRepository.Get(u=>u.VisitId==medicalVisit.VisitId);   
+            var objFromDb = _unitOfWork.MedicalVisitRepository.Get(u => u.VisitId == medicalVisit.VisitId);
             List<string> details = new List<string>();
             if (objFromDb.VisitDate != medicalVisit.VisitDate) details.Add($"Ngày khám: {objFromDb.VisitDate} -> {medicalVisit.VisitDate}");
             if (objFromDb.Symptom != medicalVisit.Symptom) details.Add($"Triệu chứng: {objFromDb.Symptom} -> {medicalVisit.Symptom}");
@@ -716,6 +714,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
             var truetmp_user = (CustomedUser)tmpuser;
             trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalVisit.VisitId, medicalVisit, details);
+            _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
+            _unitOfWork.Save();
             return RedirectToAction("DoctorDetail", new { MedicalRecordId = MedicalRecordId });
         }
 

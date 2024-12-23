@@ -172,8 +172,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     if (oldobj.NurseName != nurse.NurseName) details.Add($"Tên: {oldobj.NurseName} -> {nurse.NurseName}");
                     if (oldobj.NurseGender != nurse.NurseGender) details.Add($"Giới tính: {oldobj.NurseGender} -> {nurse.NurseGender}");
                     if (oldobj.NurseAge != nurse.NurseAge) details.Add($"Tuổi: {oldobj.NurseAge} -> {nurse.NurseAge}"); ;
-                    if (oldobj.NurseCCCD != nurse.NurseCCCD) details.Add($"CCCD: {oldobj.NurseCCCD} -> {nurse.NurseCCCD}"); ;
-                    if (oldobj.Username != nurse.Username) details.Add($"Username: {oldobj.Username} -> {nurse.Username}"); ;
+                    if (oldobj.NurseCCCD != nurse.NurseCCCD) details.Add($"CCCD: {oldobj.NurseCCCD} -> {nurse.NurseCCCD}");  
                     ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                     var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
                     var truetmp_user = (CustomedUser)tmpuser;

@@ -23,7 +23,12 @@ namespace PhanMemWebQuanLiBenhVien.Models
             entity.MemberRole = MemberRole;
             entity.ActivityTime= DateTime.Now;
             string ObjectName = Object.GetType().Name;
-            if (Object.GetType().Name == "ClaimsPrincipal") ObjectName = "Tài khoản";
+            if (Object.GetType().Name == "ClaimsPrincipal")
+            {
+                ObjectName = "tài khoản";
+                var obj =(CustomedUser)Object;
+                entity.UpdateDetails = entity.UpdateDetails + "Tài khoản " + obj.UserRole;
+            }
             string VaiTro="";
             if (MemberRole == ERole.nurse) VaiTro = "Y tá ";
             else if (MemberRole == ERole.doctor) VaiTro = "Bác sĩ ";
