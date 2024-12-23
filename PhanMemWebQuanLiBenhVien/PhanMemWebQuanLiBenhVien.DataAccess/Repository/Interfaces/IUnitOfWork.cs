@@ -24,6 +24,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
         IMedicineRepository MedicineRepository { get; }
         INhanSuRepository NhanSuRepository { get; }
         IActivityHistory ActivityHistoryRepository { get; }
+        IChamCongRepository ChamCongRepository { get; }     
         public void Save();
 		public Task SaveAsync();
 	}

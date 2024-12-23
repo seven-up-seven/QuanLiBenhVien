@@ -19,12 +19,9 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository.ImplementedClasses
 
         public void Update(ChamCong chamCong)
         {
-            var cc = _db.chamcongs.FirstOrDefault(m => m.Id == chamCong.Id);
-            if (cc != null)
-            {
-                if(chamCong.SoNgayLam != null) cc.SoNgayLam = chamCong.SoNgayLam;
-            }
-            _db.chamcongs.Update(cc);
+            var cc = _db.chamCongs.FirstOrDefault(m => m.Id == chamCong.Id);
+            
+            _db.chamCongs.Update(cc);
         }
     }
 }

@@ -305,7 +305,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==DoctorId);
 			doctor.Profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
-            doctor.PatientList = _unitOfWork.MedicalRecordRepository.GetAll(u => u.DoctorId == DoctorId)
+            doctor.PatientList = _unitOfWork.MedicalRecordRepository.GetAll(u => u.DoctorId == DoctorId && u.TrangThaiBenhAn == ETrangThaiBenhAn.dangchuatri)
                        .Select(mr => new Patient
                        {
                            PatientId = mr.PatientId,

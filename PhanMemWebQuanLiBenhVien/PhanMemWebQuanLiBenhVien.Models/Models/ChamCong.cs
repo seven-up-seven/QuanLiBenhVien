@@ -16,8 +16,9 @@ namespace PhanMemWebQuanLiBenhVien.Models.Models
 
         public int? NurseId { get; set; }
 
+        public int? NhanSuId { get; set; }
+         
         public DateTime Time { get; set; } = DateTime.Now;
 
-        public int SoNgayLam { get; set; } = 0; 
     }
 }

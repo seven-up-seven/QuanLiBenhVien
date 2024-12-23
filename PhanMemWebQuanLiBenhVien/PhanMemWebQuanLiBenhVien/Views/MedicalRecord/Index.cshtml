@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<PhanMemWebQuanLiBenhVien.Models.MedicalRecord>
+@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
 @{
     ViewData["Title"] = "Danh Sách Bệnh Án";
 }
@@ -29,12 +31,14 @@
                 <th>BHYT</th>
                 <th>Địa chỉ</th>
                 <th>Tiền sử bệnh án</th>
+                <th>Điều trị</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var record in Model)
             {
+               
                 <tr>
                     <td>@record.MedicalRecordId</td>
                     <td>@record.PatientName</td>
@@ -42,6 +46,16 @@
                     <td>@record.BHYT</td>
                     <td>@record.Address</td>
                     <td>@record.TienSuBenhAn</td>
+                    @if(record.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+                    {
+                        var dr = UnitOfWork.DoctorRepository.Get(u=>u.DoctorId == record.DoctorId); 
+                        <td>Điều trị nội trú <br /> BS: @dr.DoctorName <br /> Id: @dr.DoctorId</td>
+                    }
+                    else
+                    {
+                        var room = UnitOfWork.PhongKhamRepository.Get(u=>u.RoomId == record.PhongKhamId); 
+                        <td>Ngoại trú <br /> Phòng: @room.Name <br /> Id: @room.RoomId</td>
+                    }
                     <td>
                         <a class="btn btn-primary" asp-controller="MedicalRecord" asp-action="Update" asp-route-id="@record.MedicalRecordId"><i class="bi bi-pencil-square"></i> Sửa</a>                  
                         <a asp-controller="MedicalRecord" asp-action="DoctorDetail" asp-route-MedicalRecordId="@record.MedicalRecordId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>

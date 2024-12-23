@@ -2,6 +2,11 @@
 @{
 	ViewData["Title"] = "Chi Tiết Y Tá";
 }
+@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
+@{
+    var patientlist = UnitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == Model.NurseId); 
+}
 <link rel="stylesheet" href="~/css/Nurse/Detail.css"/>
 <div class="container mt-5">
     <h2 class="text-center">Chi tiết y tá</h2>
@@ -14,26 +19,50 @@
         <p><strong>Giới tính:</strong> @Model.NurseGender.ToString()</p>
     </div>
 
-    <div class="my-4">
-        <h4>Danh sách bệnh nhân</h4>
-        <div class="patient-list">
-            @if (Model.PatientList != null && Model.PatientList.Any())
-            {
-                <ul>
-                    @foreach (var patient in Model.PatientList)
-                    {
-                        <li>
-                            <a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none">
-                                @patient.Name
-                            </a>
-                        </li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p>Không có bệnh nhân nào.</p>
-            }
+    <div class="row">
+        <div class="my-4 col col-6">
+            <h4>Danh sách bệnh nhân đang điều trị</h4>
+            <div class="patient-list">
+                @if (Model.PatientList != null && Model.PatientList.Any())
+                {
+                    <ul>
+                        @foreach (var patient in Model.PatientList)
+                        {
+                            <li>
+                                <a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none btn btn-primary">
+                                    @patient.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Không có bệnh nhân nào.</p>
+                }
+            </div>
+        </div>
+        <div class="my-4 col col-6">
+            <h4>Danh sách bệnh nhân đã điều trị</h4>
+            <div class="patient-list">
+                @if (patientlist != null)
+                {
+                    <ul>
+                        @foreach (var patient in patientlist)
+                        {
+                            <li>
+                                <a href="@Url.Action("Detail", "Patient", new { PatientId = patient.PatientId })" class="text-decoration-none btn btn-primary">
+                                    @patient.PatientName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Không có bệnh nhân nào.</p>
+                }
+            </div>
         </div>
     </div>
 
