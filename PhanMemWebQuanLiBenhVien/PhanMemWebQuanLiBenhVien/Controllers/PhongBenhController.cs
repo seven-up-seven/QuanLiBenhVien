@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -9,9 +13,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 	public class PhongBenhController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		public PhongBenhController(IUnitOfWork unitOfWork)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
+		public PhongBenhController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
 		{
 			_unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _db = db;
 		}
 
 		[HttpGet("Index")]
@@ -92,7 +100,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			{
 				_unitOfWork.PhongBenhRepository.Add(phongBenh);
 				_unitOfWork.Save();
-				return RedirectToAction("Index");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, phongBenh.RoomId, phongBenh, null);
+                return RedirectToAction("Index");
 			}
             ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
             {
@@ -174,6 +186,15 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 else
                 {
+                    var details = new List<string>();
+                    var objFromDb = _unitOfWork.PhongBenhRepository.Get(u => u.RoomId == phongBenh.RoomId);
+                    if (phongBenh.NumberOfBeds != objFromDb.NumberOfBeds) details.Add($"Số giường: {objFromDb.NumberOfBeds} -> {phongBenh.NumberOfBeds}");
+                    if (phongBenh.Name != objFromDb.Name) details.Add($"Tên: {objFromDb.Name} -> {phongBenh.Name}");
+                    if (phongBenh.ProfessionId != objFromDb.ProfessionId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == objFromDb.ProfessionId).ProfessionName} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == phongBenh.ProfessionId).ProfessionName}");
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, phongBenh.RoomId, phongBenh, details);
                     _unitOfWork.PhongBenhRepository.Update(phongBenh);
                     _unitOfWork.Save();
                     TempData["success"] = "Cập nhật thông tin phòng bệnh thành công"; 
@@ -198,11 +219,19 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var mr_fk = _unitOfWork.MedicalRecordRepository.GetAll(m => m.PhongBenhId == PhongBenhId); 
                 if (mr_fk != null)
                 {
-                    _unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk);
+                    TempData["error"] = "Phòng bệnh liên quan đến một số dữ liệu bệnh án hiện tại, không thể xoá";
+                    return RedirectToAction("Index");
+                    //_unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk);
                 }
+                var a = _unitOfWork.MissionRepository.GetAll(u => u.PhongBenhId == phongBenh.RoomId);
+                _unitOfWork.MissionRepository.RemoveRange(a);
                 _unitOfWork.PhongBenhRepository.Remove(phongBenh);
                 _unitOfWork.Save();
                 TempData["success"] = "Xóa phòng bệnh thành công";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, phongBenh.RoomId, phongBenh, null);
                 return RedirectToAction("Index");
             }
             else

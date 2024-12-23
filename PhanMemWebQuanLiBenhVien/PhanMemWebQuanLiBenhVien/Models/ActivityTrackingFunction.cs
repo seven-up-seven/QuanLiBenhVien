@@ -23,6 +23,12 @@ namespace PhanMemWebQuanLiBenhVien.Models
             entity.MemberRole = MemberRole;
             entity.ActivityTime= DateTime.Now;
             string ObjectName = Object.GetType().Name;
+            if (Object.GetType().Name == "CustomedUser")
+            {
+                ObjectName = "tài khoản";
+                var obj =(CustomedUser)Object;
+                entity.UpdateDetails = entity.UpdateDetails + "Tài khoản " + obj.UserRole;
+            }
             string VaiTro="";
             if (MemberRole == ERole.nurse) VaiTro = "Y tá ";
             else if (MemberRole == ERole.doctor) VaiTro = "Bác sĩ ";
@@ -33,16 +39,21 @@ namespace PhanMemWebQuanLiBenhVien.Models
             if (type == ETypeOfActivity.sua)
             {
                 entity.Activity = VaiTro + MemberName + " Đã sửa " + ObjectName + " với ID là " + ObjectId;
-                foreach (var detail in UpdateDetails)
+                if (UpdateDetails!=null && UpdateDetails.Count>0)
                 {
-                    entity.UpdateDetails = entity.UpdateDetails + detail + ",";
+                    foreach (var detail in UpdateDetails)
+                    {
+                        entity.UpdateDetails = entity.UpdateDetails + detail + ",";
+                    }
+                    entity.UpdateDetails.TrimEnd(',');
                 }
-                entity.UpdateDetails.TrimEnd(',');
+                if (UpdateDetails!=null && UpdateDetails.Count == 0) return;
             }
             else if (type==ETypeOfActivity.them) entity.Activity = VaiTro + MemberName + " đã thêm " + ObjectName + " với ID là " + ObjectId;
             else if (type==ETypeOfActivity.xoa) entity.Activity = VaiTro + MemberName + " đã xóa " + ObjectName + " với ID là " + ObjectId;
             else if (type==ETypeOfActivity.dongbenhan) entity.Activity= VaiTro + MemberName + " đã đóng " + ObjectName + " với ID là " + ObjectId;
-            else entity.Activity=VaiTro + MemberName + "đã trích xuất " + ObjectName + " với ID là " + ObjectId;
+            else if (type==ETypeOfActivity.trichxuatthuoc) entity.Activity=VaiTro + MemberName + "đã trích xuất " + ObjectName + " với ID là " + ObjectId;
+            else entity.Activity = VaiTro + MemberName + "đã hoàn thành " + ObjectName + " với ID là " + ObjectId;
             _unitofwork.ActivityHistoryRepository.Add(entity);
             _unitofwork.Save();
         }

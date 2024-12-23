@@ -1,0 +1,47 @@
+﻿@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
+@model Nurse
+@{
+    Layout = "~/Views/Shared/_CustomedLayout.cshtml";
+    var dayOfWeek = DateTime.Now.DayOfWeek.ToString();
+    var currentDate = DateTime.Now.ToString("dd/MM/yyyy");
+    var chamcongs = UnitOfWork.ChamCongRepository.GetAll(u => u.NurseId == Model.NurseId)
+          .GroupBy(u => new { u.Time.Year, u.Time.Month })
+          .Select(g => new
+          {
+              Year = g.Key.Year,
+              Month = g.Key.Month,
+              TotalAttendance = g.Count()
+          }).ToList();
+}
+<link rel="stylesheet" href="~/css/Doctor/Dash.css" />
+<div class="row d-flex">
+    <h1 class="text-primary col text-center fw-bold">Bảng điều khiển - @dayOfWeek - @currentDate</h1>
+</div>
+<div class="row d-flex justify-content-start mb-2">
+    <h3 class="text-primary col-auto">Chấm công</h3>
+    <a asp-action="ChamCongClick" asp-controller="ChamCong" class="btn btn-primary col-auto">Click để chấm công</a>
+</div>
+<h3 class="text-primary">Lịch sử chấm công</h3>
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th width="100px">Năm</th>
+            <th width="100px">Tháng</th>
+            <th width="200px">Tổng số lần chấm công</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (chamcongs != null)
+        {
+            foreach (var record in chamcongs)
+            {
+                <tr>
+                    <td>@record.Year</td>
+                    <td>@record.Month</td>
+                    <td>@record.TotalAttendance</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

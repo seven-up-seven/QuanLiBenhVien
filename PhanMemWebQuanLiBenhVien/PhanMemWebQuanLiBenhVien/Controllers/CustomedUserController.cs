@@ -116,7 +116,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
                 var user = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)user;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, User, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, true_user, null);
                 return RedirectToAction("DoctorIndex");
             }
 		}
@@ -209,7 +209,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
                 var user = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)user;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, User, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, true_user, null);
                 return RedirectToAction("NurseIndex");
             }
         }
@@ -230,7 +230,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, User, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, user, null);
                 await _usermanager.DeleteAsync(user);
             }
 			return RedirectToAction("AssignDoctorAccount", new {DoctorId=DoctorId});
@@ -251,7 +251,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, User, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, user, null);
                 await _usermanager.DeleteAsync(user);
             }
             return RedirectToAction("AssignNurseAccount", new { NurseId = NurseId });
@@ -405,7 +405,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, User, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, true_user.UserId, true_user, null);
                 return RedirectToAction("NhanSuIndex");
             }
         }
@@ -429,7 +429,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitofwork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, User, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, user.UserId, user, null);
                 await _usermanager.DeleteAsync(user);
             }
             return RedirectToAction("AssignNhanSuAccount", new { NhanSuId = NhanSuId });

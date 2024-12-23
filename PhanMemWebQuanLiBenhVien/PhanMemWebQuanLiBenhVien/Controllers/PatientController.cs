@@ -1,9 +1,11 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using System.Data;
@@ -15,9 +17,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class PatientController : Controller
     {
         private IUnitOfWork _unitOfWork;
-        public PatientController(IUnitOfWork unitOfWork)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
+        public PatientController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _db = db;
         }
         public IActionResult Avail()
         {
@@ -254,6 +260,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 {
                     _unitOfWork.PatientRepository.Add(patient);
                     _unitOfWork.Save();
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, patient.PatientId, patient, null);
                     return RedirectToAction("Index");
                 }
             }
@@ -450,6 +460,20 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 else
                 {
+                    var oldobj = _unitOfWork.PatientRepository.Get(u => u.PatientId == patient.PatientId);
+                    var details = new List<string>();
+                    if (patient.Name != oldobj.Name) details.Add($"Tên: {oldobj.Name} -> {patient.Name}");
+                    if (patient.CCCD != oldobj.CCCD) details.Add($"CCCD: {oldobj.CCCD} -> {patient.CCCD}");
+                    if (patient.Gender != oldobj.Gender) details.Add($"Giới tính: {oldobj.Gender.ToString()} -> {patient.Gender.ToString()}");
+                    if (patient.DateOfBirth != oldobj.DateOfBirth) details.Add($"Ngày sinh: {oldobj.DateOfBirth} -> {patient.DateOfBirth}");
+                    if (patient.Address != oldobj.Address) details.Add($"Địa chỉ: {oldobj.Address} -> {patient.Address}");
+                    if (patient.PhoneNumber != oldobj.PhoneNumber) details.Add($"SĐT: {oldobj.PhoneNumber} -> {patient.PhoneNumber}");
+                    if (patient.TrangThaiBenhAn != oldobj.TrangThaiBenhAn) details.Add($"Trạng thái bệnh án: {oldobj.TrangThaiBenhAn} -> {patient.TrangThaiBenhAn}");
+                    if (patient.ProfesisonId != oldobj.ProfesisonId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == oldobj.ProfesisonId)} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == patient.ProfesisonId)}");
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, patient.PatientId, patient, details);
                     _unitOfWork.PatientRepository.Update(patient);
                     var medicalrecordlist = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PatientId == patient.PatientId);
                     foreach (var medicalrecord in medicalrecordlist)
@@ -537,7 +561,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var patient = _unitOfWork.PatientRepository.Get(u => u.PatientId == PatientId);
                 _unitOfWork.PatientRepository.Remove(patient);
                 _unitOfWork.Save();
-                TempData["success"] = "Xoá bệnh nhân thành công"; 
+                TempData["success"] = "Xoá bệnh nhân thành công";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, patient.PatientId, patient, null);
                 return RedirectToAction("Index");
             }
             else if (User.IsInRole("Doctor"))

@@ -1,86 +1,155 @@
-﻿@{  
+﻿@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
+@model Doctor
+@{  
    Layout = "~/Views/Shared/_CustomedLayout.cshtml";  
    var dayOfWeek = DateTime.Now.DayOfWeek.ToString();  
    var currentDate = DateTime.Now.ToString("dd/MM/yyyy");
+   var chamcongs = UnitOfWork.ChamCongRepository.GetAll(u => u.DoctorId == Model.DoctorId)
+         .GroupBy(u => new { u.Time.Year, u.Time.Month })
+         .Select(g => new
+         {
+             Year = g.Key.Year,
+             Month = g.Key.Month,
+             TotalAttendance = g.Count()
+         }).ToList();
 }  
 <link rel="stylesheet" href="~/css/Doctor/Dash.css"/>
 <div class="row d-flex">  
-   <h2 class="text-primary col ">Bảng điều khiển - @dayOfWeek - @currentDate</h2>  
+   <h1 class="text-primary col text-center fw-bold">Bảng điều khiển - @dayOfWeek - @currentDate</h1>  
 </div>
-<div class="p-4">
-    <h3 class="text-primary">Lịch làm việc hôm nay</h3>
+@if (ViewBag.CaTruc1 == null && ViewBag.CaTruc2 == null && ViewBag.CaTruc3 == null)
+{
+    <p>Hôm nay bạn không có lịch làm việc.</p>
+    <h3 class="text-primary">Lịch sử chấm công</h3>
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
-                <th width="100px">Ca</th>
-                <th width="300px">Phòng</th>
-                <th width="300px">Danh sách bệnh nhân tái khám hôm nay</th>
+                <th width="100px">Năm</th>
+                <th width="100px">Tháng</th>
+                <th width="200px">Tổng số lần chấm công</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Ca 1</td>
-                <td>
-                    @if (ViewBag.CaTruc1 != null)
-                    {
-                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc1.RoomId">@ViewBag.CaTruc1.Name </a>
-                    }
-                </td>
-                <td>
-                    <ul class="list-unstyled">
-                        @if (ViewBag.CaTruc1 != null)
-                        {
-                            foreach(var pt in ViewBag.CaTruc1.Patients)
-                            {
-                                <li>@pt.Name</li>
-                            }
-                        }
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>Ca 2</td>
-                <td>
-                    @if (ViewBag.CaTruc2 != null)
-                    {
-                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc2.RoomId">@ViewBag.CaTruc2.Name </a>
-                    }
-                </td>
-                <td>
-                    <ul class="list-unstyled">
-                        @if (ViewBag.CaTruc2 != null)
-                        {
-                            foreach (var pt in ViewBag.CaTruc2.Patients)
-                            {
-                                <li>@pt.Name</li>
-                            }
-                        }
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>Ca 3</td>
-                <td>
-                    @if (ViewBag.CaTruc3 != null)
-                    {
-                        <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc3.RoomId">@ViewBag.CaTruc3.Name </a>
-                    }
-                </td>
-                <td>
-                    <ul class="list-unstyled">
-                        @if (ViewBag.CaTruc3 != null)
-                        {
-                            foreach (var pt in ViewBag.CaTruc3.Patients)
-                            {
-                                <li>@pt.Name</li>
-                            }
-                        }
-                    </ul>
-                </td>
-            </tr>
+            @if (chamcongs != null)
+            {
+                foreach (var record in chamcongs)
+                {
+                    <tr>
+                        <td>@record.Year</td>
+                        <td>@record.Month</td>
+                        <td>@record.TotalAttendance</td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
-</div>
+}
+else
+{
+    <div class="p-4">
+        <div class="row d-flex justify-content-start mb-2">
+            <h3 class="text-primary col-auto">Chấm công</h3>
+            <a asp-action="ChamCongClick" asp-controller="ChamCong" class="btn btn-primary col-auto">Click để chấm công</a>
+        </div>
+        <h3 class="text-primary">Lịch làm việc hôm nay ngày @DateTime.Now.Date</h3>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th width="100px">Ca</th>
+                    <th width="300px">Phòng</th>
+                    <th width="300px">Danh sách bệnh nhân tái khám hôm nay</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ca 1</td>
+                    <td>
+                        @if (ViewBag.CaTruc1 != null)
+                        {
+                            <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc1.RoomId">@ViewBag.CaTruc1.Name </a>
+                        }
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @if (ViewBag.CaTruc1 != null)
+                            {
+                                foreach (var pt in ViewBag.CaTruc1.Patients)
+                                {
+                                    <li>@pt.Name</li>
+                                }
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ca 2</td>
+                    <td>
+                        @if (ViewBag.CaTruc2 != null)
+                        {
+                            <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc2.RoomId">@ViewBag.CaTruc2.Name </a>
+                        }
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @if (ViewBag.CaTruc2 != null)
+                            {
+                                foreach (var pt in ViewBag.CaTruc2.Patients)
+                                {
+                                    <li>@pt.Name</li>
+                                }
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ca 3</td>
+                    <td>
+                        @if (ViewBag.CaTruc3 != null)
+                        {
+                            <a class="btn btn-primary" asp-controller="PhongKham" asp-action="Detail" asp-route-id="@ViewBag.CaTruc3.RoomId">@ViewBag.CaTruc3.Name </a>
+                        }
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @if (ViewBag.CaTruc3 != null)
+                            {
+                                foreach (var pt in ViewBag.CaTruc3.Patients)
+                                {
+                                    <li>@pt.Name</li>
+                                }
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="text-primary">Lịch sử chấm công</h3>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th width="100px">Năm</th>
+                    <th width="100px">Tháng</th>
+                    <th width="200px">Tổng số lần chấm công</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (chamcongs != null)
+                {
+                    foreach (var record in chamcongs)
+                    {
+                        <tr>
+                            <td>@record.Year</td>
+                            <td>@record.Month</td>
+                            <td>@record.TotalAttendance</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const notiButton = document.getElementById("notiButton");

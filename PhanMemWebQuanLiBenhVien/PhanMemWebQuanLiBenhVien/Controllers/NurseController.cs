@@ -1,10 +1,12 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2013.Excel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using PhanMemWebQuanLiBenhVien.Models.Models;
 using System.Data;
 using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
@@ -24,6 +26,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _webHostEnvironment = webHostEnvironment;
             _db = db;
             _userManager = userManager;
+        }
+        public IActionResult DashBoard(int NurseId)
+        {
+            return View(_unitOfWork.NurseRepository.Get(u=>u.NurseId == NurseId)); 
         }
         public IActionResult Index()
         {
@@ -90,6 +96,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     _unitOfWork.NurseRepository.Add(nurse);
                     _unitOfWork.Save();
                     TempData["success"] = "Thêm y tá mới thành công!";
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, nurse.NurseId, nurse, null);
                     return RedirectToAction("Index");
                 }
             }
@@ -157,10 +167,20 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                         }
                         nurse.NurseImgURL = @"\images\" + filename;
                     }
+                    var oldobj=_unitOfWork.NurseRepository.Get(u=>u.NurseId== nurse.NurseId);
+                    var details = new List<string>();
+                    if (oldobj.NurseName != nurse.NurseName) details.Add($"Tên: {oldobj.NurseName} -> {nurse.NurseName}");
+                    if (oldobj.NurseGender != nurse.NurseGender) details.Add($"Giới tính: {oldobj.NurseGender} -> {nurse.NurseGender}");
+                    if (oldobj.NurseAge != nurse.NurseAge) details.Add($"Tuổi: {oldobj.NurseAge} -> {nurse.NurseAge}"); ;
+                    if (oldobj.NurseCCCD != nurse.NurseCCCD) details.Add($"CCCD: {oldobj.NurseCCCD} -> {nurse.NurseCCCD}");  
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, nurse.NurseId, nurse, details);
                     _unitOfWork.NurseRepository.Update(nurse);
                     _unitOfWork.Save();
                     if (User.IsInRole("Nurse")) return RedirectToAction("NurseHomePage", new { NurseId = nurse.NurseId });
-                    TempData["success"] = "Cập nhật bệnh nhân thành công!";
+                    TempData["success"] = "Cập nhật thông tin y tá thành công!";
                     return RedirectToAction("Index");
                 }
             }
@@ -179,6 +199,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
         public async Task<IActionResult> Delete(int NurseId)
         {
+            var user = _db.customedUsers.FirstOrDefault(u => (u.UserId == NurseId && u.UserRole == ERole.nurse));
+            if (user != null)
+            {
+                TempData["error"] = "Đang có account không thể xoá";
+                return RedirectToAction("Index");
+            }
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
             wwwroot = _webHostEnvironment.WebRootPath;
             if (!string.IsNullOrEmpty(nurse.NurseImgURL))
@@ -186,10 +212,20 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var oldpath = Path.Combine(wwwroot, nurse.NurseImgURL.TrimStart('\\'));
                 if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
             }
-            var user = _db.customedUsers.FirstOrDefault(u => (u.UserId == NurseId && u.UserRole == ERole.nurse));
-            if (user!=null) _userManager.DeleteAsync(user).GetAwaiter().GetResult();
+            var fk = _unitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == nurse.NurseId);
+            if (fk != null)
+            {
+                TempData["error"] = "Bác sĩ có liên quan đến các bệnh án hiện có, không thể xoá";
+                return RedirectToAction("Index");
+            }
+            var chamcongs = _unitOfWork.ChamCongRepository.GetAll(u => u.NurseId == NurseId);
+            _unitOfWork.ChamCongRepository.RemoveRange(chamcongs); 
             _unitOfWork.NurseRepository.Remove(nurse);
             _unitOfWork.Save();
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, nurse.NurseId, nurse, null);
             return RedirectToAction("Index");
         }
         public IActionResult Detail(int NurseId)

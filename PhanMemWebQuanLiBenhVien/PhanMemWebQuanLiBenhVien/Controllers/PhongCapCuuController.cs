@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
@@ -11,9 +14,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class PhongCapCuuController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PhongCapCuuController(IUnitOfWork unitOfWork)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
+        public PhongCapCuuController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _db = db;
         }
 
         [HttpGet("Index")]
@@ -82,6 +89,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PhongCapCuuRepository.Add(phongCapCuu);
                 _unitOfWork.Save();
                 TempData["success"] = "Thêm phòng cấp cứu thành công!";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, phongCapCuu.RoomId, phongCapCuu, null);
                 return RedirectToAction("Index");
             }
 
@@ -121,6 +132,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                var details = new List<string>();
+                var objFromDb = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == phongCapCuu.RoomId);
+                if (objFromDb.Name != phongCapCuu.Name) details.Add($"Tên: {objFromDb.Name} -> {phongCapCuu.Name}");
+                if (objFromDb.isAvailable != phongCapCuu.isAvailable) details.Add($"Đang trưng dụng: {objFromDb.isAvailable} -> {phongCapCuu.isAvailable}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, phongCapCuu.RoomId, phongCapCuu, details);
                 _unitOfWork.PhongCapCuuRepository.Update(phongCapCuu);
                 _unitOfWork.Save();
                 TempData["success"] = "Cập nhật phòng cấp cứu thành công!";
@@ -144,6 +163,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                     _unitOfWork.PhongCapCuuRepository.Remove(phongCapCuu);
                     _unitOfWork.Save();
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, phongCapCuu.RoomId, phongCapCuu, null);
                     TempData["success"] = "Xóa phòng cấp cứu thành công!";
                 }
            
@@ -170,6 +193,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 phongCapCuu.isAvailable = false;
             }
+            var details = new List<string>();
+            var objFromDb = _unitOfWork.PhongCapCuuRepository.Get(u => u.RoomId == phongCapCuu.RoomId);
+            if (objFromDb.isAvailable != phongCapCuu.isAvailable) details.Add($"Đang trưng dụng: {objFromDb.isAvailable} -> {phongCapCuu.isAvailable}");
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, phongCapCuu.RoomId, phongCapCuu, details);
             _unitOfWork.PhongCapCuuRepository.Update(phongCapCuu);
             _unitOfWork.Save();
             return RedirectToAction("Index"); 

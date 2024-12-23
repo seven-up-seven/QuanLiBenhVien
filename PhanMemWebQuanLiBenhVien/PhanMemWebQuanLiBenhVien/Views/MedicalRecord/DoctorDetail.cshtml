@@ -8,16 +8,35 @@
 <div class="container mt-4">
     <div class="row my-2">
         <div class="col text-primary">
-            <h2>Chi Tiết Bệnh Án 
-                @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
-                {
-                    <span class="badge bg-danger">Đang chữa trị</span>
-                }
-                else
-                {
-                    <span class="badge bg-success">Kết thúc chữa trị</span>
-                }
-            </h2>
+            @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+            {
+                <h2>
+                    Chi Tiết Bệnh Án Nội Trú
+                    @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                    {
+                        <span class="badge bg-danger">Đang chữa trị</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Kết thúc chữa trị</span>
+                    }
+                </h2>
+            }
+            else
+            {
+                <h2>
+                    Chi Tiết Bệnh Án Ngoại Trú
+                    @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
+                    {
+                        <span class="badge bg-danger">Đang chữa trị</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Kết thúc chữa trị</span>
+                    }
+                </h2>
+            }
+            
         </div>
         <div class="col col-2 text-end text-center">
             @if (Model.TrangThaiBenhAn==PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
@@ -35,14 +54,32 @@
             <p><strong>BHYT:</strong> @Model.BHYT</p>
             <p><strong>Địa chỉ:</strong> @Model.Address</p>
             <p><strong>Tiền sử bệnh án:</strong> @Model.TienSuBenhAn</p>
-            <p><strong>Bác sĩ:</strong> @Model.Doctor?.DoctorName</p>
-            <p><strong>Phòng khám:</strong> @Model.PhongKham?.Name</p>
-            <p><strong>Phòng bệnh:</strong> @Model.PhongBenh?.Name</p>
-            <p><strong>Y tá:</strong> @Model.Nurse?.NurseName</p>
             <p><strong>Khoa điều trị:</strong> @Model.Profession?.ProfessionName</p>
+            @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.noitru)
+            {
+                <p><strong>Bác sĩ:</strong> @Model.Doctor?.DoctorName</p>
+                <p><strong>Y tá:</strong> @Model.Nurse?.NurseName</p>
+                <p><strong>Phòng bệnh:</strong> @Model.PhongBenh?.Name</p>
+            }
+            @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru)
+            {
+                <p><strong>Phòng khám:</strong> @Model.PhongKham?.Name</p>
+            }
+
             @if(Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
             {
-                <p><strong>Tình trạng:</strong> @Model.TinhTrangBenhNhan.ToString()</p>
+                @if (Model.TinhTrangBenhNhan == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETinhTrangBenhNhan.khongtrieuchung)
+                {
+                    <p><strong>Tình trạng:</strong> <span class="badge bg-success">@Model.TinhTrangBenhNhan.ToString()</span></p>
+                }
+                else if (Model.TinhTrangBenhNhan == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETinhTrangBenhNhan.cotrieuchung)
+                {
+                    <p><strong>Tình trạng:</strong> <span class="badge bg-warning">@Model.TinhTrangBenhNhan.ToString()</span></p>
+                }
+                else if (Model.TinhTrangBenhNhan == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETinhTrangBenhNhan.tronang)
+                {
+                    <p><strong>Tình trạng:</strong> <span class="badge bg-danger">@Model.TinhTrangBenhNhan.ToString()</span></p>
+                }
             }
         </div>
 
@@ -55,6 +92,10 @@
                         <tr>
                             <th>Lần khám</th>
                             <th>Ngày khám</th>
+                            @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru)
+                            {
+                                <th>Tên BS</th>
+                            }
                             <th>Triệu chứng</th>
                             <th>Kết quả lâm sàng</th>
                             <th>Chẩn đoán</th>
@@ -72,6 +113,7 @@
                             <tr>
                                 <td>@(i++)</td>
                                 <td>@visit.VisitDate.ToString("dd/MM/yyyy")</td>
+                                <td>@visit.TenBacSi</td>
                                 <td>@visit.Symptom</td>
                                 <td>@visit.KetQuaLamSang</td>
                                 <td>@visit.ChanDoan</td>

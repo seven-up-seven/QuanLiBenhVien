@@ -523,12 +523,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 var oldobj=_unitOfWork.MedicalRecordRepository.Get(u=>u.MedicalRecordId==medicalRecord.MedicalRecordId);
                 List<string> details = new List<string>();
-                if (medicalRecord.BHYT != null) details.Add($"BHYT: {oldobj.BHYT} -> {medicalRecord.BHYT}");
-                if (medicalRecord.TienSuBenhAn != null) details.Add($"Tiền sử bệnh án: {oldobj.TienSuBenhAn} -> {medicalRecord.TienSuBenhAn}");
+                if (medicalRecord.BHYT != oldobj.BHYT) details.Add($"BHYT: {oldobj.BHYT} -> {medicalRecord.BHYT}");
+                if (medicalRecord.TienSuBenhAn != oldobj.TienSuBenhAn) details.Add($"Tiền sử bệnh án: {oldobj.TienSuBenhAn} -> {medicalRecord.TienSuBenhAn}");
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
                 if (User.IsInRole("Doctor"))
@@ -703,9 +703,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult MedicalVisitUpdate(MedicalVisit medicalVisit, int MedicalRecordId)
         {
-            _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
-            _unitOfWork.Save();
-            var objFromDb=_unitOfWork.MedicalVisitRepository.Get(u=>u.VisitId==medicalVisit.VisitId);   
+            var objFromDb = _unitOfWork.MedicalVisitRepository.Get(u => u.VisitId == medicalVisit.VisitId);
             List<string> details = new List<string>();
             if (objFromDb.VisitDate != medicalVisit.VisitDate) details.Add($"Ngày khám: {objFromDb.VisitDate} -> {medicalVisit.VisitDate}");
             if (objFromDb.Symptom != medicalVisit.Symptom) details.Add($"Triệu chứng: {objFromDb.Symptom} -> {medicalVisit.Symptom}");
@@ -716,6 +714,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
             var truetmp_user = (CustomedUser)tmpuser;
             trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalVisit.VisitId, medicalVisit, details);
+            _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
+            _unitOfWork.Save();
             return RedirectToAction("DoctorDetail", new { MedicalRecordId = MedicalRecordId });
         }
 
@@ -733,8 +733,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.Save();
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var details=new List<string>();
+                details.Add("Đóng bệnh án");
                 var truetmp_user = (CustomedUser)tmpuser;
-                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
                 return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId=patient.PatientId});
             }
             return RedirectToAction("Index");

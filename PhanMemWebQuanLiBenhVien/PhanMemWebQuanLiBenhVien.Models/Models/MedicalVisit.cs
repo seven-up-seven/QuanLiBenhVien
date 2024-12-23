@@ -28,5 +28,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
 		public string IdThuocs { get; set; }
 		public string SoLuongThuocs { get; set; }
 		public DateTime NgayTaiKham { get; set; }
+
+		public string? TenBacSi { get; set; }
     }
 }
