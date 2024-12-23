@@ -1,0 +1,76 @@
+﻿@model List<ActivityHistory>
+
+@if (Model == null || Model.Count <= 0)
+{
+    <p class="text-muted">Không có hoạt động nào.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="">
+            <tr>
+                <th>Member ID</th>
+                <th>Member Name</th>
+                <th>Role</th>
+                <th>Activity</th>
+                <th>Details</th>
+                <th>Activity Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ah in Model)
+            {
+                <tr>
+                    <td>@ah.MemberId</td>
+                    <td>@ah.MemberName</td>
+                    <td>@ah.MemberRole</td>
+                    <td>@ah.Activity</td>
+                    <td>
+                        @if (ah.UpdateDetails!=null)
+                        {
+                            var ls = ah.UpdateDetails.Split(",");
+                            foreach (string s in ls)
+                            {
+                                <p>@s</p>
+                                <br />
+                            }
+                        }
+                        else
+                        {
+                            <p>N/A</p>
+                        }
+                    </td>
+                    <td>@ah.ActivityTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<style>
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-dark {
+        background-color: #343a40;
+        color: #ffffff;
+    }
+
+    .text-muted {
+        color: #6c757d;
+        font-style: italic;
+    }
+</style>
+
