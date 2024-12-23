@@ -103,7 +103,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				var objFromDb=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId== profession.ProfessionId);
 				if (profession.ProfessionName != objFromDb.ProfessionName) details.Add($"Tên: {objFromDb.ProfessionName} -> {profession.ProfessionName}");
                 if (profession.Description != objFromDb.Description) details.Add($"Mô tả: {objFromDb.Description} -> {profession.Description}");
-                if (objFromDb.TruongKhoaId != profession.TruongKhoaId) details.Add($"Trưởng khoa: {_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==objFromDb.TruongKhoaId).DoctorName} -> {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
+                if (objFromDb.TruongKhoaId != profession.TruongKhoaId)
+				{
+					if (objFromDb.TruongKhoaId != null && profession.TruongKhoaId != null) details.Add($"Trưởng khoa: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == objFromDb.TruongKhoaId).DoctorName} -> {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
+					else if (objFromDb.TruongKhoaId != null && profession.TruongKhoaId == null) details.Add($"Bỏ trưởng khoa: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == objFromDb.TruongKhoaId).DoctorName}");
+					else details.Add($"Trưởng khoa mới: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
+                }
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
@@ -168,8 +173,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.Save();
                 if (profession.ProfessionName != objFromDb.ProfessionName) details.Add($"Tên: {objFromDb.ProfessionName} -> {profession.ProfessionName}");
                 if (profession.Description != objFromDb.Description) details.Add($"Mô tả: {objFromDb.Description} -> {profession.Description}");
-                if (objFromDb.TruongKhoaId != profession.TruongKhoaId) details.Add($"Trưởng khoa mới: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
-                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+				if (objFromDb.TruongKhoaId != profession.TruongKhoaId)
+				{
+					if (profession.ProfessionId!=null) details.Add($"Trưởng khoa mới: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
+					else details.Add($"Bỏ trưởng khoa: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == objFromDb.TruongKhoaId).DoctorName}");
+                }
+				ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
                 var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
                 var truetmp_user = (CustomedUser)tmpuser;
                 trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, profession.ProfessionId, profession, details);
