@@ -64,7 +64,8 @@ namespace PhanMemWebQuanLiBenhVien.Ultilities
             sua,
             xoa,
             dongbenhan,
-            trichxuatthuoc
+            trichxuatthuoc,
+            hoanthanhmission
         }
     }
 }

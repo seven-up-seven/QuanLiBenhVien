@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
@@ -11,9 +15,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class WorkScheduleController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public WorkScheduleController(IUnitOfWork unitOfWork)
+        private UserManager<IdentityUser> _userManager;
+        private ApplicationDbContext _db;
+        public WorkScheduleController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _db = db;
         }
 
         [HttpGet("Index")]
@@ -176,6 +184,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 if (workschedule.DoctorId3 == 0) workschedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Add(workschedule);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                var details = new List<string>();
+                details.Add("Lịch làm việc phòng khám");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, workschedule.WorkScheduleId, workschedule, details);
                 return RedirectToAction("Index");
             }
             return View();
@@ -247,6 +261,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 if (workschedule.DoctorId3 == 0) workschedule.DoctorId3 = null;
                 _unitOfWork.WorkScheduleRepository.Add(workschedule);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                var details=new List<string>();
+                details.Add("Lịch làm việc phòng cấp cứu");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, workschedule.WorkScheduleId, workschedule, details);
                 return RedirectToAction("Index");
             }
             return View();
@@ -334,6 +354,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.WorkScheduleRepository.Update(workSchedule);
                 if (workSchedule.DoctorId1 == null && workSchedule.DoctorId2 == null && workSchedule.DoctorId3 == null) _unitOfWork.WorkScheduleRepository.Remove(workSchedule);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                var details=new List<string>();
+                details.Add($"Lịch làm việc phòng cấp cứu vào thứ: {workSchedule.DayOfWeek}");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, workSchedule.WorkScheduleId, workSchedule, details);
                 return RedirectToAction("Index");
             }
             return View();
@@ -430,6 +456,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.WorkScheduleRepository.Update(workSchedule);
                 if (workSchedule.DoctorId1 == null && workSchedule.DoctorId2 == null && workSchedule.DoctorId3 == null) _unitOfWork.WorkScheduleRepository.Remove(workSchedule);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                var details = new List<string>();
+                details.Add($"Lịch làm việc phòng khám vào thứ: {workSchedule.DayOfWeek}");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, workSchedule.WorkScheduleId, workSchedule, details);
                 return RedirectToAction("Index");
             }
             return View();

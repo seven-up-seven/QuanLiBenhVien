@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using PhanMemWebQuanLiBenhVien.Models.Models;
 using System.Linq;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -10,9 +15,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class PhongKhamController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PhongKhamController(IUnitOfWork unitOfWork)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
+        public PhongKhamController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _db = db;
         }
 
         [HttpGet("Index")]
@@ -107,6 +116,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PhongKhamRepository.Add(phongKham);
                 _unitOfWork.Save();
                 TempData["success"] = "Thêm phòng khám thành công!";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, phongKham.RoomId, phongKham, null);
                 return RedirectToAction("Index");
             }
             ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
@@ -170,6 +183,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                var details=new List<string>();
+                var objFromDb=_unitOfWork.PhongKhamRepository.Get(u=>u.RoomId== phongKham.RoomId);
+                if (objFromDb.Name != phongKham.Name) details.Add($"Tên: {objFromDb.Name} -> {phongKham.Name}");
+                if (objFromDb.ProfessionId != phongKham.ProfessionId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==objFromDb.ProfessionId).ProfessionName} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == phongKham.ProfessionId).ProfessionName}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, phongKham.RoomId, phongKham, details);
                 _unitOfWork.PhongKhamRepository.Update(phongKham);
                 _unitOfWork.Save();
                 TempData["success"] = "Cập nhật phòng khám thành công!";
@@ -205,7 +226,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 {
                     _unitOfWork.PhongKhamRepository.Remove(phongKham);
                     _unitOfWork.Save();
-                    TempData["success"] = "Xoá phòng thành công";   
+                    TempData["success"] = "Xoá phòng thành công";
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var truetmp_user = (CustomedUser)tmpuser;
+                    trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, phongKham.RoomId, phongKham, null);
                     return RedirectToAction("Index");
                 }
             }
