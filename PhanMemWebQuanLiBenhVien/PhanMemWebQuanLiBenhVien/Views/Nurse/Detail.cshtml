@@ -100,7 +100,7 @@
 
     <div class="row d-flex justify-content-start mt-4">
         <a asp-controller="Nurse" asp-action="Index" class="btn text-white col-auto">Quay lại</a>
-        <form method="post" asp-controller="Nurse" asp-action="Delete" asp-route-NurseId="@Model.NurseId" class="col-auto">
+        <form method="post" asp-controller="Nurse" asp-action="Delete" asp-route-NurseId="@Model.NurseId" class="col-auto" onsubmit="return confirm('Bạn có chắc chắn muốn xoá y tá này không?');">
             <button class="btn text-white" type="submit">Xoá</button>
         </form>
     </div>

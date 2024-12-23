@@ -220,10 +220,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 if(mr_fk != null)
                 {
-                    _unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk); 
+                    TempData["error"] = "Phòng khám liên quan đến một số dữ liệu bệnh án hiện tại, không thể xoá";
+                    return RedirectToAction("Index");
                 }
                 if (phongKham != null)
                 {
+                    var a= _unitOfWork.MissionRepository.GetAll(u => u.PhongKhamId == phongKham.RoomId);
+                    _unitOfWork.MissionRepository.RemoveRange(a); 
                     _unitOfWork.PhongKhamRepository.Remove(phongKham);
                     _unitOfWork.Save();
                     TempData["success"] = "Xoá phòng thành công";

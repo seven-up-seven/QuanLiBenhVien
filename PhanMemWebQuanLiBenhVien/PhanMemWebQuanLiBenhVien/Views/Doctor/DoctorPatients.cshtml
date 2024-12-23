@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<Patient>
+@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
 @{
 	Layout = "~/Views/Shared/_CustomedLayout.cshtml";
 }
 <link rel="stylesheet" href="~/css/Doctor/DoctorPatients.css"/>
-<h2 class="text-primary">Danh sách </h2>
+<h2 class="text-primary">Danh sách bệnh nhân nội trú đang phụ trách</h2>
 <form method="post" class="d-flex justify-content-end gap-2 mb-3">
 	<input name="SearchPatientName" placeholder="Tìm bệnh nhân theo tên" class="rounded-3"/>
 	<input name="DoctorId" value="@ViewBag.doctor.DoctorId" hidden />
@@ -15,7 +17,7 @@
 </form>
 @if(Model.Count() == 0)
 {
-	<p>Trống</p>
+	<p>Trống.</p>
 }
 else
 {
@@ -82,3 +84,80 @@ else
 		</table>
 	</div>
 }
+<div class="row">
+	<div class="col col-6">
+		<h2>Lịch sử điều trị nội trú</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					int i = ViewBag.doctor.DoctorId; 
+					var pureDoctor = UnitOfWork.DoctorRepository.Get(u=>u.DoctorId == i); 
+					var patientlist = UnitOfWork.MedicalRecordRepository.GetAll(u => u.DoctorId == i);
+					if (patientlist.Count() != 0)
+					{
+						foreach (var patient in patientlist)
+						{
+							<tr>
+								<td><a href="@Url.Action("DoctorPatientDetail", "Doctor", new {PatientId = patient.PatientId})" class="text-white btn btn-primary">@patient.PatientName</a></td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td>Trống.</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+	<div class=" col col-6">
+		<h2>Lịch sử điều trị ngoại trú</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					var mrlist = UnitOfWork.MedicalRecordRepository.GetAll();
+					var ptlist = new List<Patient>();
+					foreach(var pt in mrlist)
+					{
+						pt.Visits = UnitOfWork.MedicalVisitRepository.GetAll(u=>u.MedicalRecordId == pt.MedicalRecordId).ToList(); 
+						foreach(var vs in pt.Visits)
+						{
+							Patient pn = UnitOfWork.PatientRepository.Get(u => u.PatientId == pt.PatientId); 
+							if (vs.TenBacSi == "Tên bác sĩ: " + pureDoctor.DoctorName + " ID: " + pureDoctor.DoctorId && !ptlist.Any(u=> u.PatientId == pn.PatientId))
+							{
+								ptlist.Add(pn); 
+							}
+						}
+					}
+					if (ptlist.Count() != 0)
+					{
+						foreach (var patient in ptlist)
+						{
+							<tr>
+								<td><a href="@Url.Action("DoctorPatientDetail", "Doctor", new {PatientId = patient.PatientId})" class="text-white btn btn-primary">@patient.Name</a></td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td>Trống.</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,6 +1,12 @@
 ﻿@model MedicalVisit  
+@using Microsoft.AspNetCore.Identity
+@using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces
+@inject IUnitOfWork UnitOfWork
+@inject UserManager<IdentityUser> _userManager
 @{  
    ViewData["Title"] = "Thêm lần khám";  
+    int mrid = ViewBag.MedicalRecordId; 
+    var us = (CustomedUser)_userManager.GetUserAsync(User).GetAwaiter().GetResult();
 }  
 <link rel="stylesheet" href="~/css/MedicalRecord/CreateMedicalVisit.css" />
 <div class="container mt-4">  
@@ -19,8 +25,29 @@
            <label asp-for="VisitDate">Ngày khám</label>  
            <input asp-for="VisitDate" class="form-control"/>  
            <span asp-validation-for="VisitDate" class="text-danger"></span>
-       </div>  
-       <div class="form-group">  
+       </div>
+        @if (UnitOfWork.MedicalRecordRepository.Get(u => u.MedicalRecordId == mrid).TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru)
+        {
+            if(User.IsInRole("Doctor"))
+            {
+                var doctor = UnitOfWork.DoctorRepository.Get(u => u.DoctorId == us.UserId);
+                string abc = "Tên bác sĩ: " + doctor.DoctorName + " ID: " + doctor.DoctorId; 
+                <div class="form-group">
+                    <label asp-for="TenBacSi">Tên bác sĩ</label>
+                    <input asp-for="TenBacSi" class="form-control" value="@abc" readonly/>
+                    <span asp-validation-for="TenBacSi" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="TenBacSi">Tên bác sĩ</label>
+                    <input asp-for="TenBacSi" class="form-control" />
+                    <span asp-validation-for="TenBacSi" class="text-danger"></span>
+                </div>
+            }
+        }
+        <div class="form-group">  
            <label asp-for="Symptom">Triệu chứng</label>  
            <input asp-for="Symptom" class="form-control"/>
             <span asp-validation-for="Symptom" class="text-danger"></span>
