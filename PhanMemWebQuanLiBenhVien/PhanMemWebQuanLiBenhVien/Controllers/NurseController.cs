@@ -200,6 +200,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         }
         public async Task<IActionResult> Delete(int NurseId)
         {
+            var user = _db.customedUsers.FirstOrDefault(u => (u.UserId == NurseId && u.UserRole == ERole.nurse));
+            if (user != null)
+            {
+                TempData["error"] = "Đang có account không thể xoá";
+                return RedirectToAction("Index");
+            }
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
             wwwroot = _webHostEnvironment.WebRootPath;
             if (!string.IsNullOrEmpty(nurse.NurseImgURL))
@@ -207,8 +213,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var oldpath = Path.Combine(wwwroot, nurse.NurseImgURL.TrimStart('\\'));
                 if (System.IO.File.Exists(oldpath)) System.IO.File.Delete(oldpath);
             }
-            var user = _db.customedUsers.FirstOrDefault(u => (u.UserId == NurseId && u.UserRole == ERole.nurse));
-            if (user!=null) _userManager.DeleteAsync(user).GetAwaiter().GetResult();
+            var fk = _unitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == nurse.NurseId);
+            if (fk != null)
+            {
+                TempData["error"] = "Bác sĩ có liên quan đến các bệnh án hiện có, không thể xoá";
+                return RedirectToAction("Index");
+            }
+            var chamcongs = _unitOfWork.ChamCongRepository.GetAll(u => u.NurseId == NurseId);
+            _unitOfWork.ChamCongRepository.RemoveRange(chamcongs); 
             _unitOfWork.NurseRepository.Remove(nurse);
             _unitOfWork.Save();
             ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);

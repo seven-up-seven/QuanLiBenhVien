@@ -285,9 +285,19 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 			    var user=_db.customedUsers.FirstOrDefault(u=>(u.UserId == DoctorId && u.UserRole==ERole.doctor));
                 if(user!=null)
                 {
-                    _userManager.DeleteAsync(user).GetAwaiter().GetResult();
+                    TempData["error"] = "Đang có account không thể xoá"; 
+                    return RedirectToAction("Index");
+                    //_userManager.DeleteAsync(user).GetAwaiter().GetResult();
                 }
-			    _unitOfWork.DoctorRepository.Remove(doctor);
+                var chamcongs = _unitOfWork.ChamCongRepository.GetAll(cc => cc.DoctorId == DoctorId);
+                var fk = _unitOfWork.MedicalRecordRepository.GetAll(u => u.DoctorId == doctor.DoctorId);
+                if (fk != null)
+                {
+                    TempData["error"] = "Bác sĩ có liên quan đến các bệnh án hiện có, không thể xoá";
+                    return RedirectToAction("Index");
+                }
+                _unitOfWork.ChamCongRepository.RemoveRange(chamcongs); 
+                _unitOfWork.DoctorRepository.Remove(doctor);
 			    _unitOfWork.Save();
                 TempData["success"] = "Xoá bác sĩ thành công";
                 ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
