@@ -1,17 +1,20 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
 using System.Data;
 using System.Numerics;
+using System.Reflection;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
@@ -20,11 +23,15 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     {
         private IUnitOfWork _uniUnitOfWork;
         private string wwwroot;
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
         private IWebHostEnvironment _webHostEnvironment;
-        public NhanSuController(IUnitOfWork unitOfWork, IWebHostEnvironment webhostenvironment)
+        public NhanSuController(IUnitOfWork unitOfWork, IWebHostEnvironment webhostenvironment, ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _uniUnitOfWork = unitOfWork;
             _webHostEnvironment = webhostenvironment;
+            _userManager = userManager;
+            _db = db;
         }
         public IActionResult Create()
         {
@@ -80,6 +87,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 else nhansu.ImgUrl = "";
                 _uniUnitOfWork.NhanSuRepository.Add(nhansu);
                 _uniUnitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _uniUnitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                List<string> details=new List<string>();
+                details.Add($"Vai trò: {nhansu.Role.ToString()}");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, nhansu.NhanSuId, nhansu, details);
                 return RedirectToAction("Index");
             }
             else
@@ -239,6 +252,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     nhansu.ImgUrl = @"\images\" + filename;
                 }
                 else nhansu.ImgUrl = "";
+                List<string> details = new List<string>();
+                var oldobj=_uniUnitOfWork.NhanSuRepository.Get(u=>u.NhanSuId== nhansu.NhanSuId);
+                if (nhansu.NhanSuName != oldobj.NhanSuName) details.Add($"Tên: {oldobj.NhanSuName} -> {nhansu.NhanSuName}");
+                if (nhansu.NhanSuAge != oldobj.NhanSuAge) details.Add($"Tuổi: {oldobj.NhanSuAge} -> {nhansu.NhanSuAge}");
+                if (nhansu.NhanSuGender != oldobj.NhanSuGender) details.Add($"Giới tính: {oldobj.NhanSuGender} -> {nhansu.NhanSuGender}");
+                if (nhansu.Address != oldobj.Address) details.Add($"Địa chỉ: {oldobj.Address} -> {nhansu.Address}");
+                if (oldobj.Role != nhansu.Role) details.Add($"Vai trò: {oldobj.Role} -> {nhansu.Role}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _uniUnitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, nhansu.NhanSuId, nhansu, details);
                 _uniUnitOfWork.NhanSuRepository.Update(nhansu);
                 _uniUnitOfWork.Save();
                 if (User.IsInRole("QuanLiNhanSu") || User.IsInRole("QuanLiBenhNhan") || User.IsInRole("QuanLiVatTu"))
@@ -310,6 +334,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _uniUnitOfWork.NhanSuRepository.Remove(nhansu);
                 _uniUnitOfWork.Save();
                 TempData["success"] = "Xóa nhân sự thành công!";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _uniUnitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                List<string> details = new List<string>();
+                details.Add($"Vai trò: {nhansu.Role.ToString()}");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, nhansu.NhanSuId, nhansu, details);
                 return RedirectToAction("Index");
             }
         }

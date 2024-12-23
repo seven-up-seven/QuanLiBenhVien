@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -9,9 +13,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 	public class ProfessionController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		public ProfessionController(IUnitOfWork unitOfWork)
+		private ApplicationDbContext _db;
+		private UserManager<IdentityUser> _userManager;
+		public ProfessionController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
 		{
 			_unitOfWork = unitOfWork;
+			_userManager = userManager;
+			_db = db;
 		}
 
 		[HttpGet("Index")]
@@ -51,6 +59,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				_unitOfWork.ProfessionRepository.Add(profession);
 				_unitOfWork.Save();
                 TempData["success"] = "Thêm chuyên khoa thành công!";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, profession.ProfessionId, profession, null);
                 return RedirectToAction("Index");
 			}
 
@@ -87,7 +99,16 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_unitOfWork.ProfessionRepository.Update(profession);
+				var details=new List<string>();
+				var objFromDb=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId== profession.ProfessionId);
+				if (profession.ProfessionName != objFromDb.ProfessionName) details.Add($"Tên: {objFromDb.ProfessionName} -> {profession.ProfessionName}");
+                if (profession.Description != objFromDb.Description) details.Add($"Mô tả: {objFromDb.Description} -> {profession.Description}");
+                if (objFromDb.TruongKhoaId != profession.TruongKhoaId) details.Add($"Trưởng khoa: {_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==objFromDb.TruongKhoaId).DoctorName} -> {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, profession.ProfessionId, profession, details);
+                _unitOfWork.ProfessionRepository.Update(profession);
 				_unitOfWork.Save();
                 TempData["success"] = "Cập nhật chuyên khoa thành công!";
                 return RedirectToAction("Index");
@@ -105,6 +126,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 				
                 _unitOfWork.ProfessionRepository.Remove(profession);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, profession.ProfessionId, profession, null);
                 TempData["success"] = "Chuyên khoa đã được xóa thành công!";
             }
 			else
@@ -135,10 +160,19 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 profession.TruongKhoaId = TruongKhoaId;
                 profession.TruongKhoaName = doctor.DoctorName;
                 doctor.IsTruongKhoa = true;
+                var details = new List<string>();
+                var objFromDb = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == profession.ProfessionId);
                 _unitOfWork.ProfessionRepository.Update(profession);
                 _unitOfWork.DoctorRepository.Update(doctor);
 				TempData["success"] = "Cập nhật trưởng khoa thành công"; 
                 _unitOfWork.Save();
+                if (profession.ProfessionName != objFromDb.ProfessionName) details.Add($"Tên: {objFromDb.ProfessionName} -> {profession.ProfessionName}");
+                if (profession.Description != objFromDb.Description) details.Add($"Mô tả: {objFromDb.Description} -> {profession.Description}");
+                if (objFromDb.TruongKhoaId != profession.TruongKhoaId) details.Add($"Trưởng khoa: {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == objFromDb.TruongKhoaId).DoctorName} -> {_unitOfWork.DoctorRepository.Get(u => u.DoctorId == profession.TruongKhoaId).DoctorName}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, profession.ProfessionId, profession, details);
                 return RedirectToAction("Index");
             }
 			else
