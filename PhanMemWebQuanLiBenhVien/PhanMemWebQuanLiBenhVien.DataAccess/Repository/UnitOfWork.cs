@@ -26,6 +26,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
         public IMedicineRepository MedicineRepository { get; }
         public ApplicationDbContext db_ { get { return _db; } }
         public INhanSuRepository NhanSuRepository { get; }
+        public IActivityHistory ActivityHistoryRepository { get; }
         
         public UnitOfWork(ApplicationDbContext db)                 
         {
@@ -43,6 +44,7 @@ namespace PhanMemWebQuanLiBenhVien.DataAccess.Repository
             PhongCapCuuRepository = new PhongCapCuuRepository(_db);
             MedicineRepository = new MedicineRepository(_db);
             NhanSuRepository = new NhanSuRepository(_db);
+            ActivityHistoryRepository= new ActivityHistoryRepository(_db);
         }
 
         public void Save()

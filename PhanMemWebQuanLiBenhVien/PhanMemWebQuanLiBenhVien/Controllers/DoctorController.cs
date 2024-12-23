@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
 using PhanMemWebQuanLiBenhVien.Ultilities;
+using System.Data;
 using System.Security.Principal;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -138,7 +141,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     else doctor.DoctorImgURL = "";
                     _unitOfWork.DoctorRepository.Add(doctor);
                     TempData["success"] = "Tạo bác sĩ mới thành công!";
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var user=_userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var true_user=(CustomedUser)user;
                     _unitOfWork.Save();
+                    trackingtool.TrackingActivity(true_user.UserId, true_user.UserName, ETypeOfActivity.them, true_user.UserRole, doctor.DoctorId, doctor, null);
                     return RedirectToAction("Index");
                 }
             }
@@ -209,6 +216,14 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 else
                 {
+                    var olddoctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==doctor.DoctorId);
+                    List<string> details = new List<string>();
+                    if (olddoctor.DoctorName != doctor.DoctorName) details.Add($"Tên bác sĩ: {olddoctor.DoctorName} -> {doctor.DoctorName}");
+                    if (olddoctor.DoctorGender != doctor.DoctorGender) details.Add($"Giới tính: {olddoctor.DoctorGender.ToString()} -> {doctor.DoctorGender.ToString()}");
+                    if (olddoctor.DoctorAge != doctor.DoctorAge) details.Add($"Tuổi: {olddoctor.DoctorAge} -> {doctor.DoctorAge}");
+                    if (olddoctor.DoctorCCCD != doctor.DoctorCCCD) details.Add($"CCCD: {olddoctor.DoctorCCCD} -> {doctor.DoctorCCCD}");
+                    if (olddoctor.ProfessionId != doctor.ProfessionId) details.Add($"Chuyên khoa: {_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==olddoctor.ProfessionId).ProfessionName} -> {_unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == doctor.ProfessionId).ProfessionName}");
+                    if (doctor.DoctorImgURL != null) details.Add("Ảnh đại diện");
                     wwwroot = _webHostEnvironment.WebRootPath;
                     if (DoctorImg != null)
                     {
@@ -222,6 +237,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                     _unitOfWork.DoctorRepository.Update(doctor);
                     _unitOfWork.Save();
+                    ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                    var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                    var true_user = (CustomedUser)user;
+                    trackingtool.TrackingActivity(true_user.UserId, true_user.UserName, ETypeOfActivity.sua, true_user.UserRole, doctor.DoctorId, doctor, details);
                     TempData["success"] = "Cập nhật bác sĩ thành công!";
                     if (User.IsInRole("Doctor")) return RedirectToAction("DoctorHomePage", new { DoctorId = doctor.DoctorId });
                     return RedirectToAction("Index");
@@ -255,7 +274,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 doctor.PatientList.Add(_unitOfWork.PatientRepository.Get(pt => pt.PatientId == mr.PatientId));
             }
-            if(doctor.PatientList.Count() > 0)
+            if(doctor.PatientList.Count() == 0)
             {
 			    wwwroot = _webHostEnvironment.WebRootPath;
 			    if (!string.IsNullOrEmpty(doctor.DoctorImgURL))
@@ -270,7 +289,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
 			    _unitOfWork.DoctorRepository.Remove(doctor);
 			    _unitOfWork.Save();
-                    TempData["success"] = "Xoá bác sĩ thành công";
+                TempData["success"] = "Xoá bác sĩ thành công";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var true_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(true_user.UserId, true_user.UserName, ETypeOfActivity.xoa, true_user.UserRole, doctor.DoctorId, doctor, null);
             }
             else
             {
@@ -635,6 +658,49 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 
             return View(doctor);
         }
-
+        public FileResult DoctorExportExcel(string filename, IEnumerable<Doctor> list)
+        {
+            DataTable dataTable = new DataTable("Doctor");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("ID bác sĩ"),
+                new DataColumn("Tên bác sĩ"),
+                new DataColumn("CCCD"),
+                new DataColumn("Giới tính"),
+                new DataColumn("Tuổi"),
+                new DataColumn("Chuyên khoa")
+            });
+            foreach (var doctor in list)
+            {
+                var profession=_unitOfWork.ProfessionRepository.Get(u=>u.ProfessionId==doctor.ProfessionId);
+                string gioitinh = "";
+                string truongkhoa = "";
+                if (doctor.DoctorGender == EGender.male) gioitinh = "nam";
+                else gioitinh = "nữ";
+                if (doctor.IsTruongKhoa == false) truongkhoa = "không";
+                else truongkhoa = "có";
+                dataTable.Rows.Add(doctor.DoctorId, doctor.DoctorName, doctor.DoctorCCCD, gioitinh, doctor.DoctorAge, profession.ProfessionName);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                }
+            }
+        }
+        public FileResult DoctorExport(string ids)
+        {
+            var realid = ids.TrimEnd(',');
+            var idList = realid.Split(',').Select(int.Parse).ToList();
+            var list = new List<Doctor>();
+            foreach (var id in idList)
+            {
+                list.Add(_unitOfWork.DoctorRepository.Get(u=>u.DoctorId == id));    
+            }
+            return DoctorExportExcel("danhsachbacsi.xlsx", list);
+        }
     }
 }

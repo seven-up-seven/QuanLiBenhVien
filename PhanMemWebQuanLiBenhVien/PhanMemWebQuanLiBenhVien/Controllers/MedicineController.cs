@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using NuGet.Packaging.Signing;
+using PhanMemWebQuanLiBenhVien.DataAccess;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using PhanMemWebQuanLiBenhVien.Models.Models;
+using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
 namespace PhanMemWebQuanLiBenhVien.Controllers
 {
@@ -11,10 +14,12 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
-        public MedicineController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+        private ApplicationDbContext _db;
+        public MedicineController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _db = db;
         }
 
         public IActionResult Index()
@@ -28,10 +33,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         [HttpPost]
         public IActionResult Index(int SearchID, string SearchMedicineName)
         {
-            var medicinelist = _unitOfWork.MedicineRepository.GetAll();
-            if (!string.IsNullOrEmpty(SearchMedicineName)) medicinelist = medicinelist.Where(u => u.Name.ToLower().Contains(SearchMedicineName.ToLower()));
-            if (SearchID != null && SearchID != 0) medicinelist = medicinelist.Where(u => u.MedicineId == SearchID);
-            return View(medicinelist);
+            var medicines = _unitOfWork.MedicineRepository.GetAll();
+            var validMedicines = medicines.Where(m => m.Quantity > -1 && m.ExpiryDate >= DateTime.Now).ToList();
+            var invalidMedicines = medicines.Where(m => m.Quantity <= -1 || m.ExpiryDate < DateTime.Now).ToList();
+            var sortedMedicines = validMedicines.Concat(invalidMedicines).ToList();
+            if (!string.IsNullOrEmpty(SearchMedicineName)) sortedMedicines = sortedMedicines.Where(u => u.Name.ToLower().Contains(SearchMedicineName.ToLower())).ToList();
+            if (SearchID != null && SearchID != 0) sortedMedicines = sortedMedicines.Where(u => u.MedicineId == SearchID).ToList();
+            return View(sortedMedicines);
         }
 
 
@@ -57,6 +65,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.MedicineRepository.Add(medicine);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicine.MedicineId, medicine, null);
                 return RedirectToAction(nameof(Index));
             }
             return View(medicine);
@@ -76,6 +88,18 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.MedicineRepository.Update(medicine);
                 _unitOfWork.Save();
+                List<string> details=new List<string>();
+                var objFromDb=_unitOfWork.MedicineRepository.Get(u=>u.MedicineId==medicine.MedicineId);
+                if (medicine.Name != objFromDb.Name) details.Add($"Tên: {objFromDb.Name} -> {medicine.Name}");
+                if (medicine.Usage != objFromDb.Usage) details.Add($"Cách sử dụng: {objFromDb.Usage} -> {medicine.Usage}");
+                if (medicine.Unit != objFromDb.Unit) details.Add($"Đơn vị: {objFromDb.Unit} -> {medicine.Unit}");
+                if (medicine.Price != objFromDb.Price) details.Add($"Giá: {objFromDb.Price} -> {medicine.Price}");
+                if (medicine.Quantity != objFromDb.Quantity) details.Add($"Số lượng: {objFromDb.Quantity} -> {medicine.Quantity}");
+                if (medicine.ExpiryDate != default(DateTime)) details.Add($"Ngày hết hạn: {objFromDb.ExpiryDate} -> {medicine.ExpiryDate}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicine.MedicineId, medicine, details);
                 return RedirectToAction("Index");
             }
             return View(medicine);
@@ -91,6 +115,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             }
             _unitOfWork.MedicineRepository.Remove(medicine);
             _unitOfWork.Save();
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, medicine.MedicineId, medicine, null);
             return RedirectToAction("Index");
         }
 
@@ -232,6 +260,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 {
                     thuoc.Quantity = thuoc.Quantity - quantities[key];
                 }
+                var oldmedicine = _unitOfWork.MedicineRepository.Get(u => u.MedicineId == thuoc.MedicineId);
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                List<string> details = new List<string>();
+                details.Add($"Số lượng: {oldmedicine.Quantity} -> {thuoc.Quantity}");
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.trichxuatthuoc, truetmp_user.UserRole, thuoc.MedicineId, thuoc, details);
                 _unitOfWork.MedicineRepository.Update(thuoc);
             }
             _unitOfWork.Save();

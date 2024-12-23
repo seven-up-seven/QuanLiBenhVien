@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using PhanMemWebQuanLiBenhVien.DataAccess;
+using PhanMemWebQuanLiBenhVien.DataAccess.Repository;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
@@ -11,9 +15,13 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
     public class MedicalRecordController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public MedicalRecordController(IUnitOfWork unitOfWork)
+        private ApplicationDbContext _db;
+        private UserManager<IdentityUser> _usermanager;
+        public MedicalRecordController(IUnitOfWork unitOfWork, ApplicationDbContext db, UserManager<IdentityUser> usermanager)
         {
             _unitOfWork = unitOfWork;
+            _db = db;
+            _usermanager = usermanager;
         }
 
         [HttpGet("Index")]
@@ -56,7 +64,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (!string.IsNullOrEmpty(SearchPatientCCCD)) listMedicalRecord = listMedicalRecord.Where(u => u.Patient.CCCD.Contains(SearchPatientCCCD));
             if (ProfessionId != 0) listMedicalRecord = listMedicalRecord.Where(u=>u.ProfesisonId==ProfessionId);
             if (SearchTrangThaiBenhAn != "NoFilter") listMedicalRecord = listMedicalRecord.Where(u => u.TrangThaiBenhAn.ToString() == SearchTrangThaiBenhAn);
-            if(SearchID != null)
+            if(SearchID != null && SearchID != 0)
             {
                 listMedicalRecord = listMedicalRecord.Where(u => u.MedicalRecordId == SearchID); 
             }
@@ -190,6 +198,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PatientRepository.Update(patient);
                 _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("Index");
             }
             var patientList = _unitOfWork.PatientRepository.GetAll(u => u.MedicalRecords == null || u.TrangThaiBenhAn == ETrangThaiBenhAn.ketthucchuatri);
@@ -460,6 +472,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PatientRepository.Update(pnt);
                 _unitOfWork.MedicalRecordRepository.Add(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId = medicalRecord.PatientId});
             }
             return RedirectToAction("DoctorCreate");
@@ -505,13 +521,21 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             if (ModelState.IsValid)
             {
+                var oldobj=_unitOfWork.MedicalRecordRepository.Get(u=>u.MedicalRecordId==medicalRecord.MedicalRecordId);
+                List<string> details = new List<string>();
+                if (medicalRecord.BHYT != null) details.Add($"BHYT: {oldobj.BHYT} -> {medicalRecord.BHYT}");
+                if (medicalRecord.TienSuBenhAn != null) details.Add($"Tiền sử bệnh án: {oldobj.TienSuBenhAn} -> {medicalRecord.TienSuBenhAn}");
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, details);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
                 if (User.IsInRole("Doctor"))
                 {
                     return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalRecord.MedicalRecordId });
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalRecord.MedicalRecordId });
             }
             return View(medicalRecord.MedicalRecordId);
         }
@@ -524,7 +548,11 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 _unitOfWork.MedicalRecordRepository.Remove(medicalRecord);
                 _unitOfWork.Save();
-                TempData["success"] = "Xoá thành công"; 
+                TempData["success"] = "Xoá thành công";
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("Index");
             }
             else
@@ -561,9 +589,82 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             medicalRecord.TinhTrangBenhNhan = medicalVisit.TinhTrangBenhNhan;
             if (ModelState.IsValid)
             {
+                var medicineIds = medicalVisit.IdThuocs.Split(',');
+                var quantities = medicalVisit.SoLuongThuocs.Split(',');
+
+                if (medicineIds.Length != quantities.Length)
+                {
+                    ViewBag.MedicalRecordId = MedicalRecordId;
+                    ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                                  .Cast<ETinhTrangBenhNhan>()
+                                                  .Select(e => new SelectListItem
+                                                  {
+                                                      Value = e.ToString(),
+                                                      Text = e.ToString()
+                                                  }).ToList();
+                    ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
+                                            .Select(m => new SelectListItem
+                                            {
+                                                Value = m.MedicineId.ToString(),
+                                                Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                            }).ToList();
+                    TempData["error"] = "Số lượng thuốc và ID thuốc không khớp.";
+                    return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId });
+                }
+
+                for (int i = 0; i < medicineIds.Length; i++)
+                {
+                    int medicineId = int.Parse(medicineIds[i]);
+                    int quantity = int.Parse(quantities[i]);
+
+                    var medicine = _unitOfWork.MedicineRepository.Get(m => m.MedicineId == medicineId);
+                    if (quantity < 1 || quantity > medicine.Quantity)
+                    {
+                        ViewBag.MedicalRecordId = MedicalRecordId;
+                        ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                                      .Cast<ETinhTrangBenhNhan>()
+                                                      .Select(e => new SelectListItem
+                                                      {
+                                                          Value = e.ToString(),
+                                                          Text = e.ToString()
+                                                      }).ToList();
+                        ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
+                                                .Select(m => new SelectListItem
+                                                {
+                                                    Value = m.MedicineId.ToString(),
+                                                    Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                                }).ToList();
+                        TempData["error"] =  $"Số lượng thuốc cho ID {medicineId} không hợp lệ. Số lượng phải từ 1 đến {medicine.Quantity}.";
+                        return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId });
+                    }
+                }
+
+                if (medicalVisit.VisitDate > medicalVisit.NgayTaiKham)
+                {
+                    ViewBag.MedicalRecordId = MedicalRecordId;
+                    ViewBag.TinhTrangBenhNhan = Enum.GetValues(typeof(ETinhTrangBenhNhan))
+                                                  .Cast<ETinhTrangBenhNhan>()
+                                                  .Select(e => new SelectListItem
+                                                  {
+                                                      Value = e.ToString(),
+                                                      Text = e.ToString()
+                                                  }).ToList();
+                    ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
+                                            .Select(m => new SelectListItem
+                                            {
+                                                Value = m.MedicineId.ToString(),
+                                                Text = "Tên: " + m.Name + " | Đơn vị: " + m.Unit + " | Số lượng trong kho: " + m.Quantity.ToString()
+                                            }).ToList();
+                    TempData["error"] = "Ngày tái khám phải lớn hơn ngày khám";
+                    return RedirectToAction("CreateMedicalVisit", new { MedicalRecordId = MedicalRecordId }); 
+                }
                 _unitOfWork.MedicalVisitRepository.Add(medicalVisit);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.them, truetmp_user.UserRole, medicalVisit.VisitId, medicalVisit, null);
                 return RedirectToAction("DoctorDetail", new { MedicalRecordId = medicalVisit.MedicalRecordId });
             }
             else
@@ -576,7 +677,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                                                   Value = e.ToString(),
                                                   Text = e.ToString()
                                               }).ToList();
-                ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now)
+                ViewBag.ThuocList = _unitOfWork.MedicineRepository.GetAll(m => m.ExpiryDate > DateTime.Now && m.Quantity > 0)
                                         .Select(m => new SelectListItem
                                         {
                                             Value = m.MedicineId.ToString(),
@@ -604,6 +705,17 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
         {
             _unitOfWork.MedicalVisitRepository.Update(medicalVisit);
             _unitOfWork.Save();
+            var objFromDb=_unitOfWork.MedicalVisitRepository.Get(u=>u.VisitId==medicalVisit.VisitId);   
+            List<string> details = new List<string>();
+            if (objFromDb.VisitDate != medicalVisit.VisitDate) details.Add($"Ngày khám: {objFromDb.VisitDate} -> {medicalVisit.VisitDate}");
+            if (objFromDb.Symptom != medicalVisit.Symptom) details.Add($"Triệu chứng: {objFromDb.Symptom} -> {medicalVisit.Symptom}");
+            if (objFromDb.KetQuaLamSang != medicalVisit.KetQuaLamSang) details.Add($"Kết quả lâm sàng: {objFromDb.KetQuaLamSang} -> {medicalVisit.KetQuaLamSang}"); ;
+            if (objFromDb.ChanDoan != medicalVisit.ChanDoan) details.Add($"Chẩn đoán: {objFromDb.ChanDoan} -> {medicalVisit.ChanDoan}");
+            if (objFromDb.TinhTrangBenhNhan != medicalVisit.TinhTrangBenhNhan) details.Add($"Tình trạng bệnh nhân: {objFromDb.TinhTrangBenhNhan} -> {medicalVisit.TinhTrangBenhNhan}");
+            ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+            var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+            var truetmp_user = (CustomedUser)tmpuser;
+            trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalVisit.VisitId, medicalVisit, details);
             return RedirectToAction("DoctorDetail", new { MedicalRecordId = MedicalRecordId });
         }
 
@@ -619,6 +731,10 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 _unitOfWork.PatientRepository.Update(patient);
                 _unitOfWork.MedicalRecordRepository.Update(medicalRecord);
                 _unitOfWork.Save();
+                ActivityTrackingFunction trackingtool = new ActivityTrackingFunction(_db, _unitOfWork);
+                var tmpuser = _usermanager.GetUserAsync(User).GetAwaiter().GetResult();
+                var truetmp_user = (CustomedUser)tmpuser;
+                trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.sua, truetmp_user.UserRole, medicalRecord.MedicalRecordId, medicalRecord, null);
                 return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId=patient.PatientId});
             }
             return RedirectToAction("Index");

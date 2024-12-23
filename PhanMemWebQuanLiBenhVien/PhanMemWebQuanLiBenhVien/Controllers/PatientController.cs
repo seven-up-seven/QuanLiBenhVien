@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
 using PhanMemWebQuanLiBenhVien.DataAccess.Repository.Interfaces;
 using PhanMemWebQuanLiBenhVien.Models;
+using System.Data;
 using System.Numerics;
 using static PhanMemWebQuanLiBenhVien.Ultilities.Utilities;
 
@@ -145,12 +148,65 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 {
                     TempData["error"] = "CCCD đã tồn tại!";
                     var genderList = Enum.GetValues(typeof(EGender))
-            .Cast<EGender>()
-            .Select(gender => new SelectListItem
-            {
-                Value = gender.ToString(),
-                Text = gender.ToString()
-            }).ToList();
+                    .Cast<EGender>()
+                    .Select(gender => new SelectListItem
+                    {
+                        Value = gender.ToString(),
+                        Text = gender.ToString()
+                    }).ToList();
+                    ViewBag.Genders = genderList;
+
+                    var statuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
+                    .Cast<ETrangThaiBenhAn>()
+                    .Where(e => e == ETrangThaiBenhAn.dangchuatri || e == ETrangThaiBenhAn.ketthucchuatri)
+
+                    .Select(e => new SelectListItem
+                    {
+                        Value = e.ToString(),
+                        Text = e.ToString()
+                    }).ToList();
+                    ViewBag.statuslist = statuslist;
+                    var phongkhamlist = _unitOfWork.PhongKhamRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.Name,
+                        Value = p.RoomId.ToString()
+                    });
+                    ViewBag.phongkhamlist = phongkhamlist;
+                    var doctorlist = _unitOfWork.DoctorRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.DoctorName,
+                        Value = p.DoctorId.ToString()
+                    });
+                    ViewBag.doctorlist = doctorlist;
+                    var phongbenhlist = _unitOfWork.PhongBenhRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.Name,
+                        Value = p.RoomId.ToString()
+                    });
+                    ViewBag.phongbenhlist = phongbenhlist;
+                    var nurselist = _unitOfWork.NurseRepository.GetAll().Select(p => new SelectListItem
+                    {
+                        Text = p.NurseName,
+                        Value = p.NurseId.ToString()
+                    });
+                    ViewBag.nurselist = nurselist;
+                    ViewBag.Professions = _unitOfWork.ProfessionRepository.GetAll().Select(u => new SelectListItem
+                    {
+                        Text = u.ProfessionName,
+                        Value = u.ProfessionId.ToString()
+                    });
+                    return View();
+                }
+                if (patient.DateOfBirth >= DateTime.Now)
+                {
+                    TempData["error"] = "Ngày sinh phải bé hơn ngày hiện tại";
+                    var genderList = Enum.GetValues(typeof(EGender))
+                    .Cast<EGender>()
+                    .Select(gender => new SelectListItem
+                    {
+                        Value = gender.ToString(),
+                        Text = gender.ToString()
+                    }).ToList();
                     ViewBag.Genders = genderList;
 
                     var statuslist = Enum.GetValues(typeof(ETrangThaiBenhAn))
@@ -405,7 +461,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     }
                     _unitOfWork.Save();
                     TempData["success"] = "Cập nhật bệnh nhân thành công!";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("DoctorPatientDetail", "Doctor", new {PatientId = patient.PatientId});
                 }
             }
             else
@@ -503,6 +559,50 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             patient.MedicalRecords = _unitOfWork.MedicalRecordRepository.GetAll(u => u.PatientId == patient.PatientId).ToList();
             patient.Profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == patient.ProfesisonId); 
             return View(patient);
+        }
+        public FileResult PatientExportExcel(string filename, IEnumerable<Patient> list)
+        {
+            DataTable dataTable = new DataTable("Patient");
+            dataTable.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("ID bệnh nhân"),
+                new DataColumn("Tên bệnh nhân"),
+                new DataColumn("CCCD"),
+                new DataColumn("Ngày sinh"),
+                new DataColumn("Địa chỉ"),
+                new DataColumn("Số điện thoại"),
+                new DataColumn("Giới tính"),
+                new DataColumn("Trạng thái bệnh án"),
+                new DataColumn("Chuyên khoa")
+            });
+            foreach (var patient in list)
+            {
+                var profession = _unitOfWork.ProfessionRepository.Get(u => u.ProfessionId == patient.ProfesisonId);
+                string gioitinh = "";
+                if (patient.Gender == EGender.male) gioitinh = "nam";
+                else gioitinh = "nữ";
+                dataTable.Rows.Add(patient.PatientId, patient.Name, patient.CCCD, patient.DateOfBirth, patient.Address, patient.PhoneNumber, gioitinh, patient.TrangThaiBenhAn.ToString(), profession.ProfessionName);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dataTable);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                }
+            }
+        }
+        public FileResult PatientExport(string ids)
+        {
+            var realid = ids.TrimEnd(',');
+            var idList = realid.Split(',').Select(int.Parse).ToList();
+            var list = new List<Patient>();
+            foreach (var id in idList)
+            {
+                list.Add(_unitOfWork.PatientRepository.Get(u => u.PatientId == id));
+            }
+            return PatientExportExcel("danhsachbenhnhan.xlsx", list);
         }
     }
 }

@@ -80,12 +80,12 @@
                                 <td>
                                     @if (Model.TrangThaiBenhAn == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri)
                                     {
-                                        <a asp-controller="MedicalRecord" asp-action="MedicalVisitUpdate" asp-route-MedicalVisitId="@visit.VisitId" asp-route-MedicalRecordId="@Model.MedicalRecordId" class="btn btn-primary">Sửa</a>
+                                        <a asp-controller="MedicalRecord" asp-action="MedicalVisitUpdate" asp-route-MedicalVisitId="@visit.VisitId" asp-route-MedicalRecordId="@Model.MedicalRecordId" class="btn text-decoration-none text-white">Sửa</a>
                                         <br />
                                     }
                                 @if (User.IsInRole("Doctor"))
                                 {
-                                    <a asp-controller="Medicine" asp-action="KeDonThuoc" asp-route-MedicalVisitId="@visit.VisitId">Đơn thuốc</a>
+                                    <a asp-controller="Medicine" asp-action="KeDonThuoc" asp-route-MedicalVisitId="@visit.VisitId" class="btn text-decoration-none text-white">Đơn thuốc</a>
                                 }
                             </td>
                             </tr>

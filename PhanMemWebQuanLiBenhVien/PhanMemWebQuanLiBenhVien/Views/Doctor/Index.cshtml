@@ -8,6 +8,14 @@
         <div class="col text-primary"><h2>Danh sách bác sĩ: @Model.Count() bác sĩ</h2></div>
         <div class="col col-2 text-end text-center"><h5><a asp-action="Create" asp-controller="Doctor" class="text-decoration-none text-white btn btn-primary"><i class="bi bi-person-plus-fill"></i> Thêm bác sĩ</a></h5></div>
     </div>
+    @{
+        string list = "";
+        foreach (var doctor in Model)
+        {
+            list = list + doctor.DoctorId + ",";
+        }
+    }
+    <a asp-controller="Doctor" asp-action="DoctorExport" asp-route-ids="@list" class="btn btn-primary">Xuất Excel</a>
     <form method="post" class="d-flex justify-content-end gap-2 mb-3">
         <select name="ProfessionId" asp-items="@ViewBag.Professions" class="rounded-3">
             <option value="0">Lọc bác sĩ theo khoa</option>
