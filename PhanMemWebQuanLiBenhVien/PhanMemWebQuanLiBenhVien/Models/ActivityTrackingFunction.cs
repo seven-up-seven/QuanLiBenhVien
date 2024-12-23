@@ -34,7 +34,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
             if (type == ETypeOfActivity.sua)
             {
                 entity.Activity = VaiTro + MemberName + " Đã sửa " + ObjectName + " với ID là " + ObjectId;
-                if (UpdateDetails!=null)
+                if (UpdateDetails!=null && UpdateDetails.Count>0)
                 {
                     foreach (var detail in UpdateDetails)
                     {
