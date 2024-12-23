@@ -42,7 +42,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var true_user = (CustomedUser)user;
                 listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.quanlibenhnhan && u.MemberId == true_user.UserId);
             }
-            return View(listactivity.OrderBy(u=>u.ActivityTime).ToList());
+            return View(listactivity.OrderByDescending(u=>u.ActivityTime).ToList());
         }
     }
 }

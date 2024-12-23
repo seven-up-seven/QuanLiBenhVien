@@ -23,7 +23,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
             entity.MemberRole = MemberRole;
             entity.ActivityTime= DateTime.Now;
             string ObjectName = Object.GetType().Name;
-            if (Object.GetType().Name == "ClaimsPrincipal")
+            if (Object.GetType().Name == "CustomedUser")
             {
                 ObjectName = "tài khoản";
                 var obj =(CustomedUser)Object;
