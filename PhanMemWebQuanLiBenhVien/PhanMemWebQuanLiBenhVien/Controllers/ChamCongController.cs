@@ -20,7 +20,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (User.IsInRole("Doctor"))
             {
                 var us = (CustomedUser)_userManager.GetUserAsync(User).GetAwaiter().GetResult(); 
-                var chamcong = _unitOfWork.ChamCongRepository.Get(u=>u.DoctorId == us.UserId && u.Time.Month == DateTime.Now.Month && u.Time.Year == DateTime.Now.Year);
+                var chamcong = _unitOfWork.ChamCongRepository.Get(u=>u.DoctorId == us.UserId && u.Time.Date == DateTime.Now.Date);
                 if(chamcong!=null) TempData["error"] = "Bạn đã chấm công ngày hôm nay rồi";
                 else
                 {
