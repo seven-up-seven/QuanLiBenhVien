@@ -34,6 +34,7 @@ else
                 <th>Ảnh</th>
                 <th>Vai trò</th>
                 <th>Actions</th>
+                <th>History</th>
             </tr>
         </thead>
         <tbody>
@@ -68,6 +69,9 @@ else
                     <td>
                         <a asp-action="Update" asp-route-NhanSuId="@nhansu.NhanSuId" class="btn btn-primary">Sửa</a>
                         <a asp-action="Delete" asp-route-NhanSuId="@nhansu.NhanSuId" class="btn btn-primary">Xóa</a>
+                    </td>
+                    <td>
+                        <a asp-controller="ActivityHistory" asp-action="Index" asp-route-ExecutorID="@nhansu.NhanSuId" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                     </td>
                 </tr>
             }

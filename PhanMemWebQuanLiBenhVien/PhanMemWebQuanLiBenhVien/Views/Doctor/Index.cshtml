@@ -36,6 +36,7 @@
                 <th>Ảnh</th>
                 <th>Chuyên khoa</th>
                 <th>Actions</th>
+                <th>History</th>
             </tr>
         </thead>
 
@@ -69,6 +70,9 @@
                     <td>
                     <a class="btn btn-primary" asp-controller="Doctor" asp-action="Update" asp-route-DoctorId="@doctor.DoctorId"><i class="bi bi-pencil-square"></i> Sửa</a>
                     <a asp-controller="Doctor" asp-action="Detail" asp-route-DoctorId="@doctor.DoctorId" class="btn btn-primary"><i class="bi bi-layout-text-sidebar-reverse"></i> Chi tiết</a>
+                    </td>
+                    <td>
+                        <a asp-controller="ActivityHistory" asp-action="Index" asp-route-ExecutorID="@doctor.DoctorId" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                     </td>
                 </tr>
             }
