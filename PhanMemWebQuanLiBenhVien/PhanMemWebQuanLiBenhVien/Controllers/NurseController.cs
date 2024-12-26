@@ -203,7 +203,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             if (user != null)
             {
                 TempData["error"] = "Đang có account không thể xoá";
-                return RedirectToAction("Index");
+                return RedirectToAction("Detail", "Nurse", new {NurseId = NurseId});
             }
             var nurse = _unitOfWork.NurseRepository.Get(u => u.NurseId == NurseId);
             wwwroot = _webHostEnvironment.WebRootPath;
@@ -215,8 +215,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var fk = _unitOfWork.MedicalRecordRepository.GetAll(u => u.NurseId == nurse.NurseId);
             if (fk != null)
             {
-                TempData["error"] = "Bác sĩ có liên quan đến các bệnh án hiện có, không thể xoá";
-                return RedirectToAction("Index");
+                TempData["error"] = "Y tá có liên quan đến các bệnh án hiện có, không thể xoá";
+                return RedirectToAction("Detail", "Nurse", new { NurseId = NurseId });
             }
             var chamcongs = _unitOfWork.ChamCongRepository.GetAll(u => u.NurseId == NurseId);
             _unitOfWork.ChamCongRepository.RemoveRange(chamcongs); 
@@ -226,7 +226,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             var tmpuser = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
             var truetmp_user = (CustomedUser)tmpuser;
             trackingtool.TrackingActivity(truetmp_user.UserId, truetmp_user.UserName, ETypeOfActivity.xoa, truetmp_user.UserRole, nurse.NurseId, nurse, null);
-            return RedirectToAction("Index");
+            return RedirectToAction("Detail", "Nurse", new { NurseId = NurseId });
         }
         public IActionResult Detail(int NurseId)
         {

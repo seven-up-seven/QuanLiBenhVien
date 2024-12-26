@@ -220,8 +220,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
                 if(mr_fk != null)
                 {
-                    TempData["error"] = "Phòng khám liên quan đến một số dữ liệu bệnh án hiện tại, không thể xoá";
-                    return RedirectToAction("Index");
+                    _unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk); 
                 }
                 if (phongKham != null)
                 {
