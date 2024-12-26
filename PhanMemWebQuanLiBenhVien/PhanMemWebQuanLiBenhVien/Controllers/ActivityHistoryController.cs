@@ -85,7 +85,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             return View(listactivity.OrderByDescending(u=>u.ActivityTime).ToList());
         }
         [HttpPost]
-        public async Task<IActionResult> Index(string SearchRole, int SearchExecutorID)
+        public async Task<IActionResult> Index(string SearchRole, int SearchExecutorID, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.ListRole = new SelectList(new List<SelectListItem>
             {
@@ -121,31 +121,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 }
             }, "Value", "Text");
             var listactivity = _unitOfWork.ActivityHistoryRepository.GetAll();
-            /*if (User.IsInRole("Doctor"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.doctor && u.MemberId == true_user.UserId);
-            }
-            if (User.IsInRole("Nurse"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.nurse && u.MemberId == true_user.UserId);
-            }
-            if (User.IsInRole("QuanLiVatTu"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.quanlivattu && u.MemberId == true_user.UserId);
-            }
-            if (User.IsInRole("QuanLiBenhNhan"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.quanlibenhnhan && u.MemberId == true_user.UserId);
-            }*/
-            if (SearchExecutorID!=-1)
+            if (startDate.HasValue && endDate.HasValue) listactivity = listactivity.Where(u => u.ActivityTime.Date >= startDate.Value.Date && u.ActivityTime.Date <= endDate.Value.Date);
+                if (SearchExecutorID!=-1)
             {
                 listactivity = listactivity.Where(u => u.MemberId == SearchExecutorID);
             }

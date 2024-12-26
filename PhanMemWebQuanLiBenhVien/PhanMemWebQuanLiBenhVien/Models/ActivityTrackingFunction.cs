@@ -47,11 +47,80 @@ namespace PhanMemWebQuanLiBenhVien.Models
                     }
                     entity.UpdateDetails.TrimEnd(',');
                 }
+                if (ObjectName=="MedicalRecord")
+                {
+                    var mr = (MedicalRecord)Object;
+                    var true_mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == mr.MedicalRecordId);
+                    var cccd = _unitofwork.PatientRepository.Get(u => u.PatientId == true_mr.PatientId).CCCD;
+                    entity.Activity = entity.Activity + " của bệnh nhân với ID là " + true_mr.PatientId + " và CCCD là " + cccd;
+                }
+                if (ObjectName=="MedicalVisit")
+                {
+                    var mv = (MedicalVisit)Object;
+                    var true_mv = _unitofwork.MedicalVisitRepository.Get(u => u.VisitId == mv.VisitId);
+                    var mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == true_mv.MedicalRecordId);
+                    var pt = _unitofwork.PatientRepository.Get(u => u.PatientId == mr.PatientId);
+                    entity.Activity = entity.Activity + " của bệnh án với ID là " + mr.MedicalRecordId + " của bệnh nhân với ID là " + pt.PatientId;
+                }
                 if (UpdateDetails!=null && UpdateDetails.Count == 0) return;
             }
-            else if (type==ETypeOfActivity.them) entity.Activity = VaiTro + MemberName + " đã thêm " + ObjectName + " với ID là " + ObjectId;
-            else if (type==ETypeOfActivity.xoa) entity.Activity = VaiTro + MemberName + " đã xóa " + ObjectName + " với ID là " + ObjectId;
-            else if (type==ETypeOfActivity.dongbenhan) entity.Activity= VaiTro + MemberName + " đã đóng " + ObjectName + " với ID là " + ObjectId;
+            else if (type==ETypeOfActivity.them)
+            {
+                entity.Activity = VaiTro + MemberName + " đã thêm " + ObjectName + " với ID là " + ObjectId;
+                if (ObjectName == "MedicalRecord")
+                {
+                    var mr = (MedicalRecord)Object;
+                    var true_mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == mr.MedicalRecordId);
+                    var cccd = _unitofwork.PatientRepository.Get(u => u.PatientId == true_mr.PatientId).CCCD;
+                    entity.Activity = entity.Activity + " của bệnh nhân với ID là " + true_mr.PatientId + " và CCCD là " + cccd;
+                }
+                if (ObjectName == "MedicalVisit")
+                {
+                    var mv = (MedicalVisit)Object;
+                    var true_mv = _unitofwork.MedicalVisitRepository.Get(u => u.VisitId == mv.VisitId);
+                    var mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == true_mv.MedicalRecordId);
+                    var pt = _unitofwork.PatientRepository.Get(u => u.PatientId == mr.PatientId);
+                    entity.Activity = entity.Activity + " của bệnh án với ID là " + mr.MedicalRecordId + " của bệnh nhân với ID là " + pt.PatientId;
+                }
+            }               
+            else if (type==ETypeOfActivity.xoa)
+            {
+                entity.Activity = VaiTro + MemberName + " đã xóa " + ObjectName + " với ID là " + ObjectId;
+                if (ObjectName == "MedicalRecord")
+                {
+                    var mr = (MedicalRecord)Object;
+                    var true_mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == mr.MedicalRecordId);
+                    var cccd = _unitofwork.PatientRepository.Get(u => u.PatientId == true_mr.PatientId).CCCD;
+                    entity.Activity = entity.Activity + " của bệnh nhân với ID là " + true_mr.PatientId + " và CCCD là " + cccd;
+                }
+                if (ObjectName == "MedicalVisit")
+                {
+                    var mv = (MedicalVisit)Object;
+                    var true_mv = _unitofwork.MedicalVisitRepository.Get(u => u.VisitId == mv.VisitId);
+                    var mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == true_mv.MedicalRecordId);
+                    var pt = _unitofwork.PatientRepository.Get(u => u.PatientId == mr.PatientId);
+                    entity.Activity = entity.Activity + " của bệnh án với ID là " + mr.MedicalRecordId + " của bệnh nhân với ID là " + pt.PatientId;
+                }
+            }
+            else if (type==ETypeOfActivity.dongbenhan)
+            {
+                entity.Activity = VaiTro + MemberName + " đã đóng " + ObjectName + " với ID là " + ObjectId;
+                if (ObjectName == "MedicalRecord")
+                {
+                    var mr = (MedicalRecord)Object;
+                    var true_mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == mr.MedicalRecordId);
+                    var cccd = _unitofwork.PatientRepository.Get(u => u.PatientId == true_mr.PatientId).CCCD;
+                    entity.Activity = entity.Activity + " của bệnh nhân với ID là " + true_mr.PatientId + " và CCCD là " + cccd;
+                }
+                if (ObjectName == "MedicalVisit")
+                {
+                    var mv = (MedicalVisit)Object;
+                    var true_mv = _unitofwork.MedicalVisitRepository.Get(u => u.VisitId == mv.VisitId);
+                    var mr = _unitofwork.MedicalRecordRepository.Get(u => u.MedicalRecordId == true_mv.MedicalRecordId);
+                    var pt = _unitofwork.PatientRepository.Get(u => u.PatientId == mr.PatientId);
+                    entity.Activity = entity.Activity + " của bệnh án với ID là " + mr.MedicalRecordId + " của bệnh nhân với ID là " + pt.PatientId;
+                }
+            }               
             else if (type==ETypeOfActivity.trichxuatthuoc) entity.Activity=VaiTro + MemberName + "đã trích xuất " + ObjectName + " với ID là " + ObjectId;
             else entity.Activity = VaiTro + MemberName + "đã hoàn thành " + ObjectName + " với ID là " + ObjectId;
             _unitofwork.ActivityHistoryRepository.Add(entity);

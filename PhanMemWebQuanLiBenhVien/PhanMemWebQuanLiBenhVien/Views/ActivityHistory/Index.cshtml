@@ -2,7 +2,15 @@
 
 @if (User.IsInRole("Admin") || User.IsInRole("QuanLiNhanSu"))
 {
-    <form id="myForm" method="post" class="d-flex align-items-center gap-3">
+    <form id="myForm" method="post" class="d-flex align-items-center gap-3" onsubmit="return validateDates()">
+        <div class="input-group">
+            <label class="input-group-text" for="">Ngày bắt đầu</label>
+            <input type="date" id="startDate" name="startDate" class="form-control me-2" placeholder="Từ ngày" aria-label="Từ ngày">
+        </div>
+        <div class="input-group">
+            <label class="input-group-text" for="">Ngày kết thúc</label>
+            <input type="date" id="endDate" name="endDate" class="form-control me-2" placeholder="Đến ngày" aria-label="Đến ngày">
+        </div>
         <div class="input-group">
             <label class="input-group-text" for="SearchRole">Vai trò</label>
             <select id="SearchRole" name="SearchRole" class="form-select" asp-items="@ViewBag.ListRole">
@@ -102,4 +110,19 @@ else
             input.value = -1;
         }
     });
+</script>
+<script>
+    function validateDates() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        if ((startDate && !endDate) || (!startDate && endDate)) {
+            alert('Vui lòng chọn cả ngày bắt đầu và ngày kết thúc.');
+            return false;
+        }
+        if (startDate && endDate && startDate > endDate) {
+            alert('Ngày bắt đầu phải bé hơn hoặc bằng ngày kết thúc.');
+            return false;
+        }
+        return true;
+    }
 </script>
