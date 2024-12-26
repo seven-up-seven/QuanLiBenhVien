@@ -165,8 +165,6 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
 		[HttpPost("Update/{PhongBenhId}")]
 		public IActionResult Update(PhongBenh phongBenh)
 		{
-			if (ModelState.IsValid)
-			{
                 var old = _unitOfWork.PhongBenhRepository.Get(pb => pb.RoomId == phongBenh.RoomId);
                 old.Patients = new List<Patient>(); 
                 var mrs = _unitOfWork.MedicalRecordRepository.GetAll(mr => mr.PhongBenhId == phongBenh.RoomId && mr.TrangThaiBenhAn == Ultilities.Utilities.ETrangThaiBenhAn.dangchuatri); 
@@ -200,7 +198,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                     TempData["success"] = "Cập nhật thông tin phòng bệnh thành công"; 
                     return RedirectToAction("Index");
                 }
-			}
+			
 			return View();
 		}
 
@@ -219,9 +217,7 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var mr_fk = _unitOfWork.MedicalRecordRepository.GetAll(m => m.PhongBenhId == PhongBenhId); 
                 if (mr_fk != null)
                 {
-                    TempData["error"] = "Phòng bệnh liên quan đến một số dữ liệu bệnh án hiện tại, không thể xoá";
-                    return RedirectToAction("Index");
-                    //_unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk);
+                    _unitOfWork.MedicalRecordRepository.RemoveRange(mr_fk);
                 }
                 var a = _unitOfWork.MissionRepository.GetAll(u => u.PhongBenhId == phongBenh.RoomId);
                 _unitOfWork.MissionRepository.RemoveRange(a);

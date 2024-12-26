@@ -35,7 +35,7 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="fw-bold">
             @foreach (var record in Model)
             {
                
@@ -48,8 +48,9 @@
                     <td>@record.TienSuBenhAn</td>
                     @if(record.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.noitru)
                     {
-                        var dr = UnitOfWork.DoctorRepository.Get(u=>u.DoctorId == record.DoctorId); 
-                        <td>Điều trị nội trú <br /> BS: @dr.DoctorName <br /> Id: @dr.DoctorId</td>
+                        var dr = UnitOfWork.DoctorRepository.Get(u=>u.DoctorId == record.DoctorId);
+                        var nr = UnitOfWork.NurseRepository.Get(u => u.NurseId == record.NurseId); 
+                            <td>Điều trị nội trú <br /> BS: @dr.DoctorName Id: @dr.DoctorId <br /> Y tá: @nr.NurseName Id: @nr.NurseId</td>
                     }
                     else
                     {

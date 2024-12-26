@@ -286,15 +286,21 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 if(user!=null)
                 {
                     TempData["error"] = "Đang có account không thể xoá"; 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Detail", "Doctor", new {DoctorId = doctor.DoctorId});
                     //_userManager.DeleteAsync(user).GetAwaiter().GetResult();
                 }
                 var chamcongs = _unitOfWork.ChamCongRepository.GetAll(cc => cc.DoctorId == DoctorId);
                 var fk = _unitOfWork.MedicalRecordRepository.GetAll(u => u.DoctorId == doctor.DoctorId);
-                if (fk != null)
+                if (fk != null && fk.Count() > 0)
                 {
                     TempData["error"] = "Bác sĩ có liên quan đến các bệnh án hiện có, không thể xoá";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Detail", "Doctor", new { DoctorId = doctor.DoctorId });
+                }
+                var wsl = _unitOfWork.WorkScheduleRepository.GetAll(u => u.DoctorId1 == doctor.DoctorId || u.DoctorId2 == doctor.DoctorId || u.DoctorId3 == doctor.DoctorId); 
+                if(wsl != null)
+                {
+                    TempData["error"] = "Bác sĩ đang được giao lịch, huỷ lịch trước khi xoá";
+                    return RedirectToAction("Detail", "Doctor", new { DoctorId = doctor.DoctorId });
                 }
                 _unitOfWork.ChamCongRepository.RemoveRange(chamcongs); 
                 _unitOfWork.DoctorRepository.Remove(doctor);
@@ -309,8 +315,8 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             {
                 TempData["error"] = "Bác sĩ đang phụ trách cho một số bệnh nhân, không thể xoá"; 
             }
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Detail", "Doctor", new { DoctorId = doctor.DoctorId });
+        }
 		public IActionResult Detail(int DoctorId)
 		{
 			var doctor=_unitOfWork.DoctorRepository.Get(u=>u.DoctorId==DoctorId);
