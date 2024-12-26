@@ -38,7 +38,7 @@ namespace PhanMemWebQuanLiBenhVien.Models
             else if (MemberRole == ERole.quanlibenhnhan) VaiTro = "Quản lí bệnh nhân ";
             if (type == ETypeOfActivity.sua)
             {
-                entity.Activity = VaiTro + MemberName + " Đã sửa " + ObjectName + " với ID là " + ObjectId;
+                entity.Activity = VaiTro + MemberName + " đã sửa " + ObjectName + " với ID là " + ObjectId;
                 if (UpdateDetails!=null && UpdateDetails.Count>0)
                 {
                     foreach (var detail in UpdateDetails)
