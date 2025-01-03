@@ -18,39 +18,39 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? ExecutorID=null)
         {
             ViewBag.ListRole = new SelectList(new List<SelectListItem>
             {
                 new SelectListItem
                 {
                     Text = "Quản lí nhân sự",
-                    Value = ERole.quanlinhansu.ToString()
+                    Value = ERole.quanlinhansu.ToString(),
                 },
                 new SelectListItem
                 {
                     Text = "Quản lí vật tư",
-                    Value = ERole.quanlivattu.ToString()
+                    Value = ERole.quanlivattu.ToString(),
                 },
                 new SelectListItem
                 {
                     Text = "Quản lí bệnh nhân",
-                    Value = ERole.quanlibenhnhan.ToString()
+                    Value = ERole.quanlibenhnhan.ToString(),
                 },
                 new SelectListItem
                 {
                     Text="Bác sĩ",
-                    Value=ERole.doctor.ToString()
+                    Value=ERole.doctor.ToString(),
                 },
                 new SelectListItem
                 {
                     Text="Y tá",
-                    Value=ERole.nurse.ToString()
+                    Value=ERole.nurse.ToString(),
                 },
                 new SelectListItem
                 {
                     Text="Admin",
-                    Value=ERole.admin.ToString()
+                    Value=ERole.admin.ToString(),
                 }
             }, "Value", "Text");
             var listactivity=_unitOfWork.ActivityHistoryRepository.GetAll();
@@ -78,70 +78,51 @@ namespace PhanMemWebQuanLiBenhVien.Controllers
                 var true_user = (CustomedUser)user;
                 listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.quanlibenhnhan && u.MemberId == true_user.UserId);
             }
+            if (ExecutorID!=null)
+            {
+                listactivity=listactivity.Where(u=>u.MemberId==ExecutorID);
+            }
             return View(listactivity.OrderByDescending(u=>u.ActivityTime).ToList());
         }
         [HttpPost]
-        public async Task<IActionResult> Index(string SearchRole, int SearchExecutorID)
+        public async Task<IActionResult> Index(string SearchRole, int SearchExecutorID, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.ListRole = new SelectList(new List<SelectListItem>
             {
                 new SelectListItem
                 {
                     Text = "Quản lí nhân sự",
-                    Value = ERole.quanlinhansu.ToString()
+                    Value = ERole.quanlinhansu.ToString(),
                 },
                 new SelectListItem
                 {
                     Text = "Quản lí vật tư",
-                    Value = ERole.quanlivattu.ToString()
+                    Value = ERole.quanlivattu.ToString(),
                 },
                 new SelectListItem
                 {
                     Text = "Quản lí bệnh nhân",
-                    Value = ERole.quanlibenhnhan.ToString()
+                    Value = ERole.quanlibenhnhan.ToString(),
                 },
                 new SelectListItem
                 {
                     Text="Bác sĩ",
-                    Value=ERole.doctor.ToString()
+                    Value=ERole.doctor.ToString(),
                 },
                 new SelectListItem
                 {
                     Text="Y tá",
-                    Value=ERole.nurse.ToString()
+                    Value=ERole.nurse.ToString(),
                 },
                 new SelectListItem
                 {
                     Text="Admin",
-                    Value=ERole.admin.ToString()
+                    Value=ERole.admin.ToString(),
                 }
             }, "Value", "Text");
             var listactivity = _unitOfWork.ActivityHistoryRepository.GetAll();
-            if (User.IsInRole("Doctor"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.doctor && u.MemberId == true_user.UserId);
-            }
-            if (User.IsInRole("Nurse"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.nurse && u.MemberId == true_user.UserId);
-            }
-            if (User.IsInRole("QuanLiVatTu"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.quanlivattu && u.MemberId == true_user.UserId);
-            }
-            if (User.IsInRole("QuanLiBenhNhan"))
-            {
-                var user = await _userManager.GetUserAsync(User);
-                var true_user = (CustomedUser)user;
-                listactivity = listactivity.Where(u => u.MemberRole == Ultilities.Utilities.ERole.quanlibenhnhan && u.MemberId == true_user.UserId);
-            }
-            if (!string.IsNullOrEmpty(SearchExecutorID.ToString()))
+            if (startDate.HasValue && endDate.HasValue) listactivity = listactivity.Where(u => u.ActivityTime.Date >= startDate.Value.Date && u.ActivityTime.Date <= endDate.Value.Date);
+                if (SearchExecutorID!=-1)
             {
                 listactivity = listactivity.Where(u => u.MemberId == SearchExecutorID);
             }

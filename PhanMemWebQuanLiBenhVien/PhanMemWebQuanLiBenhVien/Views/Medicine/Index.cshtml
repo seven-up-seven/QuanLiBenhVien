@@ -45,10 +45,10 @@
                 <th style="width:260px">Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="fw-bold">
             @foreach (var item in Model)
             {
-                <tr style="@((item.Quantity == -1 || item.ExpiryDate < DateTime.Now) ? "background-color: lightcoral" : "background-color: aquamarine")">
+                <tr style="@((item.Quantity <= -1 || item.ExpiryDate < DateTime.Now) ? "background-color: lightcoral" : "background-color: aquamarine")">
                     <td>
                         @Html.DisplayFor(modelItem => item.MedicineId)
                     </td>

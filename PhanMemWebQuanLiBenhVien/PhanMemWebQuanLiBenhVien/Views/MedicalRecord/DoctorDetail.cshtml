@@ -113,7 +113,10 @@
                             <tr>
                                 <td>@(i++)</td>
                                 <td>@visit.VisitDate.ToString("dd/MM/yyyy")</td>
-                                <td>@visit.TenBacSi</td>
+                                @if (Model.TrangThaiDieuTri == PhanMemWebQuanLiBenhVien.Ultilities.Utilities.ETrangThaiDieuTri.ngoaitru)
+                                {
+                                    <td>@visit.TenBacSi</td>
+                                }
                                 <td>@visit.Symptom</td>
                                 <td>@visit.KetQuaLamSang</td>
                                 <td>@visit.ChanDoan</td>

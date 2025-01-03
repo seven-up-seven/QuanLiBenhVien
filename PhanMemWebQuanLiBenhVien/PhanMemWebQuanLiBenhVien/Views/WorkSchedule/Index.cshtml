@@ -31,7 +31,7 @@
     {
         <p>Không có phòng khám nào</p>
     }
-    else
+    else 
     {
         <div class="row">
             @foreach (var phongKham in Model)
@@ -41,8 +41,9 @@
                         <div class="card-body">
                             <p class="card-title text-center fw-bold">@phongKham.Name</p>
                             <p class="text-center">@phongKham.Profession.ProfessionName</p>
-                            
-                            @{
+
+                            @if (phongKham != null && phongKham.WorkSchedules != null)
+                            {
                                 if (dayOfWeek == "Monday")
                                 {
                                     <hr />
@@ -87,8 +88,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongKham.WorkSchedules[1].DoctorId1 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
-                                                ;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[1].DoctorId1).DoctorName;
                                             }
                                         </p>
                                     </div>
@@ -97,8 +97,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongKham.WorkSchedules[1].DoctorId2 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
-                                                ;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[1].DoctorId2).DoctorName;
                                             }
                                         </p>
                                     </div>
@@ -107,8 +106,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongKham.WorkSchedules[1].DoctorId3 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
-                                                ;
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[1].DoctorId3).DoctorName;
                                             }
                                         </p>
                                     </div>
@@ -129,7 +127,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongKham.WorkSchedules[2].DoctorId1 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[2].DoctorId1).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -139,7 +137,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongKham.WorkSchedules[2].DoctorId2 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[2].DoctorId2).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -149,7 +147,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongKham.WorkSchedules[2].DoctorId3 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[2].DoctorId3).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -171,7 +169,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongKham.WorkSchedules[3].DoctorId1 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[3].DoctorId1).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -181,7 +179,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongKham.WorkSchedules[3].DoctorId2 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[3].DoctorId2).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -191,7 +189,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongKham.WorkSchedules[3].DoctorId3 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[3].DoctorId3).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -213,7 +211,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongKham.WorkSchedules[4].DoctorId1 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[4].DoctorId1).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -223,7 +221,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongKham.WorkSchedules[4].DoctorId2 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[4].DoctorId2).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -233,7 +231,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongKham.WorkSchedules[4].DoctorId3 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[4].DoctorId3).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -255,7 +253,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongKham.WorkSchedules[5].DoctorId1 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[5].DoctorId1).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -265,7 +263,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongKham.WorkSchedules[5].DoctorId2 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[5].DoctorId2).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -275,7 +273,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongKham.WorkSchedules[5].DoctorId3 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[5].DoctorId3).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -297,7 +295,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongKham.WorkSchedules[6].DoctorId1 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId1).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[6].DoctorId1).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -307,7 +305,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongKham.WorkSchedules[6].DoctorId2 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId2).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[6].DoctorId2).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -317,7 +315,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongKham.WorkSchedules[6].DoctorId3 != null)
                                             {
-                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[0].DoctorId3).DoctorName
+                                                @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == phongKham.WorkSchedules[6].DoctorId3).DoctorName
                                                 ;
                                             }
                                         </p>
@@ -410,7 +408,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongcapcuu.WorkSchedules[1].DoctorId1 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1;
+                                                int temp = phongcapcuu.WorkSchedules[1].DoctorId1;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -421,7 +419,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongcapcuu.WorkSchedules[1].DoctorId2 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                int temp = phongcapcuu.WorkSchedules[1].DoctorId2;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -432,7 +430,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongcapcuu.WorkSchedules[1].DoctorId3 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                int temp = phongcapcuu.WorkSchedules[1].DoctorId3;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -455,7 +453,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongcapcuu.WorkSchedules[2].DoctorId1 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1;
+                                                int temp = phongcapcuu.WorkSchedules[2].DoctorId1;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -466,7 +464,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongcapcuu.WorkSchedules[2].DoctorId2 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                int temp = phongcapcuu.WorkSchedules[2].DoctorId2;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -477,7 +475,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongcapcuu.WorkSchedules[2].DoctorId3 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                int temp = phongcapcuu.WorkSchedules[2].DoctorId3;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -500,7 +498,7 @@
                                             <strong>Sáng:</strong>
                                             @if (phongcapcuu.WorkSchedules[3].DoctorId1 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId1;
+                                                int temp = phongcapcuu.WorkSchedules[3].DoctorId1;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -511,7 +509,7 @@
                                             <strong>Chiều:</strong>
                                             @if (phongcapcuu.WorkSchedules[3].DoctorId2 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId2;
+                                                int temp = phongcapcuu.WorkSchedules[3].DoctorId2;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
@@ -522,7 +520,7 @@
                                             <strong>Tối:</strong>
                                             @if (phongcapcuu.WorkSchedules[3].DoctorId3 != null)
                                             {
-                                                int temp = phongcapcuu.WorkSchedules[0].DoctorId3;
+                                                int temp = phongcapcuu.WorkSchedules[3].DoctorId3;
                                                 @UnitOfWork.DoctorRepository.Get(u => u.DoctorId == temp).DoctorName
                                                 ;
                                             }
