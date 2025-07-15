@@ -1,4 +1,4 @@
-# Hotel Management Web Application
+# Hospital Management Web Application
 ## What we used: 
 - Displaying information and user interaction: Razor View (.cshtml) 
 - Storaging and querying data: C# .Net EntityFrameworkCore + Visual Studio 2022, MS SQL Server + SQL Server Management Studio 20  
